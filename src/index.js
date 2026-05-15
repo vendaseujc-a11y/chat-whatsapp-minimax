@@ -19,6 +19,10 @@ app.use(express.json());
 
 app.use(express.static('.'));
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.post('/chat', async (req, res) => {
   try {
     const { message, sessionId } = req.body;
