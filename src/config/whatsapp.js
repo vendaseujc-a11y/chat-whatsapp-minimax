@@ -1,9 +1,9 @@
 const whatsappConfig = {
-  phoneNumber: "11999999999",
-  businessName: "Minha Loja",
-  defaultMessage: "Olá! vim pelo chat do site e gostaria de fazer um pedido.",
-  hours: "Seg a Sex: 9h às 20h | Sáb: 9h às 18h",
-  address: "Rua example, 123"
+  phoneNumber: "17996705407",
+  businessName: "VNIVender+",
+  defaultMessage: "Olá! vim pelo chat da VNIVender+ e gostaria de fazer um pedido.",
+  hours: "Seg a Sex: 9h às 18h",
+  address: ""
 };
 
 function generateWhatsAppLink(message) {

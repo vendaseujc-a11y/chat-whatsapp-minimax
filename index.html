@@ -435,11 +435,30 @@
             z-index: 100;
             text-decoration: none;
             transition: all 0.3s ease;
+            border: none;
         }
 
         .whatsapp-button:hover {
             transform: scale(1.05);
             box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+        }
+
+        .link-button {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .link-button:hover {
+            opacity: 0.9;
         }
 
         .products-section {
@@ -800,6 +819,26 @@
             await loadWhatsApp();
             const btn = document.getElementById('whatsappBtn');
             btn.href = whatsappLink;
+        }
+
+        async function requestProductLink(productName) {
+            const linkBtn = document.createElement('button');
+            linkBtn.className = 'link-button';
+            linkBtn.innerHTML = '🔗 Solicitar Link';
+            linkBtn.onclick = async () => {
+                try {
+                    const response = await fetch(`${API_URL}/whatsapp/link`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ product: productName })
+                    });
+                    const data = await response.json();
+                    window.open(data.link, '_blank');
+                } catch (e) {
+                    window.open(whatsappLink, '_blank');
+                }
+            };
+            return linkBtn;
         }
 
         loadProducts();

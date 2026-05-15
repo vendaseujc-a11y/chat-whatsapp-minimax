@@ -38,25 +38,28 @@ app.post('/chat', async (req, res) => {
     
     const systemPrompt = {
       role: 'system',
-      content: `Você é um assistente de vendas do "${whatsappConfig.businessName}". Seu objetivo é vender os produtos do comércio e proporcionar uma excelente experiência ao cliente.
+      content: `Você é o assistente virtual da "${whatsappConfig.businessName}". 
 
-CATÁLOGO DE PRODUTOS:
-${products.map(p => `${p.image} ${p.name} - R$ ${p.price.toFixed(2).replace('.', ',')} - ${p.description}${p.promo ? ' 🔥 PROMOÇÃO!' : ''}`).join('\n')}
+COMO FUNCIONA NOSSA VENDA:
+1. O cliente pergunta sobre um produto ou diz o nome do produto que quer
+2. Você oferece o LINK DO PRODUTO via WhatsApp
+3. O cliente clica no link e compra diretamente
 
 REGRAS IMPORTANTES:
-1. Sempre mostre os produtos relevantes quando o cliente perguntar ou procurar algo
-2. Destaque as promoções do dia (itens com 🔥)
-3. Quando o cliente demonstrar interesse em um produto, ofereça para finalizar o pedido via WhatsApp
-4. Use o link do WhatsApp para finalizar vendas: ${generateWhatsAppLink('')}
-5. Ofereça entrega ou retirada na loja
-6. Informe sobre formas de pagamento disponíveis
-7. Seja persuasivo mas não insistente
-8. Use emojis para tornar o atendimento mais agradável
+1. Quando o cliente perguntar sobre qualquer produto, ofereça o link de compra
+2. Sempre pergunte: "Posso te enviar o link para compra direta?"
+3. Use o botão/link do WhatsApp para enviar o link do produto
+4. Seja rápido e direto nas respostas
+5. Use emojis para deixar o chat mais agradável
+6. Quando não souber o produto, diga que vai verificar e enviar o link
 
-HORÁRIO DE FUNCIONAMENTO: ${whatsappConfig.hours}
-ENDEREÇO: ${whatsappConfig.address}
+WHATSAPP: ${generateWhatsAppLink('')}
+HORÁRIO: ${whatsappConfig.hours}
 
-Quando o cliente quiser comprar ou solicitar mais informações sobre um produto, redirecione para o WhatsApp com uma mensagem personalizada.`
+Exemplo de resposta quando cliente quer um produto:
+"Claro! Posso te enviar o link direto para compra. É só clicar e pagar pelo WhatsApp! 👉 [LINK]"
+
+Sempre ofereça o link do WhatsApp quando o cliente demonstrar interesse em comprar algo!`
     };
 
     const messages = [
@@ -123,22 +126,32 @@ app.get('/products/search', (req, res) => {
 });
 
 app.get('/whatsapp', (req, res) => {
-  const { product } = req.query;
-  let message = whatsappConfig.defaultMessage;
+  const { message, product } = req.query;
+  let finalMessage = message || whatsappConfig.defaultMessage;
   
   if (product) {
-    const prod = products.find(p => p.id === parseInt(product));
-    if (prod) {
-      message = `Olá! Gostaria de pedir:\n\n${prod.image} *${prod.name}*\nValor: R$ ${prod.price.toFixed(2).replace('.', ',')}\n\nPor favor, confirme o pedido.`;
-    }
+    finalMessage = `Olá! Gostaria de saber mais sobre o produto: ${product}\n\nPor favor, me envie o link para compra.`;
   }
   
   res.json({
-    link: generateWhatsAppLink(message),
+    link: generateWhatsAppLink(finalMessage),
     phone: whatsappConfig.phoneNumber,
     businessName: whatsappConfig.businessName,
     hours: whatsappConfig.hours,
     address: whatsappConfig.address
+  });
+});
+
+app.post('/whatsapp/link', (req, res) => {
+  const { product } = req.body;
+  let message = whatsappConfig.defaultMessage;
+  
+  if (product) {
+    message = `Olá! Tenho interesse no produto: ${product}\nPor favor, me envie o link para compra.`;
+  }
+  
+  res.json({
+    link: generateWhatsAppLink(message)
   });
 });
 
