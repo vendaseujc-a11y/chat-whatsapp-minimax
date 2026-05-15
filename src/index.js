@@ -50,8 +50,8 @@ app.post('/chat', async (req, res) => {
         headers: {
           'Authorization': `Bearer ${API_KEY}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'http://localhost:3000',
-          'X-Title': 'Chat Backend'
+          'HTTP-Referer': 'https://chat-minimax.vercel.app',
+          'X-Title': 'Chat IA MiniMax'
         }
       }
     );
@@ -67,6 +67,9 @@ app.post('/chat', async (req, res) => {
     });
   } catch (error) {
     console.error('Erro no chat:', error.message);
+    if (error.response) {
+      console.error('API Response:', error.response.data);
+    }
     res.status(500).json({ error: error.message });
   }
 });
