@@ -513,10 +513,10 @@
     </div>
 
     <script>
-        const API_URLS = [
-            'http://localhost:3000',
-            'http://127.0.0.1:3000'
-        ];
+        const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        const API_URLS = isProduction 
+            ? [window.location.origin]
+            : ['http://localhost:3000', 'http://127.0.0.1:3000'];
         let API_URL = API_URLS[0];
         
         const chatMessages = document.getElementById('chatMessages');
