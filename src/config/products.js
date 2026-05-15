@@ -1,68 +1,84 @@
 const products = [
   {
     id: 1,
-    name: "Promo do Dia - Combo Família",
-    description: "Hambúrguer + batata frita + refrigerante 2L + onion rings",
-    price: 49.90,
-    category: "Lanches",
-    image: "🍔",
+    name: "Whey Protein Concentrado 900g",
+    description: "Proteína de soro do leite - 25g de proteína por dose. Sabor baunilha.",
+    price: 189.90,
+    category: "Proteínas",
+    image: "💪",
     promo: true
   },
   {
     id: 2,
-    name: "Hambúrguer Artesanal",
-    description: "Pão brioche, carne bovina, queijo cheddar, alface, tomate e molho especial",
-    price: 24.90,
-    category: "Lanches",
-    image: "🍔"
+    name: "Creatina Monoidratada 300g",
+    description: "Aumenta força e desempenho. 5g por dose. Sem sabor.",
+    price: 89.90,
+    category: "Creatina",
+    image: "⚡"
   },
   {
     id: 3,
-    name: "Pizza Média (4 sabores)",
-    description: "Massa italiana tradicional com ingredientes frescos",
-    price: 59.90,
-    category: "Pizzas",
-    image: "🍕"
+    name: "BCAA 240 capsules",
+    description: "Aminoácidos de cadeia ramificada. Recuperação muscular pós-treino.",
+    price: 79.90,
+    category: "Aminoácidos",
+    image: "🏋️"
   },
   {
     id: 4,
-    name: "Açaí 700ml",
-    description: "Açaí natural com granola, morango, banana e mel",
-    price: 18.90,
-    category: "Sobremesas",
-    image: "🍨"
+    name: "Pré-Treino 300g",
+    description: "Energia e foco para seus treinos. Sabor frutas vermelhas.",
+    price: 129.90,
+    category: "Pré-Treino",
+    image: "🔥"
   },
   {
     id: 5,
-    name: "Suco Natural (700ml)",
-    description: "Laranja, manga, abacaxi ou laranja com cenoura",
-    price: 12.90,
-    category: "Bebidas",
-    image: "🧃"
+    name: "Glutamina 150g",
+    description: "Recuperação e sistema imunológico. Pó solúvel.",
+    price: 69.90,
+    category: "Aminoácidos",
+    image: "💊"
   },
   {
     id: 6,
-    name: "Cerveja Artesanal",
-    description: "IPA, Pilsen ou Stout - Copo 400ml",
-    price: 16.90,
-    category: "Bebidas",
-    image: "🍺"
+    name: "Omega 3 90 caps",
+    description: "Ácidos graxos essenciais. Saúde cardiovascular e cerebral.",
+    price: 59.90,
+    category: "Vitaminas",
+    image: "🐟"
   },
   {
     id: 7,
-    name: "Prato do Dia - Feijoada",
-    description: "Feijoada completa com arroz, couve, bacon e laranja",
-    price: 32.90,
-    category: "Pratos",
-    image: "🍖"
+    name: "Vitamina D3 60 caps",
+    description: "6000 UI - Fortalecimento ósseo e imunidade.",
+    price: 49.90,
+    category: "Vitaminas",
+    image: "☀️"
   },
   {
     id: 8,
-    name: "Sobremesa do Chef",
-    description: "Brownie com sorvete e calda de chocolate",
-    price: 15.90,
-    category: "Sobremesas",
-    image: "🍰"
+    name: "Multivitaminico 60 caps",
+    description: "Complexo vitamínico completo para dia a dia.",
+    price: 54.90,
+    category: "Vitaminas",
+    image: "🌿"
+  },
+  {
+    id: 9,
+    name: "Albumina 400g",
+    description: "Proteína de ovo. Ótima para complementar питание.",
+    price: 79.90,
+    category: "Proteínas",
+    image: "🥚"
+  },
+  {
+    id: 10,
+    name: "Termogênico 60 caps",
+    description: "Acelera metabolismo e queima gordura. Com cafeína natural.",
+    price: 89.90,
+    category: "Emagrecimento",
+    image: "⚖️"
   }
 ];
 
