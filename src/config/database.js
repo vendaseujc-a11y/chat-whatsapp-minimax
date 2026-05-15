@@ -1,59 +1,58 @@
 const sessions = new Map();
-
-const isVercel = process.env.VERCEL === '1';
+let useMemory = true;
 
 async function initDatabase() {
-  if (isVercel) {
-    console.log('Modo Vercel: usando armazenamento em memória');
-  } else {
-    try {
-      const initSqlJs = require('sql.js');
-      const fs = require('fs');
-      const path = require('path');
-      
-      const dbPath = path.join(__dirname, '..', '..', 'database.sqlite');
-      
-      const SQL = await initSqlJs();
-      
-      let data;
-      if (fs.existsSync(dbPath)) {
-        data = fs.readFileSync(dbPath);
-      }
-      
-      const db = new SQL.Database(data);
-      
-      db.run(`
-        CREATE TABLE IF NOT EXISTS conversations (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          session_id TEXT NOT NULL,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-      `);
-      
-      db.run(`
-        CREATE TABLE IF NOT EXISTS messages (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          conversation_id INTEGER NOT NULL,
-          role TEXT NOT NULL,
-          content TEXT NOT NULL,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (conversation_id) REFERENCES conversations(id)
-        )
-      `);
-      
-      const dataExport = db.export();
-      const buffer = Buffer.from(dataExport);
-      fs.writeFileSync(dbPath, buffer);
-      
-      global.db = db;
-    } catch (e) {
-      console.log('SQLite não disponível, usando memória');
+  console.log('Inicializando banco de dados...');
+  
+  try {
+    if (typeof require === 'undefined') {
+      useMemory = true;
+      return;
     }
+    
+    const fs = require('fs');
+    const path = require('path');
+    const dbPath = path.join(__dirname, '..', '..', 'database.sqlite');
+    
+    if (!fs.existsSync(dbPath)) {
+      useMemory = true;
+      return;
+    }
+    
+    const initSqlJs = require('sql.js');
+    const SQL = await initSqlJs();
+    const data = fs.readFileSync(dbPath);
+    const db = new SQL.Database(data);
+    
+    db.run(`
+      CREATE TABLE IF NOT EXISTS conversations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        session_id TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    db.run(`
+      CREATE TABLE IF NOT EXISTS messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        conversation_id INTEGER NOT NULL,
+        role TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+      )
+    `);
+    
+    global.db = db;
+    useMemory = false;
+  } catch (e) {
+    console.log('Usando armazenamento em memória');
+    useMemory = true;
   }
 }
 
 function getOrCreateConversation(sessionId) {
-  if (isVercel || !global.db) {
+  if (useMemory || !global.db) {
     if (!sessions.has(sessionId)) {
       sessions.set(sessionId, []);
     }
@@ -78,7 +77,7 @@ function getOrCreateConversation(sessionId) {
 }
 
 function getContextMessages(sessionId, limit = 15) {
-  if (isVercel || !global.db) {
+  if (useMemory || !global.db) {
     const sessionMessages = sessions.get(sessionId) || [];
     return sessionMessages.slice(-limit);
   }
@@ -106,7 +105,7 @@ function getContextMessages(sessionId, limit = 15) {
 function saveMessage(sessionId, role, content) {
   const limit = parseInt(process.env.MAX_CONTEXT_MESSAGES) || 15;
   
-  if (isVercel || !global.db) {
+  if (useMemory || !global.db) {
     const sessionMessages = sessions.get(sessionId) || [];
     sessionMessages.push({ role, content, created_at: new Date() });
     

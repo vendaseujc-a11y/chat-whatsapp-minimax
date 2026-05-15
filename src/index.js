@@ -10,10 +10,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
 
-if (process.env.VERCEL) {
-  process.env.VERCEL = '1';
-}
-
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST'],
