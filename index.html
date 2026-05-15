@@ -417,6 +417,101 @@
             border-color: var(--accent-primary);
         }
 
+        .whatsapp-button {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 100;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+        }
+
+        .products-section {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .products-section.active {
+            display: block;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .product-card {
+            background: var(--bg-card-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .product-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            color: var(--success);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .product-promo {
+            color: #f59e0b;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .products-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-right: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .products-toggle:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
         .error-toast {
             position: fixed;
             bottom: 24px;
@@ -479,11 +574,16 @@
                         <span class="status-dot"></span>
                         SEU CHAT NA SUA EMPRESA
                     </div>
+                    <button class="products-toggle" onclick="toggleProducts()">📋 Ver Cardápio</button>
                 </div>
                 <div class="session-info">
                     <span class="session-label">Sessão:</span>
                     <input type="text" class="session-input" id="sessionId" value="default" placeholder="ID da sessão">
                 </div>
+            </div>
+
+            <div class="products-section" id="productsSection">
+                <div class="products-grid" id="productsGrid"></div>
             </div>
 
             <div class="chat-messages" id="chatMessages">
@@ -642,6 +742,75 @@
                 toast.remove();
             }, 5000);
         }
+
+        let productsData = [];
+        let whatsappLink = '#';
+
+        async function loadProducts() {
+            try {
+                const response = await fetch(`${API_URL}/products`);
+                const data = await response.json();
+                productsData = data.products || [];
+                renderProducts(productsData);
+            } catch (e) {
+                console.log('Produtos não disponíveis');
+            }
+        }
+
+        async function loadWhatsApp() {
+            try {
+                const response = await fetch(`${API_URL}/whatsapp`);
+                const data = await response.json();
+                whatsappLink = data.link;
+            } catch (e) {
+                console.log('WhatsApp não disponível');
+            }
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card" onclick="selectProduct(${p.id})">
+                    <div class="product-icon">${p.image}</div>
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
+                    ${p.promo ? '<div class="product-promo">🔥 PROMOÇÃO</div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function toggleProducts() {
+            const section = document.getElementById('productsSection');
+            section.classList.toggle('active');
+            if (section.classList.contains('active') && productsData.length === 0) {
+                loadProducts();
+            }
+        }
+
+        function selectProduct(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (product) {
+                messageInput.value = `Gostaria de saber mais sobre: ${product.name} ${product.image}`;
+                messageInput.focus();
+                document.getElementById('productsSection').classList.remove('active');
+            }
+        }
+
+        async function initWhatsApp() {
+            await loadWhatsApp();
+            const btn = document.getElementById('whatsappBtn');
+            btn.href = whatsappLink;
+        }
+
+        loadProducts();
+        initWhatsApp();
     </script>
+
+    <a href="#" id="whatsappBtn" class="whatsapp-button" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Falar no WhatsApp
+    </a>
 </body>
 </html>

@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { initDatabase, getContextMessages, saveMessage } = require('./config/database');
+const { products, getAllProducts, getPromos, searchProducts } = require('./config/products');
+const { whatsappConfig, generateWhatsAppLink } = require('./config/whatsapp');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,25 +38,25 @@ app.post('/chat', async (req, res) => {
     
     const systemPrompt = {
       role: 'system',
-      content: `Você é um assistente de vendas especializado para comércios locais (lojas, restaurantes, mercados, farmácias, etc.). Seu objetivo é ajudar o comércio a vender seus produtos e serviços.
+      content: `Você é um assistente de vendas do "${whatsappConfig.businessName}". Seu objetivo é vender os produtos do comércio e proporcionar uma excelente experiência ao cliente.
+
+CATÁLOGO DE PRODUTOS:
+${products.map(p => `${p.image} ${p.name} - R$ ${p.price.toFixed(2).replace('.', ',')} - ${p.description}${p.promo ? ' 🔥 PROMOÇÃO!' : ''}`).join('\n')}
 
 REGRAS IMPORTANTES:
-1. Seja Simpático, Atento e Persuasivo - ajude o cliente a encontrar o que precisa
-2. Know Your Products - conheça e divulgue os produtos do comércio
-3. Ofereça promoções e combos quando possível
-4. Tire dúvidas sobre produtos, preços, disponibilidade e formas de pagamento
-5. Agende entregas ou retirada se solicitado
-6. Sempre motive a compra e fechamento da venda
-7. Use emojis para deixar o chat mais vivo e amigável
-8. Mantenha respostas courtes mas completas
+1. Sempre mostre os produtos relevantes quando o cliente perguntar ou procurar algo
+2. Destaque as promoções do dia (itens com 🔥)
+3. Quando o cliente demonstrar interesse em um produto, ofereça para finalizar o pedido via WhatsApp
+4. Use o link do WhatsApp para finalizar vendas: ${generateWhatsAppLink('')}
+5. Ofereça entrega ou retirada na loja
+6. Informe sobre formas de pagamento disponíveis
+7. Seja persuasivo mas não insistente
+8. Use emojis para tornar o atendimento mais agradável
 
-ESTILO DE RESPOSTA:
-- Tom: Profissional mas amigável 🏪
--Sempre pergunte se o cliente precisa de mais alguma coisa
-- Ofereça ajuda adicional ao final de cada resposta
-- Se houver promoções do dia, mencione com destaque
+HORÁRIO DE FUNCIONAMENTO: ${whatsappConfig.hours}
+ENDEREÇO: ${whatsappConfig.address}
 
-Como assistente, você deve ajudar o comércio a converter visitantes em compradores!`
+Quando o cliente quiser comprar ou solicitar mais informações sobre um produto, redirecione para o WhatsApp com uma mensagem personalizada.`
     };
 
     const messages = [
@@ -102,6 +104,42 @@ app.get('/chat/context/:sessionId', (req, res) => {
   const { sessionId } = req.params;
   const messages = getContextMessages(sessionId, 15);
   res.json({ messages });
+});
+
+app.get('/products', (req, res) => {
+  res.json({ products: getAllProducts() });
+});
+
+app.get('/products/promos', (req, res) => {
+  res.json({ products: getPromos() });
+});
+
+app.get('/products/search', (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    return res.json({ products: getAllProducts() });
+  }
+  res.json({ products: searchProducts(q) });
+});
+
+app.get('/whatsapp', (req, res) => {
+  const { product } = req.query;
+  let message = whatsappConfig.defaultMessage;
+  
+  if (product) {
+    const prod = products.find(p => p.id === parseInt(product));
+    if (prod) {
+      message = `Olá! Gostaria de pedir:\n\n${prod.image} *${prod.name}*\nValor: R$ ${prod.price.toFixed(2).replace('.', ',')}\n\nPor favor, confirme o pedido.`;
+    }
+  }
+  
+  res.json({
+    link: generateWhatsAppLink(message),
+    phone: whatsappConfig.phoneNumber,
+    businessName: whatsappConfig.businessName,
+    hours: whatsappConfig.hours,
+    address: whatsappConfig.address
+  });
 });
 
 app.get('/', (req, res) => {
