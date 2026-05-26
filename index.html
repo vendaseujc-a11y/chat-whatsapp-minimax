@@ -923,7 +923,7 @@
             border-radius: var(--border-radius-md);
             padding: 14px;
             display: grid;
-            grid-template-columns: 46px 1fr;
+            grid-template-columns: 40px 1fr;
             gap: 14px;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
@@ -971,16 +971,56 @@
         }
 
         .product-avatar-wrap {
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 94, 0, 0.05);
+            border: 1.5px solid var(--accent-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             align-self: start;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 94, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        .product-avatar-wrap:hover {
+            transform: scale(1.15) rotate(10deg);
+            background: var(--accent-gradient);
+            border-color: white;
+            box-shadow: 0 0 20px rgba(255, 94, 0, 0.45);
+        }
+
+        .avatar-add-badge {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            color: black;
+            border: 1px solid var(--accent-secondary);
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            z-index: 12;
+        }
+
+        .product-avatar-wrap:hover .avatar-add-badge {
+            background: white;
+            color: var(--accent-neon);
+            transform: scale(1.2);
+            border-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .product-info-wrap {
@@ -1483,7 +1523,7 @@
             .product-avatar-wrap {
                 width: 36px !important;
                 height: 36px !important;
-                border-radius: 8px !important;
+                border-radius: 50% !important; /* Circular avatar on mobile */
                 font-size: 18px !important;
             }
 
@@ -2413,8 +2453,9 @@
 
             grid.innerHTML = products.map(p => `
                 <div class="product-cyber-card ${p.promo ? 'promo-card' : ''}" onclick="focusProduct('${p.name}', '${p.image}')">
-                    <div class="product-avatar-wrap">
+                    <div class="product-avatar-wrap" onclick="event.stopPropagation(); addToStack(${p.id})" title="Adicionar ao Combo">
                         ${p.image}
+                        <span class="avatar-add-badge">＋</span>
                     </div>
                     <div class="product-info-wrap">
                         <div class="product-name-txt">${p.name}</div>
