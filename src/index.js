@@ -149,12 +149,14 @@ app.post('/api/admin/products', (req, res) => {
 
   const success = addOrUpdateProduct(product);
   if (success) {
-    // Attempt auto git-push so that Vercel automatically deploys updates
-    const { exec } = require('child_process');
-    exec('git add src/config/products.json && git commit -m "chore: update products database via admin console" && git push', (err, stdout, stderr) => {
-      if (err) console.error('[Auto-push Error]', err);
-      else console.log('[Auto-push Success]', stdout);
-    });
+    // Attempt auto git-push locally so that Vercel automatically deploys updates
+    if (!process.env.VERCEL) {
+      const { exec } = require('child_process');
+      exec('git add src/config/products.json && git commit -m "chore: update products database via admin console" && git push', (err, stdout, stderr) => {
+        if (err) console.error('[Auto-push Error]', err);
+        else console.log('[Auto-push Success]', stdout);
+      });
+    }
 
     return res.json({ success: true, products: getAllProducts() });
   }
@@ -174,12 +176,14 @@ app.post('/api/admin/products/delete', (req, res) => {
 
   const success = deleteProduct(parseInt(id));
   if (success) {
-    // Attempt auto git-push so that Vercel automatically deploys updates
-    const { exec } = require('child_process');
-    exec('git add src/config/products.json && git commit -m "chore: remove product from database via admin console" && git push', (err, stdout, stderr) => {
-      if (err) console.error('[Auto-push Error]', err);
-      else console.log('[Auto-push Success]', stdout);
-    });
+    // Attempt auto git-push locally so that Vercel automatically deploys updates
+    if (!process.env.VERCEL) {
+      const { exec } = require('child_process');
+      exec('git add src/config/products.json && git commit -m "chore: remove product from database via admin console" && git push', (err, stdout, stderr) => {
+        if (err) console.error('[Auto-push Error]', err);
+        else console.log('[Auto-push Success]', stdout);
+      });
+    }
 
     return res.json({ success: true, products: getAllProducts() });
   }
