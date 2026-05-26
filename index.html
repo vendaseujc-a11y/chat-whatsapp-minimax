@@ -997,30 +997,54 @@
 
         .avatar-add-badge {
             position: absolute;
-            bottom: -3px;
-            right: -3px;
-            width: 14px;
-            height: 14px;
+            bottom: -3.5px;
+            right: -3.5px;
+            width: 15px;
+            height: 15px;
             background: white;
             color: black;
             border: 1px solid var(--accent-secondary);
             border-radius: 50%;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 900;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 12;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 0;
+        }
+
+        .badge-text {
+            font-size: 7.5px;
+            font-weight: 800;
+            margin-left: 2px;
+            opacity: 0;
+            max-width: 0;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-block;
+            vertical-align: middle;
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .product-avatar-wrap:hover .avatar-add-badge {
+            width: 72px; /* Expands to hold the text! */
+            border-radius: 8px;
             background: white;
             color: var(--accent-neon);
-            transform: scale(1.2);
             border-color: white;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            padding: 0 6px;
+        }
+
+        .product-avatar-wrap:hover .badge-text {
+            opacity: 1;
+            max-width: 50px;
         }
 
         .product-info-wrap {
@@ -2455,7 +2479,7 @@
                 <div class="product-cyber-card ${p.promo ? 'promo-card' : ''}" onclick="focusProduct('${p.name}', '${p.image}')">
                     <div class="product-avatar-wrap" onclick="event.stopPropagation(); addToStack(${p.id})" title="Adicionar ao Combo">
                         ${p.image}
-                        <span class="avatar-add-badge">＋</span>
+                        <span class="avatar-add-badge">＋<span class="badge-text">Interesse</span></span>
                     </div>
                     <div class="product-info-wrap">
                         <div class="product-name-txt">${p.name}</div>
