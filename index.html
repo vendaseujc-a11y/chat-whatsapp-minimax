@@ -1962,6 +1962,75 @@
             color: white;
             border-color: transparent;
         }
+
+        /* High-tech Quick Add Product Grid Styles */
+        .stack-quick-add-section {
+            margin-bottom: 18px;
+            border-bottom: 1.5px dashed rgba(255, 255, 255, 0.05);
+            padding-bottom: 16px;
+        }
+
+        .stack-quick-add-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns fit perfectly on desktop and mobile */
+            gap: 8px;
+            max-height: 190px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .stack-product-chip {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 8px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            min-height: 80px;
+            position: relative;
+        }
+
+        .stack-product-chip:hover {
+            background: rgba(255, 94, 0, 0.06);
+            border-color: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 94, 0, 0.15);
+        }
+
+        .stack-product-chip-icon {
+            font-size: 16px;
+            margin-bottom: 3px;
+            display: inline-block;
+        }
+
+        .stack-product-chip-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stack-product-chip-price {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8px;
+            color: var(--accent-secondary);
+            margin-top: 3px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -2096,6 +2165,14 @@
                 <div class="stack-builder-container" id="stackSection">
                     <div class="section-header stack-header">
                         <h2>⚡ Seu Combo Atual</h2>
+                    </div>
+
+                    <!-- Quick Add Product Grid (smaller squares describing each registered product) -->
+                    <div class="stack-quick-add-section">
+                        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">➕ Adicionar ao Combo:</div>
+                        <div class="stack-quick-add-grid" id="stackQuickAddGrid">
+                            <!-- Loaded dynamically -->
+                        </div>
                     </div>
 
                     <!-- Items container -->
@@ -2566,6 +2643,18 @@
         }
 
         function renderStack() {
+            // Render the Quick Add Grid of smaller squares for all registered products!
+            const quickAddGrid = document.getElementById('stackQuickAddGrid');
+            if (quickAddGrid && typeof productsData !== 'undefined') {
+                quickAddGrid.innerHTML = productsData.map(p => `
+                    <div class="stack-product-chip" onclick="addToStack(${p.id})" title="Adicionar ${p.name} ao Combo">
+                        <span class="stack-product-chip-icon">${p.image}</span>
+                        <div class="stack-product-chip-name">${p.name}</div>
+                        <div class="stack-product-chip-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                `).join('');
+            }
+
             // Count total items
             const totalQty = cyberStack.reduce((sum, item) => sum + item.quantity, 0);
             
