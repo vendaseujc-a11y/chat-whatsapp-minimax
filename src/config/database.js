@@ -4,6 +4,12 @@ let useMemory = true;
 async function initDatabase() {
   console.log('Inicializando banco de dados...');
   
+  if (process.env.VERCEL) {
+    console.log('Forçando uso em memória no Vercel');
+    useMemory = true;
+    return;
+  }
+
   try {
     if (typeof require === 'undefined') {
       useMemory = true;
@@ -95,7 +101,8 @@ function getContextMessages(sessionId, limit = 15) {
   
   const messages = [];
   while (stmt.step()) {
-    messages.push({ role: stmt.get()[0], content: stmt.get()[1] });
+    const row = stmt.get();
+    messages.push({ role: row[0], content: row[1] });
   }
   stmt.free();
   

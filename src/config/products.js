@@ -1,4 +1,50 @@
-const products = [];
+const products = [
+  {
+    id: 1,
+    name: "100% Whey Prime Integralmedica",
+    category: "Proteínas",
+    image: "💪",
+    price: 139.90,
+    promo: true,
+    description: "Whey Protein concentrado de alta qualidade, ideal para ganho de massa muscular e recuperação pós-treino."
+  },
+  {
+    id: 2,
+    name: "Creatina Creapure Max Titanium",
+    category: "Força",
+    image: "⚡",
+    price: 99.90,
+    promo: false,
+    description: "Creatina monohidratada 100% pura com selo Creapure, garantindo máxima absorção, força e explosão muscular."
+  },
+  {
+    id: 3,
+    name: "Whey Gold Standard Optimum Nutrition",
+    category: "Proteínas",
+    image: "⭐",
+    price: 249.90,
+    promo: true,
+    description: "O Whey Protein isolado mais vendido do mundo. Elevada pureza proteica e sabor incomparável."
+  },
+  {
+    id: 4,
+    name: "Pré-Treino C4 Beta Pump Pro",
+    category: "Energia",
+    image: "🔥",
+    price: 119.90,
+    promo: false,
+    description: "Pré-treino ultra concentrado para máximo foco, energia explosiva e vasodilatação durante os treinos mais intensos."
+  },
+  {
+    id: 5,
+    name: "BCAA Powder Max Titanium",
+    category: "Recuperação",
+    image: "💊",
+    price: 79.90,
+    promo: false,
+    description: "Aminoácidos de cadeia ramificada essenciais para reduzir a fadiga muscular e acelerar a síntese proteica."
+  }
+];
 
 function getAllProducts() {
   return products;

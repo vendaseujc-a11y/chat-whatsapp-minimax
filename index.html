@@ -3,23 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat IA - MiniMax</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>VouComprarFácil - Atendimento Futurista</title>
+    <!-- Google Fonts: Orbitron for tech headers, Outfit for clean body, Space Grotesk for interactive text -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0a0f;
-            --bg-card: #12121a;
-            --bg-card-hover: #1a1a25;
-            --accent-primary: #6366f1;
-            --accent-secondary: #8b5cf6;
-            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --bg-dark: #050508;
+            --bg-cyber-dark: #0a0a14;
+            --accent-neon: #ff5e00;         /* Neon athletic orange */
+            --accent-secondary: #00f0ff;    /* Cyber cyan */
+            --accent-purple: #8b5cf6;       /* Hyper purple */
+            --accent-gradient: linear-gradient(135deg, var(--accent-neon) 0%, #ff8c00 50%, var(--accent-secondary) 100%);
+            --accent-gradient-glow: linear-gradient(135deg, rgba(255, 94, 0, 0.3) 0%, rgba(0, 240, 255, 0.3) 100%);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border-color: #1e293b;
+            --text-muted: #4b5563;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-neon: rgba(0, 240, 255, 0.15);
+            --glass-bg: rgba(13, 13, 23, 0.7);
+            --glass-card: rgba(20, 20, 35, 0.45);
+            --glass-card-hover: rgba(30, 30, 50, 0.65);
             --success: #10b981;
-            --error: #ef4444;
-            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+            --success-glow: rgba(16, 185, 129, 0.2);
+            --error: #f43f5e;
+            --shadow-glow: 0 0 30px rgba(255, 94, 0, 0.15);
+            --cyan-glow: 0 0 30px rgba(0, 240, 255, 0.15);
+            --border-radius-lg: 24px;
+            --border-radius-md: 16px;
+            --border-radius-sm: 10px;
         }
 
         * {
@@ -28,14 +39,34 @@
             box-sizing: border-box;
         }
 
+        /* High-tech Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 94, 0, 0.3);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-neon);
+            box-shadow: 0 0 10px var(--accent-neon);
+        }
+
         body {
             font-family: 'Outfit', sans-serif;
             background: var(--bg-dark);
             color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            position: relative;
         }
 
+        /* Animated Futuristic Background */
         body::before {
             content: '';
             position: fixed;
@@ -44,289 +75,599 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15), transparent),
-                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(139, 92, 246, 0.1), transparent);
+                radial-gradient(circle at 10% 20%, rgba(255, 94, 0, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 60%);
             pointer-events: none;
-            z-index: 0;
+            z-index: -2;
+        }
+
+        /* Digital grid overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            opacity: 0.95;
+            z-index: -1;
+        }
+
+        /* Cybernetic Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.15) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.2;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
             position: relative;
-            z-index: 1;
-            min-height: 100vh;
+            z-index: 2;
+            height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
+        /* Header Redesign */
         header {
             text-align: center;
-            padding: 30px 0;
-            animation: fadeInDown 0.6s ease-out;
+            padding: 20px 0 10px 0;
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            gap: 15px;
+            margin-bottom: 6px;
         }
 
         .logo-icon {
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             background: var(--accent-gradient);
-            border-radius: 14px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             box-shadow: var(--shadow-glow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: logoPulse 3s infinite ease-in-out;
+            position: relative;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); box-shadow: var(--shadow-glow); }
+            50% { transform: scale(1.05) rotate(5deg); box-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            border: 2px solid var(--accent-secondary);
+            animation: hologramRing 2s infinite linear;
+            opacity: 0.5;
+        }
+
+        @keyframes hologramRing {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
         }
 
         h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 1px;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            filter: drop-shadow(0 2px 10px rgba(255, 94, 0, 0.2));
+            text-transform: uppercase;
         }
 
         .subtitle {
+            font-family: 'Space Grotesk', sans-serif;
             color: var(--text-secondary);
             font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             margin-top: 4px;
         }
 
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-card);
-            border-radius: 24px;
+        .subtitle span {
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            font-weight: 600;
+        }
+
+        /* Mobile Tab Navigation */
+        .mobile-tabs {
+            display: none;
+            background: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
-            overflow: hidden;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
+            border-radius: var(--border-radius-md);
+            padding: 6px;
+            margin-bottom: 15px;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 8px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .tab-badge {
+            background: var(--accent-secondary);
+            color: var(--bg-dark);
+            border-radius: 20px;
+            padding: 1px 6px;
+            font-size: 10px;
+            font-weight: 800;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 0 8px var(--accent-secondary);
+        }
+
+        /* Main Futuristic Split Layout Grid */
+        .dashboard-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 24px;
+            margin-top: 15px;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+            min-height: 0; /* Important for flex child scrollability */
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
+        /* LEFT SIDE: Chat UI */
+        .chat-section {
+            display: flex;
+            flex-direction: column;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        /* Chat Header */
         .chat-header {
-            padding: 20px 24px;
+            padding: 18px 24px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(18, 18, 26, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 20, 0.6);
         }
 
-        .model-info {
+        .assistant-status {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .model-badge {
-            display: inline-flex;
+        /* Hologram Ring Robot Avatar */
+        .hologram-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, rgba(5, 5, 10, 0.8) 100%);
+            border: 1.5px solid var(--accent-secondary);
+            display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 20px;
-            font-size: 12px;
-            color: #a5b4fc;
+            justify-content: center;
+            font-size: 18px;
+            position: relative;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
+        .hologram-avatar::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px dashed var(--accent-secondary);
+            animation: rotateHologram 8s infinite linear;
+        }
+
+        @keyframes rotateHologram {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hologram-avatar .glow-dot {
+            width: 6px;
+            height: 6px;
             background: var(--success);
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            border: 1px solid var(--bg-dark);
+            box-shadow: 0 0 8px var(--success);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .bot-meta-info {
+            display: flex;
+            flex-direction: column;
         }
 
+        .bot-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bot-badge {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--accent-secondary);
+            font-size: 9px;
+            font-family: 'Orbitron', sans-serif;
+            padding: 1px 6px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .bot-status-text {
+            font-size: 11px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 1px;
+        }
+
+        .pulse-light {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: lightPulse 1.8s infinite alternate;
+        }
+
+        @keyframes lightPulse {
+            0% { opacity: 0.3; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 6px var(--success); }
+        }
+
+        /* Configurações da Sessão */
+        .session-panel {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-panel label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .session-input-neon {
+            background: rgba(5, 5, 10, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 6px 12px;
+            color: var(--accent-secondary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            outline: none;
+            width: 110px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .session-input-neon:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        /* Messages Area */
         .chat-messages {
             flex: 1;
             padding: 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            min-height: 400px;
-            max-height: 60vh;
-        }
-
-        .chat-messages::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .chat-messages::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 3px;
+            gap: 22px;
+            min-height: 0;
+            background: radial-gradient(circle at center, rgba(13, 13, 27, 0.3) 0%, transparent 100%);
         }
 
         .message {
             display: flex;
-            gap: 12px;
-            animation: messageIn 0.4s ease-out;
+            gap: 14px;
+            max-width: 80%;
+            animation: messageSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        @keyframes messageIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes messageSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .message.user {
+            align-self: flex-end;
             flex-direction: row-reverse;
+            max-width: 75%;
         }
 
         .message-avatar {
             width: 36px;
             height: 36px;
-            border-radius: 10px;
+            border-radius: var(--border-radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .message.user .message-avatar {
             background: var(--accent-gradient);
+            color: white;
+            box-shadow: var(--shadow-glow);
         }
 
         .message.assistant .message-avatar {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid var(--border-color);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid var(--accent-secondary);
+            color: var(--accent-secondary);
+            box-shadow: var(--cyan-glow);
+            position: relative;
         }
 
-        .message-content {
-            max-width: 70%;
+        .message-bubble {
             padding: 14px 18px;
-            border-radius: 16px;
+            border-radius: var(--border-radius-md);
             line-height: 1.6;
-            font-size: 15px;
+            font-size: 14.5px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .message.user .message-content {
-            background: var(--accent-gradient);
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #ff5e00 0%, #d85000 100%);
             color: white;
-            border-bottom-right-radius: 4px;
+            border-top-right-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .message.assistant .message-content {
-            background: var(--bg-card-hover);
+        .message.assistant .message-bubble {
+            background: var(--glass-card);
             border: 1px solid var(--border-color);
-            border-bottom-left-radius: 4px;
             color: var(--text-primary);
+            border-top-left-radius: 2px;
+            border-left: 3px solid var(--accent-secondary);
         }
 
-        .typing-indicator {
+        /* Smart WhatsApp CTA card style */
+        .whatsapp-chat-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 14px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+        }
+
+        .whatsapp-chat-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 22px rgba(37, 211, 102, 0.5), 0 0 10px rgba(37, 211, 102, 0.2);
+        }
+
+        .wa-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            animation: pulse-ring 1.5s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(0.95); }
+        }
+
+        /* Cyber Link styled */
+        .cyber-link {
+            color: var(--accent-secondary);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        .cyber-link:hover {
+            color: white;
+            text-shadow: 0 0 8px var(--accent-secondary);
+        }
+
+        /* Quick Action Chips */
+        .quick-replies-container {
             display: flex;
-            gap: 4px;
-            padding: 14px 18px;
-            background: var(--bg-card-hover);
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 24px;
+            background: rgba(10, 10, 20, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .quick-reply-chip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-reply-chip:hover {
+            background: rgba(255, 94, 0, 0.08);
+            border-color: var(--accent-neon);
+            color: var(--text-primary);
+            transform: translateY(-1.5px);
+            box-shadow: 0 4px 10px rgba(255, 94, 0, 0.1);
+        }
+
+        /* Typing Indicator styled */
+        .typing-indicator {
+            align-self: flex-start;
+            display: flex;
+            gap: 5px;
+            padding: 14px 20px;
+            background: var(--glass-card);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            border-bottom-left-radius: 4px;
+            border-radius: var(--border-radius-md);
+            border-top-left-radius: 2px;
+            border-left: 3px solid var(--accent-secondary);
             width: fit-content;
+            animation: messageSlideIn 0.3s ease-out;
         }
 
         .typing-indicator span {
-            width: 8px;
-            height: 8px;
-            background: var(--text-muted);
+            width: 7px;
+            height: 7px;
+            background: var(--accent-secondary);
             border-radius: 50%;
-            animation: typing 1.4s infinite;
+            animation: typingPulse 1.4s infinite;
+            box-shadow: 0 0 5px var(--accent-secondary);
         }
 
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingPulse {
+            0%, 60%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+            30% { transform: translateY(-5px) scale(1.15); opacity: 1; }
         }
 
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-6px); }
-        }
-
-        .welcome-message {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-secondary);
-        }
-
-        .welcome-message h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 20px;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
-        .welcome-message p {
-            font-size: 14px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .chat-input-container {
+        /* Input Controls Area */
+        .chat-input-area {
             padding: 20px 24px;
             border-top: 1px solid var(--border-color);
-            background: rgba(18, 18, 26, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 20, 0.8);
+            position: relative;
         }
 
-        .chat-input-wrapper {
+        .input-glow-bar {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--accent-secondary) 50%, transparent 100%);
+            opacity: 0.5;
+        }
+
+        .input-layout-wrapper {
             display: flex;
             gap: 12px;
             align-items: flex-end;
         }
 
-        .input-container {
+        .text-input-container {
             flex: 1;
             position: relative;
         }
@@ -334,318 +675,1089 @@
         textarea {
             width: 100%;
             padding: 16px 20px;
-            padding-right: 50px;
-            background: var(--bg-dark);
+            padding-right: 56px;
+            background: rgba(5, 5, 10, 0.7);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: var(--border-radius-md);
             color: var(--text-primary);
             font-family: 'Outfit', sans-serif;
-            font-size: 15px;
+            font-size: 14.5px;
             resize: none;
             min-height: 56px;
-            max-height: 150px;
+            max-height: 140px;
             outline: none;
             transition: all 0.3s ease;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
         }
 
-        textarea:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        textarea::placeholder {
-            color: var(--text-muted);
-        }
-
-        .send-button {
-            width: 56px;
-            height: 56px;
-            background: var(--accent-gradient);
+        .mic-cyber-btn {
+            position: absolute;
+            right: 14px;
+            bottom: 12px;
+            background: transparent;
             border: none;
-            border-radius: 16px;
-            color: white;
-            font-size: 22px;
+            color: var(--text-secondary);
             cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .mic-cyber-btn:hover {
+            color: var(--accent-secondary);
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        .mic-cyber-btn.recording {
+            color: var(--error);
+            background: rgba(244, 63, 94, 0.15);
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+            animation: pulse-recording 1.2s infinite alternate;
+        }
+
+        @keyframes pulse-recording {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        textarea:focus {
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 15px rgba(255, 94, 0, 0.25), inset 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        textarea::placeholder {
+            color: rgba(255,255,255,0.25);
+        }
+
+        .send-cyber-btn {
+            width: 56px;
+            height: 56px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: var(--border-radius-md);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: var(--shadow-glow);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
         }
 
-        .send-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+        .send-cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.6s ease;
         }
 
-        .send-button:disabled {
-            opacity: 0.5;
+        .send-cyber-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 94, 0, 0.4);
+        }
+
+        .send-cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        .send-cyber-btn:disabled {
+            opacity: 0.4;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
-        .send-button svg {
+        .send-cyber-btn svg {
             width: 22px;
             height: 22px;
-        }
-
-        .session-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .session-label {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .session-input {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: var(--text-primary);
-            font-size: 13px;
-            font-family: 'Outfit', sans-serif;
-            outline: none;
-            width: 200px;
-        }
-
-        .session-input:focus {
-            border-color: var(--accent-primary);
-        }
-
-        .whatsapp-button {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #25D366;
-            color: white;
-            padding: 14px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-            z-index: 100;
-            text-decoration: none;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
             transition: all 0.3s ease;
-            border: none;
         }
 
-        .whatsapp-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+        .send-cyber-btn:hover svg {
+            transform: translate(2px, -2px);
         }
 
-        .link-button {
+
+        /* RIGHT SIDE: Sidebar (Catalog + Stack Builder) */
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 0;
+        }
+
+        /* Catalog Card Section */
+        .catalog-container {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            min-height: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 10px;
+        }
+
+        .section-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-neon);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-badge {
+            background: rgba(255, 94, 0, 0.15);
+            color: #fdba74;
+            border: 1px solid rgba(255, 94, 0, 0.3);
+            font-size: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .catalog-scroll {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 4px;
+        }
+
+        /* High-tech Product Card Design */
+        .product-cyber-card {
+            background: var(--glass-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 14px;
+            display: grid;
+            grid-template-columns: 46px 1fr;
+            gap: 14px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-cyber-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .product-cyber-card:hover {
+            background: var(--glass-card-hover);
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 240, 255, 0.05);
+        }
+
+        .product-cyber-card:hover::before {
+            background: var(--accent-secondary);
+        }
+
+        .product-cyber-card.promo-card {
+            border: 1.5px solid rgba(255, 94, 0, 0.2);
+        }
+        .product-cyber-card.promo-card::after {
+            content: '🔥 PROMO';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent-neon);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-bottom-left-radius: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .product-avatar-wrap {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            align-self: start;
+        }
+
+        .product-info-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name-txt {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .product-desc-txt {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            margin: 4px 0 8px 0;
+            line-height: 1.4;
+        }
+
+        .product-action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .product-price-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 13.5px;
+            color: var(--accent-secondary);
+        }
+
+        .add-to-stack-btn {
+            background: rgba(255, 94, 0, 0.1);
+            border: 1px solid rgba(255, 94, 0, 0.3);
+            color: #fdba74;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .add-to-stack-btn:hover {
             background: var(--accent-gradient);
             color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
+            border-color: transparent;
+            box-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
+        }
+
+
+        /* Cyber Stack Builder Section */
+        .stack-builder-container {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, rgba(13, 13, 23, 0.85) 0%, rgba(20, 20, 35, 0.85) 100%);
+            border: 1px solid var(--border-neon);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 240, 255, 0.05);
+            min-height: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stack-builder-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-secondary), transparent);
+        }
+
+        .stack-header h2 {
+            color: var(--accent-secondary) !important;
+        }
+
+        .stack-item-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-right: 4px;
+        }
+
+        .stack-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-secondary);
+            gap: 8px;
+        }
+
+        .stack-empty-icon {
+            font-size: 32px;
+            opacity: 0.3;
+            animation: pulse-slow 3s infinite alternate;
+        }
+
+        @keyframes pulse-slow {
+            0% { transform: scale(0.9); opacity: 0.2; }
+            100% { transform: scale(1.1); opacity: 0.5; }
+        }
+
+        .stack-empty p {
+            font-size: 12px;
+            max-width: 200px;
+            line-height: 1.4;
+        }
+
+        /* Combo Stack Card Item */
+        .stack-cyber-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: stackItemIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        @keyframes stackItemIn {
+            from { opacity: 0; transform: scale(0.9) translateX(15px); }
+            to { opacity: 1; transform: scale(1) translateX(0); }
+        }
+
+        .stack-item-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stack-item-icon {
+            font-size: 20px;
+        }
+
+        .stack-item-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
             font-size: 13px;
-            cursor: pointer;
-            margin-top: 8px;
-            display: inline-flex;
+            color: var(--text-primary);
+        }
+
+        .stack-item-qty {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--accent-secondary);
+            margin-top: 2px;
+        }
+
+        .stack-item-controls {
+            display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .link-button:hover {
-            opacity: 0.9;
-        }
-
-        .products-section {
-            display: none;
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .products-section.active {
-            display: block;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-        }
-
-        .product-card {
-            background: var(--bg-card-hover);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
-
-        .product-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .product-name {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .product-price {
-            color: var(--success);
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        .product-promo {
-            color: #f59e0b;
-            font-size: 11px;
-            margin-top: 4px;
-        }
-
-        .products-toggle {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            cursor: pointer;
-            margin-right: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .products-toggle:hover {
-            border-color: var(--accent-primary);
+        .stack-qty-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
             color: var(--text-primary);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
         }
 
-        .error-toast {
+        .stack-qty-btn:hover {
+            background: rgba(255, 94, 0, 0.2);
+            border-color: var(--accent-neon);
+        }
+
+        /* Order Finalize Area */
+        .stack-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stack-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .summary-value {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        .btn-checkout-stack {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-glow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-checkout-stack:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 94, 0, 0.4);
+        }
+
+
+        /* Floating Partner WhatsApp Button (Bottom-Right Badge) */
+        .floating-wa-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .floating-wa-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 14px 35px rgba(37, 211, 102, 0.5);
+        }
+
+        .toast-system {
             position: fixed;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(239, 68, 68, 0.9);
+            background: rgba(244, 63, 94, 0.95);
+            backdrop-filter: blur(10px);
             color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
+            padding: 14px 28px;
+            border-radius: var(--border-radius-md);
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 14px;
-            animation: slideUp 0.3s ease-out;
-            z-index: 1000;
+            font-weight: 500;
+            animation: slideUpToast 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
+        @keyframes slideUpToast {
+            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        @media (max-width: 640px) {
+        /* Responsiveness: Large screens get dual-view, small screen gets single tabbed panels */
+        @media (max-width: 1023px) {
+            .mobile-tabs {
+                display: flex;
+                flex-shrink: 0;
+                margin-bottom: 10px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+                flex: 1;
+                min-height: 0;
+                height: 100%;
+            }
+
+            /* Toggle visibility based on active tab */
+            .chat-section, .catalog-container, .stack-builder-container {
+                display: none !important;
+            }
+
+            .chat-section.tab-active, 
+            .catalog-container.tab-active, 
+            .stack-builder-container.tab-active {
+                display: flex !important;
+            }
+
             .container {
-                padding: 12px;
+                padding: 10px;
+                height: 100vh;
+                height: 100dvh;
+                min-height: 0;
+                overflow: hidden;
             }
 
-            .message-content {
-                max-width: 85%;
+            header {
+                padding: 6px 0 2px 0 !important;
+                flex-shrink: 0;
+            }
+
+            .logo {
+                gap: 8px !important;
+                margin-bottom: 2px !important;
+            }
+
+            .logo-icon {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 16px !important;
+                border-radius: 8px !important;
+            }
+
+            .logo-icon::after {
+                border-radius: 8px !important;
+            }
+
+            h1 {
+                font-size: 20px !important;
+            }
+
+            .subtitle {
+                font-size: 10px !important;
+                letter-spacing: 1px !important;
+                margin-top: 1px !important;
+            }
+
+            .session-panel {
+                display: none !important;
             }
 
             .chat-header {
-                flex-direction: column;
-                gap: 12px;
+                padding: 10px 14px !important;
             }
 
-            .session-input {
-                width: 100%;
+            .chat-section {
+                height: 100% !important;
+                min-height: 0 !important;
             }
+
+            .sidebar-section {
+                height: 100% !important;
+                min-height: 0 !important;
+                gap: 0 !important;
+            }
+
+            .catalog-container, .stack-builder-container {
+                height: 100% !important;
+                min-height: 0 !important;
+                flex: 1 !important;
+            }
+
+            .quick-replies-container {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                padding: 8px 16px !important;
+                scrollbar-width: none; /* Firefox */
+            }
+
+            .quick-replies-container::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera */
+            }
+
+            .quick-reply-chip {
+                flex-shrink: 0 !important;
+                white-space: nowrap !important;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .floating-wa-btn {
+                bottom: 16px;
+                right: 16px;
+                padding: 12px 18px;
+                font-size: 13px;
+            }
+
+            /* Responsive and premium message input field optimization for mobile */
+            .chat-input-area {
+                padding: 12px 16px !important;
+                background: rgba(10, 10, 20, 0.95) !important;
+            }
+
+            .input-layout-wrapper {
+                gap: 8px !important;
+                align-items: flex-end !important;
+            }
+
+            .text-input-container {
+                flex: 1 !important;
+            }
+
+            textarea {
+                padding: 12px 46px 12px 14px !important; /* Perfect safety bounds for text, preventing mic overlap */
+                font-size: 16px !important; /* Crucial to completely prevent iOS Safari auto-zoom on focus! */
+                min-height: 48px !important;
+                max-height: 120px !important;
+                border-radius: 12px !important;
+                line-height: 1.4 !important;
+            }
+
+            .mic-cyber-btn {
+                right: 8px !important;
+                bottom: 8px !important;
+                width: 32px !important;
+                height: 32px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            .send-cyber-btn {
+                width: 48px !important;
+                height: 48px !important;
+                border-radius: 12px !important;
+                flex-shrink: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            .send-cyber-btn svg {
+                width: 18px !important;
+                height: 18px !important;
+            }
+        }
+
+        /* NEXT-GEN SMARTPHONE & DYNAMIC THEMES */
+        body.theme-massa {
+            --accent-neon: #ff3e00;
+            --accent-secondary: #ff8c00;
+            --accent-gradient: linear-gradient(135deg, #ff3e00 0%, #ff6a00 50%, #ffaa00 100%);
+            --shadow-glow: 0 0 30px rgba(255, 62, 0, 0.25);
+        }
+
+        body.theme-secar {
+            --accent-neon: #00f0ff;
+            --accent-secondary: #0072ff;
+            --accent-gradient: linear-gradient(135deg, #00f0ff 0%, #00bcff 50%, #0072ff 100%);
+            --shadow-glow: 0 0 30px rgba(0, 240, 255, 0.25);
+        }
+
+        body.theme-energia {
+            --accent-neon: #adff2f;
+            --accent-secondary: #00ff88;
+            --accent-gradient: linear-gradient(135deg, #adff2f 0%, #7cfc00 50%, #00ff88 100%);
+            --shadow-glow: 0 0 30px rgba(173, 255, 47, 0.25);
+        }
+
+        /* Haptic-Tactile press active compression effects */
+        .quick-reply-chip:active, 
+        .add-to-stack-btn:active, 
+        .send-cyber-btn:active, 
+        .mic-cyber-btn:active,
+        .stack-qty-btn:active,
+        .whatsapp-chat-btn:active,
+        .tab-btn:active,
+        .voice-toggle-btn:active {
+            transform: scale(0.94);
+            filter: brightness(1.2);
+            transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Adaptive auto-learning status badge */
+        .adaptive-profile-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: pulse-badge-glow 3s infinite alternate;
+        }
+
+        body.theme-massa .adaptive-profile-badge {
+            background: rgba(255, 62, 0, 0.08);
+            border-color: rgba(255, 62, 0, 0.3);
+            color: #ff9d80;
+        }
+
+        body.theme-secar .adaptive-profile-badge {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.3);
+            color: #99f6ff;
+        }
+
+        body.theme-energia .adaptive-profile-badge {
+            background: rgba(173, 255, 47, 0.08);
+            border-color: rgba(173, 255, 47, 0.3);
+            color: #e5ffb3;
+        }
+
+        .adaptive-profile-badge .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            box-shadow: 0 0 8px var(--text-muted);
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        body.theme-massa .adaptive-profile-badge .status-dot {
+            background: #ff3e00;
+            box-shadow: 0 0 10px #ff3e00, 0 0 20px rgba(255, 62, 0, 0.5);
+            animation: pulse-dot-active 1s infinite alternate;
+        }
+
+        body.theme-secar .adaptive-profile-badge .status-dot {
+            background: #00f0ff;
+            box-shadow: 0 0 10px #00f0ff, 0 0 20px rgba(0, 240, 255, 0.5);
+            animation: pulse-dot-active 1s infinite alternate;
+        }
+
+        body.theme-energia .adaptive-profile-badge .status-dot {
+            background: #adff2f;
+            box-shadow: 0 0 10px #adff2f, 0 0 20px rgba(173, 255, 47, 0.5);
+            animation: pulse-dot-active 1s infinite alternate;
+        }
+
+        /* Voice Assistant toggle button in header */
+        .voice-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .voice-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        }
+
+        .voice-toggle-btn.voice-active {
+            background: rgba(0, 240, 255, 0.12);
+            border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+        }
+
+        .voice-toggle-btn .voice-wave-anim {
+            display: none;
+            align-items: center;
+            gap: 2px;
+            height: 10px;
+        }
+
+        .voice-toggle-btn.voice-active .voice-wave-anim {
+            display: inline-flex;
+        }
+
+        .voice-toggle-btn .voice-wave-anim span {
+            width: 2px;
+            height: 100%;
+            background-color: var(--accent-secondary);
+            animation: voice-bar-bounce 1s infinite ease-in-out alternate;
+        }
+
+        .voice-toggle-btn .voice-wave-anim span:nth-child(2) { animation-delay: 0.15s; }
+        .voice-toggle-btn .voice-wave-anim span:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes voice-bar-bounce {
+            0% { height: 30%; }
+            100% { height: 100%; }
+        }
+
+        @keyframes pulse-badge-glow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-1px); }
+        }
+
+        @keyframes pulse-dot-active {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
+    <div class="scanlines"></div>
+
     <div class="container">
+        <!-- Modern Header -->
         <header>
             <div class="logo">
-                <div class="logo-icon">✨</div>
-                <h1>Chat IA</h1>
+                <div class="logo-icon">⚡</div>
+                <h1>VouComprarFácil</h1>
             </div>
-            <p class="subtitle">Assistente de Vendas para seu Comércio</p>
+            <p class="subtitle">Atendimento Inteligente <span>Cyber-VouComprarFacil</span></p>
         </header>
 
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="model-info">
-                    <div class="model-badge">
-                        <span class="status-dot"></span>
-                        SEU CHAT NA SUA EMPRESA
+        <!-- Mobile Navigation Tabs (visible only on mobile/tablet) -->
+        <nav class="mobile-tabs" id="mobileTabs">
+            <button class="tab-btn active" onclick="switchMobileTab('chat')">
+                💬 Conversa
+            </button>
+            <button class="tab-btn" onclick="switchMobileTab('catalog')">
+                🛍️ Catálogo
+            </button>
+            <button class="tab-btn" onclick="switchMobileTab('stack')">
+                ⚡ Seu Combo <span class="tab-badge" id="stackMobileBadge">0</span>
+            </button>
+        </nav>
+
+        <!-- Main Dashboard Split Grid -->
+        <main class="dashboard-grid">
+            
+            <!-- LEFT COLUMN: Automated Chat Room -->
+            <section class="chat-section tab-active" id="chatSection">
+                <div class="chat-header">
+                    <div class="assistant-status">
+                        <div class="hologram-avatar">
+                            🤖
+                            <span class="glow-dot"></span>
+                        </div>
+                        <div class="bot-meta-info">
+                            <span class="bot-title">VNI <span class="bot-badge" style="background: var(--accent-gradient); border-color: rgba(255, 255, 255, 0.15); color: white; box-shadow: var(--shadow-glow); font-weight: 800; font-size: 10px; padding: 2px 8px;">VENDER +</span></span>
+                            <span class="bot-status-text"><span class="pulse-light"></span> online e pronto</span>
+                        </div>
                     </div>
-                    <button class="products-toggle" onclick="toggleProducts()">📋 Ver Cardápio</button>
-                </div>
-                <div class="session-info">
-                    <span class="session-label">Sessão:</span>
-                    <input type="text" class="session-input" id="sessionId" value="default" placeholder="ID da sessão">
-                </div>
-            </div>
 
-            <div class="products-section" id="productsSection">
-                <div class="products-grid" id="productsGrid"></div>
-            </div>
-
-            <div class="chat-messages" id="chatMessages">
-                <div class="welcome-message">
-                    <h2>Olá! Bem-vindo ao seu Chat de Vendas 🏪</h2>
-                    <p>Estou aqui para ajudar seus clientes a encontrar produtos, tirar dúvidas sobre preços, promoções e muito mais!.</p>
-                </div>
-            </div>
-
-            <div class="chat-input-container">
-                <div class="chat-input-wrapper">
-                    <div class="input-container">
-                        <textarea 
-                            id="messageInput" 
-                            placeholder="Digite sua mensagem..." 
-                            rows="1"
-                        ></textarea>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 4px 0;">
+                        <!-- Adaptive Profile Badge -->
+                        <div class="adaptive-profile-badge" id="adaptiveProfileBadge" style="cursor: pointer;" title="IA com Auto-Aprendizado Ativo (Clique para resetar)" onclick="resetActiveGoal()">
+                            <span class="status-dot"></span>
+                            <span id="adaptiveProfileText">IA Neutra 🔄</span>
+                        </div>
+                        <!-- Voice Toggle Button -->
+                        <button class="voice-toggle-btn" id="voiceToggleBtn" onclick="toggleVoiceAssistant()" title="Ativar/Desativar Leitura por Voz da IA">
+                            <span>🔊 Voz IA</span>
+                            <div class="voice-wave-anim">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
                     </div>
-                    <button class="send-button" id="sendButton">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/>
-                        </svg>
-                    </button>
+
+                    <div class="session-panel">
+                        <label for="sessionId">ID Sessão:</label>
+                        <input type="text" class="session-input-neon" id="sessionId" value="default" placeholder="Sessão">
+                    </div>
                 </div>
-            </div>
-        </div>
+
+                <!-- Chat history display -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-bubble">
+                            Olá! Seja extremamente bem-vindo à <strong>VouComprarFácil</strong>! ⚡💪<br><br>
+                            Sou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para decifrar os seus objetivos e indicar o produto ideal para o seu treino decolar!<br><br>
+                            Qual é a sua principal meta hoje? Escolha uma opção abaixo ou me diga com suas palavras! 😊
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Replies Chips -->
+                <div class="quick-replies-container">
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Quero ganhar massa muscular rápida 💪')">💪 Ganhar Massa</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Preciso de mais força e energia no treino ⚡')">⚡ Mais Força</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Como emagrecer e queimar gordura? 🔥')">🔥 Queimar Gordura</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre os melhores combos e promoções! 🎁')">🎁 Ver Promoções</button>
+                </div>
+
+                <!-- Message Input Control area -->
+                <div class="chat-input-area">
+                    <div class="input-glow-bar"></div>
+                    <div class="input-layout-wrapper">
+                        <div class="text-input-container">
+                            <textarea 
+                                id="messageInput" 
+                                placeholder="Fale ou digite suas metas..." 
+                                rows="1"
+                            ></textarea>
+                            <button class="mic-cyber-btn" id="micButton" title="Falar por Voz">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                            </button>
+                        </div>
+                        <button class="send-cyber-btn" id="sendButton" title="Enviar Mensagem">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: Sidebar (Interactive Catalog & Cyber Combo builder) -->
+            <section class="sidebar-section">
+                
+                <!-- Catalog Showcase Card -->
+                <div class="catalog-container" id="catalogSection">
+                    <div class="section-header">
+                        <h2>🛍️ Cardápio Oficial</h2>
+                        <span class="search-badge">5 Produtos Disponíveis</span>
+                    </div>
+                    
+                    <div class="catalog-scroll" id="productsGrid">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Cyber Stack Builder Drawer -->
+                <div class="stack-builder-container" id="stackSection">
+                    <div class="section-header stack-header">
+                        <h2>⚡ Seu Combo Atual</h2>
+                    </div>
+
+                    <!-- Items container -->
+                    <div class="stack-item-list" id="stackItemList">
+                        <!-- Loaded dynamically or shows empty state -->
+                    </div>
+
+                    <!-- Stack Summary & Finalization -->
+                    <div class="stack-footer">
+                        <div class="stack-summary-row">
+                            <span class="summary-label">Estimativa Total:</span>
+                            <span class="summary-value" id="stackTotal">R$ 0,00</span>
+                        </div>
+                        <button class="btn-checkout-stack" id="btnCheckout" onclick="finalizeStack()" disabled>
+                            💬 Solicitar Combo no WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+        </main>
     </div>
 
+
+
+    <!-- Frontend Core Application logic -->
     <script>
-        const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-        const API_URLS = isProduction 
-            ? [window.location.origin]
-            : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+        const isLocalFile = window.location.protocol === 'file:';
+        const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
+        let API_URLS;
+        if (isLocalFile) {
+            API_URLS = ['https://chat-minimax.vercel.app', 'http://localhost:3000', 'http://127.0.0.1:3000'];
+        } else if (isLocalHost) {
+            API_URLS = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+        } else {
+            API_URLS = [window.location.origin];
+        }
         let API_URL = API_URLS[0];
         
+        // DOM Handles
         const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const sessionIdInput = document.getElementById('sessionId');
+        const stackItemList = document.getElementById('stackItemList');
+        const stackTotalText = document.getElementById('stackTotal');
+        const btnCheckout = document.getElementById('btnCheckout');
+        const stackMobileBadge = document.getElementById('stackMobileBadge');
 
+        // Products and Combo State
+        let productsData = [];
+        let cyberStack = [];
+        let whatsappLink = '#';
+
+        // Load cached stack from LocalStorage (if any)
+        try {
+            const cachedStack = localStorage.getItem('voucomprafacil_stack');
+            if (cachedStack) {
+                cyberStack = JSON.parse(cachedStack);
+            }
+        } catch(e) {
+            console.error('Falha ao restaurar cache do combo', e);
+        }
+
+        // Auto growing input textarea
         messageInput.addEventListener('input', function() {
             this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+            this.style.height = Math.min(this.scrollHeight, 140) + 'px';
         });
 
         messageInput.addEventListener('keydown', function(e) {
@@ -655,22 +1767,71 @@
             }
         });
 
-        sendButton.addEventListener('click', sendMessage);
+        sendButton.addEventListener('click', () => sendMessage());
 
-        async function sendMessage() {
-            const message = messageInput.value.trim();
+        // Quick Reply trigger
+        function sendQuickReply(text) {
+            triggerHaptic(30);
+            sendMessage(text);
+        }
+
+        // Switch tabs on Mobile View
+        function switchMobileTab(tab) {
+            // Trigger physical tactile click when switching tabs on mobile
+            triggerHaptic(30);
+
+            // Remove active classes
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('chatSection').classList.remove('tab-active');
+            document.getElementById('catalogSection').classList.remove('tab-active');
+            document.getElementById('stackSection').classList.remove('tab-active');
+
+            // Find clicked button
+            const buttons = document.querySelectorAll('.tab-btn');
+            if (tab === 'chat') {
+                buttons[0].classList.add('active');
+                document.getElementById('chatSection').classList.add('tab-active');
+            } else if (tab === 'catalog') {
+                buttons[1].classList.add('active');
+                document.getElementById('catalogSection').classList.add('tab-active');
+            } else if (tab === 'stack') {
+                buttons[2].classList.add('active');
+                document.getElementById('stackSection').classList.add('tab-active');
+            }
+        }
+
+        // Connect with server and dispatch message
+        async function sendMessage(overrideMessage = null) {
+            const textContent = overrideMessage || messageInput.value.trim();
             const sessionId = sessionIdInput.value.trim() || 'default';
 
-            if (!message) return;
+            if (!textContent) return;
 
-            addMessage('user', message);
-            messageInput.value = '';
-            messageInput.style.height = 'auto';
+            // Trigger physical tactile click when user sends message
+            triggerHaptic(40);
+
+            // AUTO-LEARNING: Scan the text to learn about customer goals
+            const detectedGoal = detectUserGoal(textContent);
+            if (detectedGoal && detectedGoal !== activeUserGoal) {
+                activeUserGoal = detectedGoal;
+                localStorage.setItem('voucomprafacil_goal', detectedGoal);
+                applyGoalTheme(detectedGoal);
+                renderAdaptiveChips(detectedGoal);
+                customizeWelcomeGreeting(detectedGoal);
+                showSystemToast(`IA aprendeu seu foco: ${detectedGoal === 'massa' ? 'Ganho de Massa 💪' : detectedGoal === 'secar' ? 'Definição 🔥' : 'Foco & Energia ⚡'}`);
+                triggerHaptic([100, 50, 100]);
+            }
+
+            addMessage('user', textContent);
+
+            if (!overrideMessage) {
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+            }
 
             showTypingIndicator();
 
             let lastError = null;
-            
             for (const url of API_URLS) {
                 try {
                     const response = await fetch(`${url}/chat`, {
@@ -678,18 +1839,26 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ message, sessionId })
+                        body: JSON.stringify({ message: textContent, sessionId })
                     });
 
                     removeTypingIndicator();
 
                     if (!response.ok) {
-                        throw new Error('Erro na requisição');
+                        let errorMsg = 'Erro na resposta da IA';
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error) errorMsg = errorData.error;
+                        } catch(e) {}
+                        throw new Error(errorMsg);
                     }
 
                     const data = await response.json();
-                    API_URL = url;
+                    API_URL = url; // Remember working endpoint
                     addMessage('assistant', data.response);
+                    
+                    // Voice assistant speaker: Read aloud if active
+                    speakAssistantResponse(data.response);
                     return;
 
                 } catch (error) {
@@ -698,38 +1867,67 @@
             }
 
             removeTypingIndicator();
-            showError(`Erro ao conectar: ${lastError?.message || 'Servidor indisponível'}. Execute "npm start" no terminal.`);
+            showSystemToast(`Erro de conexão da IA: ${lastError?.message || 'Servidor Indisponível'}`);
             console.error(lastError);
         }
 
+        // Append message bubble to UI
         function addMessage(role, content) {
-            const welcomeMessage = chatMessages.querySelector('.welcome-message');
-            if (welcomeMessage) {
-                welcomeMessage.remove();
-            }
+            const typingInd = document.getElementById('typingIndicator');
+            if (typingInd) typingInd.remove();
 
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${role}`;
 
-            const avatarIcon = role === 'user' ? '➤' : '🤖';
+            const avatarIcon = role === 'user' ? '👤' : '🤖';
 
             messageDiv.innerHTML = `
                 <div class="message-avatar">${avatarIcon}</div>
-                <div class="message-content">${formatContent(content)}</div>
+                <div class="message-bubble">${formatContent(content)}</div>
             `;
 
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
+        // Smart HTML parser for markdown, icons and beautiful WhatsApp buttons
         function formatContent(content) {
-            return content
+            let hasWaLink = false;
+            let waUrl = '';
+            
+            // Catch raw WhatsApp redirect link
+            const waRegex = /https:\/\/wa\.me\/[^\s"'>]+/g;
+            const match = content.match(waRegex);
+            if (match) {
+                waUrl = match[0];
+                hasWaLink = true;
+            }
+
+            // Standard basic markdown tags
+            let formatted = content
                 .replace(/\n/g, '<br>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
                 .replace(/`(.*?)`/g, '<code>$1</code>');
+
+            // Format markdown links, intercept WhatsApp and render gorgeous CTA buttons
+            formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
+                if (url.includes('wa.me')) {
+                    hasWaLink = false; // Already handled here
+                    return `<a href="${url}" target="_blank" class="whatsapp-chat-btn"><svg class="wa-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm5.835-2.296c1.649.979 3.284 1.496 4.908 1.497 5.48-.001 9.932-4.457 9.935-9.943.001-2.658-1.034-5.157-2.91-7.037-1.879-1.878-4.378-2.912-7.032-2.913-5.485 0-9.94 4.453-9.943 9.94-.001 1.953.508 3.86 1.474 5.568l-.99 3.61 3.731-.977zm11.302-6.862c-.3-.15-1.77-.874-2.048-.975-.279-.1-.481-.15-.68.15-.2.3-.779.975-.958 1.174-.177.2-.358.224-.658.075-.3-.15-1.265-.467-2.41-1.485-.89-.794-1.49-1.775-1.665-2.075-.177-.3-.019-.462.13-.611.135-.135.3-.349.45-.524.15-.175.2-.299.3-.499.1-.2.05-.375-.025-.524-.075-.15-.68-1.646-.93-2.247-.244-.589-.493-.509-.68-.519-.177-.009-.38-.01-.58-.01-.2 0-.525.075-.8.374-.275.3-1.05 1.024-1.05 2.5s1.025 2.899 1.175 3.099c.15.2 2.016 3.078 4.887 4.317.682.295 1.214.47 1.629.601.686.219 1.31.188 1.803.115.549-.08 1.77-.723 2.018-1.396.248-.673.248-1.248.173-1.372-.075-.124-.275-.199-.575-.349z"/></svg>${text}</a>`;
+                }
+                return `<a href="${url}" target="_blank" class="cyber-link">${text}</a>`;
+            });
+
+            // Convert raw whatsapp link to beautiful button if missed
+            if (hasWaLink && !formatted.includes('whatsapp-chat-btn')) {
+                formatted += `<br><a href="${waUrl}" target="_blank" class="whatsapp-chat-btn"><svg class="wa-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm5.835-2.296c1.649.979 3.284 1.496 4.908 1.497 5.48-.001 9.932-4.457 9.935-9.943.001-2.658-1.034-5.157-2.91-7.037-1.879-1.878-4.378-2.912-7.032-2.913-5.485 0-9.94 4.453-9.943 9.94-.001 1.953.508 3.86 1.474 5.568l-.99 3.61 3.731-.977zm11.302-6.862c-.3-.15-1.77-.874-2.048-.975-.279-.1-.481-.15-.68.15-.2.3-.779.975-.958 1.174-.177.2-.358.224-.658.075-.3-.15-1.265-.467-2.41-1.485-.89-.794-1.49-1.775-1.665-2.075-.177-.3-.019-.462.13-.611.135-.135.3-.349.45-.524.15-.175.2-.299.3-.499.1-.2.05-.375-.025-.524-.075-.15-.68-1.646-.93-2.247-.244-.589-.493-.509-.68-.519-.177-.009-.38-.01-.58-.01-.2 0-.525.075-.8.374-.275.3-1.05 1.024-1.05 2.5s1.025 2.899 1.175 3.099c.15.2 2.016 3.078 4.887 4.317.682.295 1.214.47 1.629.601.686.219 1.31.188 1.803.115.549-.08 1.77-.723 2.018-1.396.248-.673.248-1.248.173-1.372-.075-.124-.275-.199-.575-.349z"/></svg>Finalizar no WhatsApp</a>`;
+            }
+
+            return formatted;
         }
 
+        // Show elegant typing indicator
         function showTypingIndicator() {
             const typingDiv = document.createElement('div');
             typingDiv.className = 'typing-indicator';
@@ -739,117 +1937,584 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
+        // Delete indicator
         function removeTypingIndicator() {
             const typingIndicator = document.getElementById('typingIndicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
-            }
+            if (typingIndicator) typingIndicator.remove();
         }
 
-        function showError(message) {
-            const existingToast = document.querySelector('.error-toast');
-            if (existingToast) {
-                existingToast.remove();
-            }
+        // System toast notifier
+        function showSystemToast(message) {
+            const existingToast = document.querySelector('.toast-system');
+            if (existingToast) existingToast.remove();
 
             const toast = document.createElement('div');
-            toast.className = 'error-toast';
+            toast.className = 'toast-system';
             toast.textContent = message;
             document.body.appendChild(toast);
 
             setTimeout(() => {
                 toast.remove();
-            }, 5000);
+            }, 6000);
         }
 
-        let productsData = [];
-        let whatsappLink = '#';
-
+        // Fetch list of supplements
         async function loadProducts() {
-            try {
-                const response = await fetch(`${API_URL}/products`);
-                const data = await response.json();
-                productsData = data.products || [];
-                renderProducts(productsData);
-            } catch (e) {
-                console.log('Produtos não disponíveis');
+            for (const url of API_URLS) {
+                try {
+                    const response = await fetch(`${url}/products`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        productsData = data.products || [];
+                        renderProducts(productsData);
+                        renderStack(); // Sync stack rendering with prices
+                        return;
+                    }
+                } catch (e) {
+                    console.log(`Endpoint ${url} offline para buscar produtos.`);
+                }
             }
+            console.log('Falha total ao buscar catálogo de produtos.');
         }
 
-        async function loadWhatsApp() {
-            try {
-                const response = await fetch(`${API_URL}/whatsapp`);
-                const data = await response.json();
-                whatsappLink = data.link;
-            } catch (e) {
-                console.log('WhatsApp não disponível');
-            }
-        }
-
+        // Render products as futuristic items
         function renderProducts(products) {
             const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+
             grid.innerHTML = products.map(p => `
-                <div class="product-card" onclick="selectProduct(${p.id})">
-                    <div class="product-icon">${p.image}</div>
-                    <div class="product-name">${p.name}</div>
-                    <div class="product-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
-                    ${p.promo ? '<div class="product-promo">🔥 PROMOÇÃO</div>' : ''}
+                <div class="product-cyber-card ${p.promo ? 'promo-card' : ''}" onclick="focusProduct('${p.name}', '${p.image}')">
+                    <div class="product-avatar-wrap">
+                        ${p.image}
+                    </div>
+                    <div class="product-info-wrap">
+                        <div class="product-name-txt">${p.name}</div>
+                        <div class="product-desc-txt">${p.description}</div>
+                        <div class="product-action-bar">
+                            <span class="product-price-tag">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+                            <button class="add-to-stack-btn" onclick="event.stopPropagation(); addToStack(${p.id})">
+                                ➕ Combo
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function toggleProducts() {
-            const section = document.getElementById('productsSection');
-            section.classList.toggle('active');
-            if (section.classList.contains('active') && productsData.length === 0) {
-                loadProducts();
+        // Focus and select product to query IA
+        function focusProduct(name, emoji) {
+            messageInput.value = `Gostaria de obter explicações completas sobre o ${name} ${emoji}! Quais os principais benefícios?`;
+            messageInput.focus();
+            messageInput.style.height = 'auto';
+            messageInput.style.height = Math.min(messageInput.scrollHeight, 140) + 'px';
+            
+            // On mobile, auto slide back to Chat tab to see query
+            if (window.innerWidth < 1024) {
+                switchMobileTab('chat');
             }
         }
 
-        function selectProduct(productId) {
+        // ==========================================
+        // CYBER COMBO STACK BUILDER MOTORS
+        // ==========================================
+
+        function addToStack(productId) {
             const product = productsData.find(p => p.id === productId);
-            if (product) {
-                messageInput.value = `Gostaria de saber mais sobre: ${product.name} ${product.image}`;
-                messageInput.focus();
-                document.getElementById('productsSection').classList.remove('active');
+            if (!product) return;
+
+            // Trigger physical haptic feedback click for addition (firm click)
+            triggerHaptic(60);
+
+            const existing = cyberStack.find(item => item.product.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cyberStack.push({ product, quantity: 1 });
+            }
+
+            saveStackCache();
+            renderStack();
+            showSystemToast(`Adicionado: ${product.name} no seu combo! ⚡`);
+        }
+
+        function removeFromStack(productId) {
+            // Trigger physical haptic feedback click for removal (double soft click)
+            triggerHaptic([40, 50, 40]);
+
+            const existing = cyberStack.find(item => item.product.id === productId);
+            if (existing) {
+                existing.quantity -= 1;
+                if (existing.quantity <= 0) {
+                    cyberStack = cyberStack.filter(item => item.product.id !== productId);
+                }
+            }
+
+            saveStackCache();
+            renderStack();
+        }
+
+        function increaseStackQty(productId) {
+            // Trigger physical haptic feedback click for quantity increase
+            triggerHaptic(60);
+
+            const existing = cyberStack.find(item => item.product.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+                saveStackCache();
+                renderStack();
             }
         }
 
-        async function initWhatsApp() {
-            await loadWhatsApp();
-            const btn = document.getElementById('whatsappBtn');
-            btn.href = whatsappLink;
+        function saveStackCache() {
+            try {
+                localStorage.setItem('voucomprafacil_stack', JSON.stringify(cyberStack));
+            } catch(e) {}
         }
 
-        async function requestProductLink(productName) {
-            const linkBtn = document.createElement('button');
-            linkBtn.className = 'link-button';
-            linkBtn.innerHTML = '🔗 Solicitar Link';
-            linkBtn.onclick = async () => {
+        function renderStack() {
+            // Count total items
+            const totalQty = cyberStack.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Sync mobile tab badge indicator
+            if (stackMobileBadge) {
+                stackMobileBadge.textContent = totalQty;
+                if (totalQty > 0) {
+                    stackMobileBadge.style.display = 'inline-block';
+                } else {
+                    stackMobileBadge.style.display = 'none';
+                }
+            }
+
+            if (cyberStack.length === 0) {
+                stackItemList.innerHTML = `
+                    <div class="stack-empty">
+                        <div class="stack-empty-icon">🎒</div>
+                        <p>Seu combo está vazio. Toque em <strong>➕ Combo</strong> no catálogo para começar seu stack!</p>
+                    </div>
+                `;
+                stackTotalText.textContent = "R$ 0,00";
+                btnCheckout.disabled = true;
+                return;
+            }
+
+            // Render Stack Cards
+            stackItemList.innerHTML = cyberStack.map(item => `
+                <div class="stack-cyber-item">
+                    <div class="stack-item-meta">
+                        <span class="stack-item-icon">${item.product.image}</span>
+                        <div>
+                            <div class="stack-item-name">${item.product.name}</div>
+                            <div class="stack-item-qty">${item.quantity}x • R$ ${(item.product.price * item.quantity).toFixed(2).replace('.', ',')}</div>
+                        </div>
+                    </div>
+                    <div class="stack-item-controls">
+                        <button class="stack-qty-btn" onclick="removeFromStack(${item.product.id})">−</button>
+                        <button class="stack-qty-btn" onclick="increaseStackQty(${item.product.id})">＋</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Calculate total price
+            const totalSum = cyberStack.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            stackTotalText.textContent = `R$ ${totalSum.toFixed(2).replace('.', ',')}`;
+            btnCheckout.disabled = false;
+        }
+
+        // Pre-build stack combo and trigger WhatsApp
+        async function finalizeStack() {
+            if (cyberStack.length === 0) return;
+
+            // Trigger success checkout haptic pattern
+            triggerHaptic([100, 50, 100]);
+
+            const itemsText = cyberStack.map(item => `⚡ ${item.quantity}x ${item.product.name} (${item.product.image})`).join('\n');
+            const totalSum = cyberStack.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            const rawProductsNameString = cyberStack.map(item => `${item.quantity}x ${item.product.name}`).join(', ');
+
+            const defaultWaMsg = `Olá! Montei meu combo de suplementos de alta performance na VouComprarFácil:\n\n${itemsText}\n\n*Estimativa do Combo: R$ ${totalSum.toFixed(2).replace('.', ',')}*\n\nGostaria de finalizar meu pedido com desconto especial e receber o catálogo completo! 🛍️✨`;
+
+            try {
+                // Post requested product chain to get WhatsApp Partner link
+                const response = await fetch(`${API_URL}/whatsapp/link`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product: rawProductsNameString })
+                });
+                const data = await response.json();
+                
+                // Customize URL with the full list stack
+                let finalLink = data.link;
+                if (finalLink.includes('text=')) {
+                    // Inject rich formatted stack details
+                    const baseUri = finalLink.split('text=')[0];
+                    finalLink = `${baseUri}text=${encodeURIComponent(defaultWaMsg)}`;
+                }
+                
+                window.open(finalLink, '_blank');
+            } catch (e) {
+                // Fallback to local link generation
+                window.open(`https://wa.me/17996705407?text=${encodeURIComponent(defaultWaMsg)}`, '_blank');
+            }
+        }
+
+        // ==========================================
+        // NEXT-GEN FEATURES: AUTO-LEARNING, VOICE & GESTURES
+        // ==========================================
+
+        let isVoiceEnabled = false;
+        let activeUserGoal = null;
+        let recognition = null;
+        let isRecording = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        // Tactile Haptics Feedback Engine
+        function triggerHaptic(pattern) {
+            if (navigator.vibrate) {
                 try {
-                    const response = await fetch(`${API_URL}/whatsapp/link`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ product: productName })
-                    });
-                    const data = await response.json();
-                    window.open(data.link, '_blank');
+                    navigator.vibrate(pattern);
                 } catch (e) {
-                    window.open(whatsappLink, '_blank');
+                    console.log('Falha ao acionar vibração háptica', e);
+                }
+            }
+        }
+
+        // Semantic Classifier for Auto-Learning
+        function detectUserGoal(text) {
+            if (!text) return null;
+            const lower = text.toLowerCase();
+            
+            // Keywords list
+            const massaKeywords = ['massa', 'muscul', 'hipertrofia', 'crescer', 'monstro', 'ganhar peso', 'whey', 'creatina', 'bomba', 'academia', 'força'];
+            const secarKeywords = ['secar', 'emagrecer', 'perder', 'gordura', 'definir', 'cardio', 'termogenico', 'queima', 'peso', 'slim'];
+            const energiaKeywords = ['energia', 'disposição', 'pre-treino', 'foco', 'focus', 'estimulante', 'cansado', 'acordar', 'disposicao', 'cafeina', 'power'];
+
+            let isMassa = massaKeywords.some(kw => lower.includes(kw));
+            let isSecar = secarKeywords.some(kw => lower.includes(kw));
+            let isEnergia = energiaKeywords.some(kw => lower.includes(kw));
+
+            if (isMassa) return 'massa';
+            if (isSecar) return 'secar';
+            if (isEnergia) return 'energia';
+            return null;
+        }
+
+        // Apply visual neon theme for active goal
+        function applyGoalTheme(goal) {
+            document.body.classList.remove('theme-massa', 'theme-secar', 'theme-energia');
+            const badgeText = document.getElementById('adaptiveProfileText');
+            
+            if (goal === 'massa') {
+                document.body.classList.add('theme-massa');
+                if (badgeText) badgeText.innerHTML = 'IA: Massa 💪 🔄';
+            } else if (goal === 'secar') {
+                document.body.classList.add('theme-secar');
+                if (badgeText) badgeText.innerHTML = 'IA: Secar 🔥 🔄';
+            } else if (goal === 'energia') {
+                document.body.classList.add('theme-energia');
+                if (badgeText) badgeText.innerHTML = 'IA: Energia ⚡ 🔄';
+            } else {
+                if (badgeText) badgeText.innerHTML = 'IA Neutra 🧠';
+            }
+        }
+
+        // Dynamic Welcoming Message adaptation
+        function customizeWelcomeGreeting(goal) {
+            const welcomeBubble = document.querySelector('.chat-messages .message.assistant .message-bubble');
+            if (!welcomeBubble) return;
+
+            if (goal === 'massa') {
+                welcomeBubble.innerHTML = `
+                    Olá, campeão! 💪 Vejo que seu perfil de <strong>Ganho de Massa Muscular e Hipertrofia</strong> está ativo! ⚡<br><br>
+                    Tenho os melhores Wheys, Creatinas importadas e combos hipertróficos de ponta com ofertas imperdíveis. Pronto para construir o shape dos seus sonhos?<br><br>
+                    Como posso te ajudar no seu treino hoje? Escolha um atalho rápido ou fale comigo por texto ou voz! 😊
+                `;
+            } else if (goal === 'secar') {
+                welcomeBubble.innerHTML = `
+                    Olá, atleta! 🔥 Vejo que seu perfil de <strong>Definição e Emagrecimento</strong> está ativo! 📉<br><br>
+                    Preparei uma seleção especial de termogênicos de elite, L-Carnitina e BCAAs para queimar gordura aceleradamente e obter a definição máxima do shape.<br><br>
+                    O que vamos queimar hoje? Escolha um atalho rápido ou me diga seus objetivos! 😊
+                `;
+            } else if (goal === 'energia') {
+                welcomeBubble.innerHTML = `
+                    E aí, guerreiro! ⚡ Vejo que seu perfil de <strong>Explosão de Energia e Foco</strong> está ativo! 🔋<br><br>
+                    Pronto para superar seus limites no treino? Nossa linha de pré-treinos superconcentrados, cafeína e recuperadores de treino vai te levar ao próximo nível.<br><br>
+                    Qual é a sua meta de força hoje? Digite ou escolha um combo de energia abaixo! 😊
+                `;
+            } else {
+                welcomeBubble.innerHTML = `
+                    Olá! Seja extremamente bem-vindo à <strong>VouComprarFácil</strong>! ⚡💪<br><br>
+                    Sou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para decifrar os seus objetivos e indicar o produto ideal para o seu treino decolar!<br><br>
+                    Qual é a sua principal meta hoje? Escolha uma opção abaixo ou me diga com suas palavras! 😊
+                `;
+            }
+        }
+
+        // Dynamically render customized quick action reply chips
+        function renderAdaptiveChips(goal) {
+            const container = document.querySelector('.quick-replies-container');
+            if (!container) return;
+
+            if (goal === 'massa') {
+                container.innerHTML = `
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre o melhor combo para ganhar massa 💪')">💪 Combo Massa</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Quais os benefícios de combinar Whey e Creatina? 🧬')">🧬 Whey + Creatina</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Comparar Whey Prime com Whey Gold Standard ⭐')">⭐ Comparar Wheys</button>
+                    <button class="quick-reply-chip" onclick="resetActiveGoal()" style="border-color: rgba(255,255,255,0.25);">🔄 Mudar Foco</button>
+                `;
+            } else if (goal === 'secar') {
+                container.innerHTML = `
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Me indique suplementos para queimar gordura rápido 🔥')">🔥 Seca Gordura</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Como tomar o BCAA para definição muscular? 💊')">💊 BCAA para Definição</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Quero ver termogênicos em promoção 🎁')">📉 Termogênicos Tops</button>
+                    <button class="quick-reply-chip" onclick="resetActiveGoal()" style="border-color: rgba(255,255,255,0.25);">🔄 Mudar Foco</button>
+                `;
+            } else if (goal === 'energia') {
+                container.innerHTML = `
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Qual pré-treino vai me dar mais força e foco? ⚡')">⚡ Pré-Treino Forte</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Como acelerar a recuperação muscular pós-treino? 🔋')">🔋 Recuperação Rápida</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre os suplementos de força 🏋️')">🏋️ Combos de Força</button>
+                    <button class="quick-reply-chip" onclick="resetActiveGoal()" style="border-color: rgba(255,255,255,0.25);">🔄 Mudar Foco</button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Quero ganhar massa muscular rápida 💪')">💪 Ganhar Massa</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Preciso de mais força e energia no treino ⚡')">⚡ Mais Força</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Como emagrecer e queimar gordura? 🔥')">🔥 Queimar Gordura</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre os melhores combos e promoções! 🎁')">🎁 Ver Promoções</button>
+                `;
+            }
+        }
+
+        // Reset the learned profile back to neutral
+        function resetActiveGoal() {
+            activeUserGoal = null;
+            localStorage.removeItem('voucomprafacil_goal');
+            applyGoalTheme(null);
+            renderAdaptiveChips(null);
+            customizeWelcomeGreeting(null);
+            showSystemToast('Foco de treino redefinido. IA em modo adaptativo neutro! 🧠');
+            triggerHaptic([50, 50]);
+        }
+
+        // Web Speech Recognition for Portuguese Speaking
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                console.log('Web Speech API Recognition não suportada neste navegador.');
+                return;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'pt-BR';
+
+            recognition.onstart = function() {
+                isRecording = true;
+                const micBtn = document.getElementById('micButton');
+                if (micBtn) micBtn.classList.add('recording');
+                messageInput.placeholder = 'Ouvindo suas metas... 🎙️';
+                triggerHaptic(80);
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                if (transcript) {
+                    messageInput.value = transcript;
+                    messageInput.style.height = 'auto';
+                    messageInput.style.height = Math.min(messageInput.scrollHeight, 140) + 'px';
+                    triggerHaptic([40, 40]);
+                    showSystemToast('Fala capturada com sucesso! 🎙️');
                 }
             };
-            return linkBtn;
+
+            recognition.onerror = function(event) {
+                console.error('Speech error:', event.error);
+                if (event.error === 'not-allowed') {
+                    showSystemToast('Permissão de microfone negada no navegador.');
+                } else {
+                    showSystemToast(`Erro de microfone: ${event.error}`);
+                }
+                stopRecording();
+            };
+
+            recognition.onend = function() {
+                stopRecording();
+            };
         }
 
-        loadProducts();
-        initWhatsApp();
-    </script>
+        function stopRecording() {
+            isRecording = false;
+            const micBtn = document.getElementById('micButton');
+            if (micBtn) micBtn.classList.remove('recording');
+            messageInput.placeholder = 'Fale ou digite suas metas...';
+        }
 
-    <a href="#" id="whatsappBtn" class="whatsapp-button" target="_blank">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-        Falar no WhatsApp
-    </a>
+        // Voice button trigger
+        function toggleRecording() {
+            if (!recognition) initSpeechRecognition();
+            
+            if (!recognition) {
+                showSystemToast('Microfone não suportado no navegador. Use Chrome ou Safari no celular.');
+                return;
+            }
+
+            if (isRecording) {
+                recognition.stop();
+                triggerHaptic(50);
+            } else {
+                try {
+                    recognition.start();
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+        }
+
+        // Voice Assistant TTS Speaker (Text-to-Speech in pt-BR)
+        function toggleVoiceAssistant() {
+            isVoiceEnabled = !isVoiceEnabled;
+            const btn = document.getElementById('voiceToggleBtn');
+            if (btn) {
+                if (isVoiceEnabled) {
+                    btn.classList.add('voice-active');
+                    showSystemToast('Leitura de voz da IA ativa! 🔊');
+                } else {
+                    btn.classList.remove('voice-active');
+                    window.speechSynthesis.cancel();
+                    showSystemToast('Leitura de voz desativada. 🔇');
+                }
+            }
+            triggerHaptic(50);
+        }
+
+        function speakAssistantResponse(text) {
+            if (!isVoiceEnabled) return;
+            
+            window.speechSynthesis.cancel();
+            
+            let cleanText = text
+                .replace(/[*#`_\-]/g, '')
+                .replace(/https?:\/\/\S+/g, 'link do whatsapp')
+                .replace(/⚡|💪|🔥|🛍️|🎁|🤖|👤|🧬|⭐|💊|📉|🔋|🏋️/g, '');
+
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = 'pt-BR';
+            
+            const voices = window.speechSynthesis.getVoices();
+            const ptVoice = voices.find(v => v.lang.includes('pt') || v.lang.includes('PT'));
+            if (ptVoice) utterance.voice = ptVoice;
+            
+            utterance.rate = 1.15;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Swipable Mobile tab panel gestures
+        function initSwipeGestures() {
+            const mainGrid = document.querySelector('.dashboard-grid');
+            if (!mainGrid) return;
+
+            mainGrid.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+
+            mainGrid.addEventListener('touchend', function(e) {
+                const touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                handleSwipe(touchStartX, touchStartY, touchEndX, touchEndY);
+            }, { passive: true });
+        }
+
+        // Process mobile gestures swiper
+        function handleSwipe(startX, startY, endX, endY) {
+            if (window.innerWidth >= 1024) return;
+
+            const diffX = endX - startX;
+            const diffY = endY - startY;
+
+            if (Math.abs(diffX) > 85 && Math.abs(diffY) < 55) {
+                const tabs = ['chat', 'catalog', 'stack'];
+                let currentIndex = -1;
+                
+                if (document.getElementById('chatSection').classList.contains('tab-active')) {
+                    currentIndex = 0;
+                } else if (document.getElementById('catalogSection').classList.contains('tab-active')) {
+                    currentIndex = 1;
+                } else if (document.getElementById('stackSection').classList.contains('tab-active')) {
+                    currentIndex = 2;
+                }
+
+                if (currentIndex === -1) return;
+
+                if (diffX < 0) {
+                    // Swipe Left: Next Tab
+                    if (currentIndex < 2) {
+                        switchMobileTab(tabs[currentIndex + 1]);
+                    }
+                } else {
+                    // Swipe Right: Previous Tab
+                    if (currentIndex > 0) {
+                        switchMobileTab(tabs[currentIndex - 1]);
+                    }
+                }
+            }
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+
+        async function loadWhatsApp() {
+            for (const url of API_URLS) {
+                try {
+                    const response = await fetch(`${url}/whatsapp`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        whatsappLink = data.link;
+                        const btn = document.getElementById('whatsappBtn');
+                        if (btn) {
+                            btn.href = whatsappLink;
+                        }
+                        return;
+                    }
+                } catch (e) {
+                    console.log(`Endpoint ${url} offline para buscar WhatsApp.`);
+                }
+            }
+        }
+
+        // Run on startup
+        (async function init() {
+            // Load learned goal focus
+            activeUserGoal = localStorage.getItem('voucomprafacil_goal') || null;
+            applyGoalTheme(activeUserGoal);
+            renderAdaptiveChips(activeUserGoal);
+            
+            // Core catalog and WhatsApp links loaders
+            await loadProducts();
+            await loadWhatsApp();
+
+            // Customize welcoming message based on active learned goal
+            customizeWelcomeGreeting(activeUserGoal);
+
+            // Bind voice microphone button
+            const micBtn = document.getElementById('micButton');
+            if (micBtn) {
+                micBtn.addEventListener('click', toggleRecording);
+            }
+
+            // Init Web Speech and Mobile swiping gestures
+            initSpeechRecognition();
+            initSwipeGestures();
+            
+            // Chrome voice loading pre-fetch trigger
+            if (window.speechSynthesis) {
+                window.speechSynthesis.getVoices();
+            }
+        })();
+
+    </script>
 </body>
 </html>

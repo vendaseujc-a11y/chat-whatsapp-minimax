@@ -38,28 +38,21 @@ app.post('/chat', async (req, res) => {
     
     const systemPrompt = {
       role: 'system',
-      content: `Você é o assistente virtual da "${whatsappConfig.businessName}". 
+      content: `Você é o assistente virtual da "${whatsappConfig.businessName}".
+Sua principal função é atender clientes interessados em nossos produtos (suplementos esportivos como Whey Protein, Creatina, Pré-Treinos, etc.), explicando seus benefícios de forma entusiasmada, profissional e autoexplicativa.
 
-COMO FUNCIONA NOSSA VENDA:
-1. O cliente pergunta sobre um produto ou diz o nome do produto que quer
-2. Você oferece o LINK DO PRODUTO via WhatsApp
-3. O cliente clica no link e compra diretamente
+REGRAS RÍGIDAS DE ATENDIMENTO:
+1. NUNCA FORNEÇA PREÇOS na conversa. Se o cliente perguntar o preço ou valor, explique de forma educada e persuasiva que as condições e valores atualizados, junto com as melhores promoções e kits, estão descritos em detalhes no nosso catálogo oficial e que você pode disponibilizar o catálogo para ele.
+2. DIÁLOGO AUTOEXPLICATIVO E PERSUASIVO: Quando o cliente mencionar um produto (ex: Whey Protein, Creatina), use sua inteligência para explicar de forma completa o que é o produto, quais são seus benefícios específicos (ganho de massa, energia, força, recuperação) e tire todas as dúvidas de forma entusiasmada e clara. Use emojis (✨🛍️💪⚡).
+3. PROPOSTA FINAL (OFERTA DO CATÁLOGO): Quando o cliente demonstrar forte interesse, pedir informações de valores, ou indicar que deseja comprar, você deve obrigatoriamente propor o envio do catálogo completo.
+   - Use uma pergunta como: "Você gostaria que eu te enviasse o nosso catálogo completo com todos os produtos e condições especiais?"
+4. ENVIO DO LINK PARCEIRO: Quando o cliente concordar em receber o catálogo ou desejar concluir, envie o link do WhatsApp para que um de nossos parceiros consultores envie o catálogo imediatamente para ele.
 
-REGRAS IMPORTANTES:
-1. Quando o cliente perguntar sobre qualquer produto, ofereça o link de compra
-2. Sempre pergunte: "Posso te enviar o link para compra direta?"
-3. Use o botão/link do WhatsApp para enviar o link do produto
-4. Seja rápido e direto nas respostas
-5. Use emojis para deixar o chat mais agradável
-6. Quando não souber o produto, diga que vai verificar e enviar o link
+Exemplo de frase final com link:
+"Excelente escolha! 🌟 Vou te direcionar para um dos nossos parceiros que irá te enviar o catálogo completo agora mesmo. Clique aqui para falar com ele no WhatsApp: 👉 [LINK]"
 
-WHATSAPP: ${generateWhatsAppLink('')}
-HORÁRIO: ${whatsappConfig.hours}
-
-Exemplo de resposta quando cliente quer um produto:
-"Claro! Posso te enviar o link direto para compra. É só clicar e pagar pelo WhatsApp! 👉 [LINK]"
-
-Sempre ofereça o link do WhatsApp quando o cliente demonstrar interesse em comprar algo!`
+LINK DO WHATSAPP PARCEIRO: ${generateWhatsAppLink('Olá! Gostaria de receber o catálogo de produtos da VouComprarFácil.')}
+HORÁRIO DE ATENDIMENTO: ${whatsappConfig.hours}`
     };
 
     const messages = [
@@ -69,10 +62,14 @@ Sempre ofereça o link do WhatsApp quando o cliente demonstrar interesse em comp
     ];
 
     const API_KEY = process.env.OPENROUTER_API_KEY;
+    console.log('API Key disponível:', !!API_KEY);
+    if (!API_KEY) {
+      return res.status(500).json({ error: 'API Key não configurada no servidor' });
+    }
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'minimax/minimax-m2.5:free',
+        model: 'openrouter/free',
         messages: messages
       },
       {
@@ -98,6 +95,9 @@ Sempre ofereça o link do WhatsApp quando o cliente demonstrar interesse em comp
     console.error('Erro no chat:', error.message);
     if (error.response) {
       console.error('API Response:', error.response.data);
+      if (error.response.status === 429) {
+        return res.status(429).json({ error: 'Limite de mensagens gratuitas da IA atingido (Erro 429 - Too Many Requests). Aguarde alguns instantes antes de enviar nova mensagem.' });
+      }
     }
     res.status(500).json({ error: error.message });
   }
@@ -156,7 +156,21 @@ app.post('/whatsapp/link', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'index.html'));
+  const possiblePaths = [
+    path.join(__dirname, '..', 'index.html'),
+    path.join(__dirname, 'index.html'),
+    path.join(process.cwd(), 'index.html')
+  ];
+  
+  for (const p of possiblePaths) {
+    try {
+      const fs = require('fs');
+      if (fs.existsSync(p)) {
+        return res.sendFile(p);
+      }
+    } catch(e) {}
+  }
+  res.status(500).send('index.html não encontrado');
 });
 
 app.get('/api', (req, res) => {
@@ -172,12 +186,20 @@ app.get('/api', (req, res) => {
 initDatabase()
   .then(() => {
     console.log('Banco de dados OK');
-    const server = app.listen(PORT, HOST, () => {
-      console.log(`Servidor rodando em http://${HOST}:${PORT}`);
-    });
-    server.on('error', (err) => console.error('Erro no servidor:', err));
+    if (process.env.VERCEL) {
+      console.log('Rodando no Vercel (Serverless)');
+    } else {
+      const server = app.listen(PORT, HOST, () => {
+        console.log(`Servidor rodando em http://${HOST}:${PORT}`);
+      });
+      server.on('error', (err) => console.error('Erro no servidor:', err));
+    }
   })
   .catch(err => {
     console.error('Erro ao iniciar banco de dados:', err);
-    process.exit(1);
+    if (!process.env.VERCEL) {
+      process.exit(1);
+    }
   });
+
+module.exports = app;

@@ -1,7 +1,7 @@
 const whatsappConfig = {
   phoneNumber: "17996705407",
-  businessName: "VNIVender+",
-  defaultMessage: "Olá! vim pelo chat da VNIVender+ e gostaria de fazer um pedido.",
+  businessName: "VouComprarFácil",
+  defaultMessage: "Olá! Vim pelo chat da VouComprarFácil e gostaria de fazer um pedido.",
   hours: "Seg a Sex: 9h às 18h",
   address: ""
 };
