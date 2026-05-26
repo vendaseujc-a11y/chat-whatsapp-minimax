@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { initDatabase, getContextMessages, saveMessage } = require('./config/database');
-const { products, getAllProducts, getPromos, searchProducts } = require('./config/products');
+const { getAllProducts, getPromos, searchProducts, addOrUpdateProduct, deleteProduct } = require('./config/products');
 const { whatsappConfig, generateWhatsAppLink } = require('./config/whatsapp');
 
 const app = express();
@@ -123,6 +123,67 @@ app.get('/products/search', (req, res) => {
     return res.json({ products: getAllProducts() });
   }
   res.json({ products: searchProducts(q) });
+});
+
+const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || 'VOUPRO9988';
+
+// Admin login verification endpoint
+app.post('/api/admin/verify', (req, res) => {
+  const { passcode } = req.body;
+  if (passcode === ADMIN_PASSCODE) {
+    return res.json({ success: true, message: 'Autenticado com sucesso' });
+  }
+  return res.status(401).json({ error: 'Código de acesso incorreto' });
+});
+
+// Admin save or update product
+app.post('/api/admin/products', (req, res) => {
+  const { passcode, product } = req.body;
+  if (passcode !== ADMIN_PASSCODE) {
+    return res.status(401).json({ error: 'Código de acesso incorreto' });
+  }
+
+  if (!product || !product.name) {
+    return res.status(400).json({ error: 'Dados do produto são inválidos' });
+  }
+
+  const success = addOrUpdateProduct(product);
+  if (success) {
+    // Attempt auto git-push so that Vercel automatically deploys updates
+    const { exec } = require('child_process');
+    exec('git add src/config/products.json && git commit -m "chore: update products database via admin console" && git push', (err, stdout, stderr) => {
+      if (err) console.error('[Auto-push Error]', err);
+      else console.log('[Auto-push Success]', stdout);
+    });
+
+    return res.json({ success: true, products: getAllProducts() });
+  }
+  return res.status(500).json({ error: 'Falha ao salvar produto no banco de dados' });
+});
+
+// Admin delete product
+app.post('/api/admin/products/delete', (req, res) => {
+  const { passcode, id } = req.body;
+  if (passcode !== ADMIN_PASSCODE) {
+    return res.status(401).json({ error: 'Código de acesso incorreto' });
+  }
+
+  if (!id) {
+    return res.status(400).json({ error: 'ID do produto é obrigatório' });
+  }
+
+  const success = deleteProduct(parseInt(id));
+  if (success) {
+    // Attempt auto git-push so that Vercel automatically deploys updates
+    const { exec } = require('child_process');
+    exec('git add src/config/products.json && git commit -m "chore: remove product from database via admin console" && git push', (err, stdout, stderr) => {
+      if (err) console.error('[Auto-push Error]', err);
+      else console.log('[Auto-push Success]', stdout);
+    });
+
+    return res.json({ success: true, products: getAllProducts() });
+  }
+  return res.status(500).json({ error: 'Falha ao deletar produto do banco de dados' });
 });
 
 app.get('/whatsapp', (req, res) => {

@@ -1691,6 +1691,213 @@
             0% { opacity: 0.4; }
             100% { opacity: 1; }
         }
+
+        /* High-Tech Admin Cyber Modal Styles */
+        .cyber-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 10, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cyber-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .cyber-modal {
+            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95) 0%, rgba(5, 5, 15, 0.98) 100%);
+            border: 1.5px solid var(--border-neon);
+            border-radius: var(--border-radius-lg);
+            width: 95%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.25);
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .cyber-modal-overlay.active .cyber-modal {
+            transform: scale(1);
+        }
+
+        .cyber-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+
+        .cyber-modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cyber-modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cyber-modal-close:hover {
+            color: var(--error);
+        }
+
+        .admin-form-group {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .admin-form-group label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 10px 14px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .admin-input:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 10px rgba(255, 94, 0, 0.15);
+        }
+
+        .admin-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .admin-btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-glow);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 0 20px rgba(255, 94, 0, 0.35);
+        }
+
+        /* Products List in Admin Panel */
+        .admin-products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 4px;
+        }
+
+        .admin-product-row {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-product-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-product-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .admin-action-btn {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .admin-action-btn.edit {
+            background: rgba(0, 240, 255, 0.1);
+            color: #67e8f9;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+        }
+
+        .admin-action-btn.edit:hover {
+            background: var(--accent-secondary);
+            color: white;
+            border-color: transparent;
+        }
+
+        .admin-action-btn.delete {
+            background: rgba(244, 63, 94, 0.1);
+            color: #fda4af;
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }
+
+        .admin-action-btn.delete:hover {
+            background: #e11d48;
+            color: white;
+            border-color: transparent;
+        }
     </style>
 </head>
 <body>
@@ -1750,6 +1957,10 @@
                                 <span></span>
                                 <span></span>
                             </div>
+                        </button>
+                        <!-- Admin Access Button -->
+                        <button class="voice-toggle-btn" id="adminLoginBtn" onclick="openAdminModal()" title="Painel do Administrador" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); color: #d8b4fe;">
+                            <span>🔑 Admin</span>
                         </button>
                     </div>
 
@@ -1844,7 +2055,83 @@
         </main>
     </div>
 
+    <!-- Cyber Modal for Admin Console -->
+    <div class="cyber-modal-overlay" id="adminModalOverlay">
+        <div class="cyber-modal">
+            <div class="cyber-modal-header">
+                <div class="cyber-modal-title">🔑 PAINEL DO ADMINISTRADOR</div>
+                <button class="cyber-modal-close" onclick="closeAdminModal()">✕</button>
+            </div>
+            
+            <!-- Auth View -->
+            <div id="adminAuthView">
+                <div class="admin-form-group">
+                    <label for="adminPasscode">Código de Acesso Seguro</label>
+                    <input type="password" class="admin-input" id="adminPasscode" placeholder="Digite o código gerado...">
+                </div>
+                <button class="admin-btn" onclick="verifyAdminPasscode()">Acessar Painel 🔒</button>
+            </div>
 
+            <!-- Dashboard View (hidden by default) -->
+            <div id="adminDashboardView" style="display: none;">
+                <!-- Product Form (Add/Edit) -->
+                <div style="margin-bottom: 20px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 20px;">
+                    <div class="cyber-modal-title" style="font-size: 13px; margin-bottom: 12px; color: var(--accent-neon);" id="formTitle">➕ ADICIONAR / EDITAR SUPLEMENTO</div>
+                    
+                    <input type="hidden" id="prodId" value="">
+                    
+                    <div class="admin-form-group">
+                        <label for="prodName">Nome do Produto</label>
+                        <input type="text" class="admin-input" id="prodName" placeholder="Ex: Whey Gold Standard">
+                    </div>
+                    
+                    <div class="admin-row">
+                        <div class="admin-form-group">
+                            <label for="prodCategory">Categoria</label>
+                            <select class="admin-input" id="prodCategory" style="background: black;">
+                                <option value="Proteínas">Proteínas 🥩</option>
+                                <option value="Força">Força 💪</option>
+                                <option value="Energia">Energia ⚡</option>
+                                <option value="Recuperação">Recuperação 💊</option>
+                                <option value="Emagrecimento">Emagrecimento 🔥</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="prodEmoji">Emoji / Ícone</label>
+                            <input type="text" class="admin-input" id="prodEmoji" placeholder="Ex: 💪" value="💪">
+                        </div>
+                    </div>
+                    
+                    <div class="admin-row">
+                        <div class="admin-form-group">
+                            <label for="prodPrice">Preço (R$)</label>
+                            <input type="number" step="0.01" class="admin-input" id="prodPrice" placeholder="Ex: 139.90">
+                        </div>
+                        <div class="admin-form-group" style="flex-direction: row; align-items: center; gap: 8px; margin-top: 24px;">
+                            <input type="checkbox" id="prodPromo" style="width: 18px; height: 18px; cursor: pointer;">
+                            <label for="prodPromo" style="margin-bottom: 0; cursor: pointer;">Em Promoção (🔥 PROMO)</label>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label for="prodDescription">Descrição dos Benefícios</label>
+                        <textarea class="admin-input" id="prodDescription" rows="2" placeholder="Descreva os benefícios de forma autoexplicativa..." style="resize: none;"></textarea>
+                    </div>
+
+                    <div class="admin-row" style="margin-top: 10px;">
+                        <button class="admin-btn" onclick="saveAdminProduct()" style="background: var(--accent-gradient);">Salvar Produto 💾</button>
+                        <button class="admin-btn" onclick="clearAdminForm()" style="background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); box-shadow: none;">Limpar 🧹</button>
+                    </div>
+                </div>
+
+                <!-- Products Database List -->
+                <div class="cyber-modal-title" style="font-size: 13px; margin-bottom: 12px; color: var(--accent-secondary);">🛍️ PRODUTOS NO BANCO</div>
+                <div class="admin-products-list" id="adminProductsList">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Frontend Core Application logic -->
     <script>
@@ -2624,6 +2911,195 @@
                 } catch (e) {
                     console.log(`Endpoint ${url} offline para buscar WhatsApp.`);
                 }
+            }
+        }
+
+        // ==========================================
+        // ADMIN CONSOLE MANAGEMENT MOTORS
+        // ==========================================
+        let adminPasscode = '';
+
+        function openAdminModal() {
+            triggerHaptic(30);
+            document.getElementById('adminModalOverlay').classList.add('active');
+            
+            // If already verified, direct to dashboard
+            if (adminPasscode) {
+                document.getElementById('adminAuthView').style.display = 'none';
+                document.getElementById('adminDashboardView').style.display = 'block';
+                renderAdminProductsList();
+            } else {
+                document.getElementById('adminAuthView').style.display = 'block';
+                document.getElementById('adminDashboardView').style.display = 'none';
+            }
+        }
+
+        function closeAdminModal() {
+            triggerHaptic(30);
+            document.getElementById('adminModalOverlay').classList.remove('active');
+        }
+
+        async function verifyAdminPasscode() {
+            const inputVal = document.getElementById('adminPasscode').value.trim();
+            if (!inputVal) {
+                showSystemToast('Digite o código de acesso');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/admin/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ passcode: inputVal })
+                });
+
+                if (response.ok) {
+                    adminPasscode = inputVal;
+                    showSystemToast('Acesso administrativo liberado! 🔓');
+                    triggerHaptic([50, 30, 50]);
+                    
+                    document.getElementById('adminAuthView').style.display = 'none';
+                    document.getElementById('adminDashboardView').style.display = 'block';
+                    renderAdminProductsList();
+                } else {
+                    const data = await response.json();
+                    showSystemToast(data.error || 'Código de acesso incorreto ❌');
+                    triggerHaptic(100);
+                }
+            } catch(e) {
+                showSystemToast('Erro de conexão ao servidor');
+                console.error(e);
+            }
+        }
+
+        function renderAdminProductsList() {
+            const container = document.getElementById('adminProductsList');
+            if (!container) return;
+
+            container.innerHTML = productsData.map(p => `
+                <div class="admin-product-row">
+                    <div class="admin-product-meta">
+                        <span>${p.image}</span>
+                        <div>
+                            <strong style="font-size: 13px; color: white;">${p.name}</strong>
+                            <div style="font-size: 11px; color: var(--accent-secondary);">R$ ${p.price.toFixed(2).replace('.', ',')} | ${p.category}</div>
+                        </div>
+                    </div>
+                    <div class="admin-product-actions">
+                        <button class="admin-action-btn edit" onclick="editAdminProduct(${p.id})">✏️</button>
+                        <button class="admin-action-btn delete" onclick="deleteAdminProduct(${p.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function clearAdminForm() {
+            document.getElementById('prodId').value = '';
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodCategory').value = 'Proteínas';
+            document.getElementById('prodEmoji').value = '💪';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodPromo').checked = false;
+            document.getElementById('prodDescription').value = '';
+            document.getElementById('formTitle').innerText = '➕ ADICIONAR / EDITAR SUPLEMENTO';
+        }
+
+        function editAdminProduct(id) {
+            const p = productsData.find(prod => prod.id === id);
+            if (!p) return;
+
+            document.getElementById('prodId').value = p.id;
+            document.getElementById('prodName').value = p.name;
+            document.getElementById('prodCategory').value = p.category || 'Proteínas';
+            document.getElementById('prodEmoji').value = p.image || '💪';
+            document.getElementById('prodPrice').value = p.price;
+            document.getElementById('prodPromo').checked = !!p.promo;
+            document.getElementById('prodDescription').value = p.description || '';
+            document.getElementById('formTitle').innerText = '✏️ EDITAR SUPLEMENTO';
+        }
+
+        async function saveAdminProduct() {
+            const id = document.getElementById('prodId').value;
+            const name = document.getElementById('prodName').value.trim();
+            const category = document.getElementById('prodCategory').value;
+            const image = document.getElementById('prodEmoji').value.trim();
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const promo = document.getElementById('prodPromo').checked;
+            const description = document.getElementById('prodDescription').value.trim();
+
+            if (!name || isNaN(price)) {
+                showSystemToast('Nome e preço são obrigatórios');
+                return;
+            }
+
+            const product = {
+                name,
+                category,
+                image,
+                price,
+                promo,
+                description
+            };
+
+            if (id) {
+                product.id = parseInt(id);
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/admin/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ passcode: adminPasscode, product })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    productsData = data.products;
+                    
+                    // Re-render both local and remote lists
+                    renderProducts(productsData);
+                    renderAdminProductsList();
+                    clearAdminForm();
+                    
+                    showSystemToast('Produto salvo no Cardápio com sucesso! 🛍️');
+                    triggerHaptic([50, 50]);
+                } else {
+                    const data = await response.json();
+                    showSystemToast(data.error || 'Falha ao salvar produto');
+                }
+            } catch(e) {
+                showSystemToast('Erro de conexão ao servidor');
+                console.error(e);
+            }
+        }
+
+        async function deleteAdminProduct(id) {
+            if (!confirm('Deseja realmente remover este produto do cardápio?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/admin/products/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ passcode: adminPasscode, id })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    productsData = data.products;
+                    
+                    // Re-render both local and remote lists
+                    renderProducts(productsData);
+                    renderAdminProductsList();
+                    
+                    showSystemToast('Produto excluído com sucesso! 🗑️');
+                    triggerHaptic(80);
+                } else {
+                    const data = await response.json();
+                    showSystemToast(data.error || 'Falha ao excluir produto');
+                }
+            } catch(e) {
+                showSystemToast('Erro de conexão ao servidor');
+                console.error(e);
             }
         }
 
