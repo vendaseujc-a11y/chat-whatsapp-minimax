@@ -524,6 +524,66 @@
             border-left: 3px solid var(--accent-secondary);
         }
 
+        /* High-tech List Item Formatting inside Chat Bubbles */
+        .list-bullet-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin: 6px 0;
+            padding-left: 4px;
+            font-size: 13.5px;
+            line-height: 1.45;
+            color: var(--text-primary);
+        }
+
+        .list-bullet-item::before {
+            content: '⚡';
+            color: var(--accent-secondary);
+            font-size: 11px;
+            margin-top: 3px;
+            text-shadow: 0 0 6px var(--accent-secondary);
+            flex-shrink: 0;
+        }
+
+        .list-number-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            font-size: 13.5px;
+            line-height: 1.45;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .list-number-item:hover {
+            background: rgba(255, 94, 0, 0.04);
+            border-color: rgba(255, 94, 0, 0.2);
+            box-shadow: inset 0 0 8px rgba(255, 94, 0, 0.02);
+        }
+
+        .list-number-badge {
+            background: var(--accent-gradient);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            font-weight: 900;
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-glow);
+            margin-top: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         /* Smart WhatsApp CTA card style */
         .whatsapp-chat-btn {
             display: inline-flex;
@@ -1389,6 +1449,78 @@
                 width: 18px !important;
                 height: 18px !important;
             }
+
+            /* Optimized Catalog UI for Mobile (prevents distortions and enhances readability) */
+            .catalog-container {
+                padding: 12px 14px !important;
+            }
+
+            .section-header {
+                margin-bottom: 12px !important;
+                padding-bottom: 8px !important;
+            }
+
+            .section-header h2 {
+                font-size: 15px !important;
+            }
+
+            .search-badge {
+                font-size: 9px !important;
+                padding: 2px 6px !important;
+            }
+
+            .catalog-scroll {
+                gap: 10px !important;
+            }
+
+            .product-cyber-card {
+                padding: 10px 12px !important;
+                grid-template-columns: 36px 1fr !important; /* Smaller icon column to give text more space */
+                gap: 10px !important;
+                border-radius: 12px !important;
+            }
+
+            .product-avatar-wrap {
+                width: 36px !important;
+                height: 36px !important;
+                border-radius: 8px !important;
+                font-size: 18px !important;
+            }
+
+            .product-info-wrap {
+                gap: 1px !important;
+            }
+
+            .product-name-txt {
+                font-size: 13px !important;
+                line-height: 1.3 !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+
+            .product-desc-txt {
+                font-size: 11px !important;
+                color: rgba(255, 255, 255, 0.6) !important; /* Higher contrast, clean readable description */
+                margin: 4px 0 6px 0 !important;
+                line-height: 1.35 !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+
+            .product-action-bar {
+                margin-top: 4px !important;
+                gap: 6px !important;
+            }
+
+            .product-price-tag {
+                font-size: 12.5px !important;
+            }
+
+            .add-to-stack-btn {
+                padding: 4px 8px !important;
+                font-size: 10px !important;
+                border-radius: 6px !important;
+            }
         }
 
         /* NEXT-GEN SMARTPHONE & DYNAMIC THEMES */
@@ -1909,6 +2041,16 @@
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
                 .replace(/`(.*?)`/g, '<code>$1</code>');
+
+            // Format numbered lists beautifully (e.g. 1., 2.)
+            formatted = formatted.replace(/(?:^|<br>)\s*(\d+)\.\s*(.*?)(?=<br>|$)/g, (match, num, item) => {
+                return `<div class="list-number-item"><span class="list-number-badge">${num}</span><div style="flex: 1;">${item}</div></div>`;
+            });
+
+            // Format bullet lists beautifully (e.g. lines starting with - or *)
+            formatted = formatted.replace(/(?:^|<br>)\s*[-\*]\s*(.*?)(?=<br>|$)/g, (match, item) => {
+                return `<div class="list-bullet-item">${item}</div>`;
+            });
 
             // Format markdown links, intercept WhatsApp and render gorgeous CTA buttons
             formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
