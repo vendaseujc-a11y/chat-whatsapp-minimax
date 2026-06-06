@@ -23,6 +23,91 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+const userStates = new Map();
+
+function getFlowState(stateId) {
+  const flowTree = {
+    inicio: {
+      message: `Olá! Seja muito bem-vindo à **VouComprarFácil**! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:`,
+      options: [
+        { text: "Ver Categorias de Suplementos 💪", nextState: "categorias" },
+        { text: "Ver Promoções Ativas 🔥", nextState: "promocoes" },
+        { text: "Falar com Consultor / Comprar 🛒", nextState: "falar_vendedor" },
+        { text: "Informações de Entrega 📦", nextState: "entrega" }
+      ]
+    },
+    categorias: {
+      message: `Escolha qual categoria de suplementos você gostaria de explorar hoje:`,
+      options: [
+        { text: "Proteínas 🥩", nextState: "cat_Proteínas" },
+        { text: "Força 💪", nextState: "cat_Força" },
+        { text: "Energia ⚡", nextState: "cat_Energia" },
+        { text: "Recuperação 💊", nextState: "cat_Recuperação" },
+        { text: "Emagrecimento 🔥", nextState: "cat_Emagrecimento" },
+        { text: "Voltar ao Menu Principal 🔄", nextState: "inicio" }
+      ]
+    },
+    entrega: {
+      message: `📦 **Informações de Entrega VouComprarFácil:**\n\n- **Prazo de Envio:** Todos os pedidos são despachados em até 24 horas úteis!\n- **Frete:** Temos condições de frete grátis dependendo da sua região e do valor do pedido (consulte o vendedor).\n- **Embalagem:** Enviamos tudo em caixas discretas e super seguras para garantir a integridade dos seus suplementos.\n\nComo gostaria de prosseguir?`,
+      options: [
+        { text: "Ver Categorias de Suplementos 💪", nextState: "categorias" },
+        { text: "Falar com Consultor 🛒", nextState: "falar_vendedor" },
+        { text: "Voltar ao Menu Principal 🔄", nextState: "inicio" }
+      ]
+    },
+    falar_vendedor: {
+      message: `Perfeito! ✨ Nossos consultores especializados estão prontos para te atender, tirar dúvidas técnicas e garantir as melhores condições e kits com descontos progressivos!\n\nClique no botão verde abaixo para falar direto com o nosso consultor no WhatsApp:\n\n👉 [Falar com Consultor](${generateWhatsAppLink('Olá! Estava tirando dúvidas no chat da VouComprarFácil e gostaria de falar com um consultor para finalizar meu pedido.')})`,
+      options: [
+        { text: "Voltar ao Menu Principal 🔄", nextState: "inicio" }
+      ]
+    }
+  };
+
+  if (stateId.startsWith('cat_')) {
+    const categoryName = stateId.replace('cat_', '');
+    const products = getAllProducts().filter(p => p.category === categoryName);
+    let messageText = `🥩 **Suplementos de ${categoryName} disponíveis:**\n\n`;
+    if (products.length === 0) {
+      messageText += `Nenhum produto cadastrado nesta categoria no momento.`;
+    } else {
+      products.forEach(p => {
+        messageText += `${p.image} **${p.name}**\n${p.description}\n\n`;
+      });
+      messageText += `⚠️ *Nota: Por regras da loja, os valores atualizados e promoções de kits são passados pelo consultor.*`;
+    }
+    return {
+      message: messageText,
+      options: [
+        { text: "Falar com Consultor / Comprar 🛒", nextState: "falar_vendedor" },
+        { text: "Ver Outras Categorias 🔄", nextState: "categorias" },
+        { text: "Voltar ao Menu Principal 🔄", nextState: "inicio" }
+      ]
+    };
+  }
+
+  if (stateId === 'promocoes') {
+    const promos = getPromos();
+    let messageText = `🔥 **Suplementos em Promoção no momento:**\n\n`;
+    if (promos.length === 0) {
+      messageText += `Nenhum produto com promoção ativa no momento. Consulte o vendedor para descontos manuais!`;
+    } else {
+      promos.forEach(p => {
+        messageText += `${p.image} **${p.name}** (Em Promoção!)\n${p.description}\n\n`;
+      });
+      messageText += `👉 Garanta seu desconto especial nos kits com o nosso consultor!`;
+    }
+    return {
+      message: messageText,
+      options: [
+        { text: "Falar com Consultor / Comprar 🛒", nextState: "falar_vendedor" },
+        { text: "Voltar ao Menu Principal 🔄", nextState: "inicio" }
+      ]
+    };
+  }
+
+  return flowTree[stateId] || flowTree['inicio'];
+}
+
 app.post('/chat', async (req, res) => {
   try {
     const { message, sessionId } = req.body;
@@ -32,80 +117,64 @@ app.post('/chat', async (req, res) => {
     }
 
     const session = sessionId || 'default';
-    const axios = require('axios');
+    const currentSessionState = userStates.get(session) || 'inicio';
 
-    const contextMessages = getContextMessages(session, 15);
-    
-    const systemPrompt = {
-      role: 'system',
-      content: `Você é o assistente virtual da "${whatsappConfig.businessName}".
-Sua principal função é atender clientes interessados em nossos produtos (suplementos esportivos como Whey Protein, Creatina, Pré-Treinos, etc.), explicando seus benefícios de forma entusiasmada, profissional e autoexplicativa.
+    let nextStateId = null;
+    const currentStateConfig = getFlowState(currentSessionState);
 
-REGRAS RÍGIDAS DE ATENDIMENTO:
-1. NUNCA FORNEÇA PREÇOS na conversa. Se o cliente perguntar o preço ou valor, explique de forma educada e persuasiva que as condições e valores atualizados, junto com as melhores promoções e kits, estão descritos em detalhes no nosso catálogo oficial e que você pode disponibilizar o catálogo para ele.
-2. DIÁLOGO AUTOEXPLICATIVO E PERSUASIVO: Quando o cliente mencionar um produto (ex: Whey Protein, Creatina), use sua inteligência para explicar de forma completa o que é o produto, quais são seus benefícios específicos (ganho de massa, energia, força, recuperação) e tire todas as dúvidas de forma entusiasmada e clara. Use emojis (✨🛍️💪⚡).
-3. PROPOSTA FINAL (OFERTA DO CATÁLOGO): Quando o cliente demonstrar forte interesse, pedir informações de valores, ou indicar que deseja comprar, você deve obrigatoriamente propor o envio do catálogo completo.
-   - Use uma pergunta como: "Você gostaria que eu te enviasse o nosso catálogo completo com todos os produtos e condições especiais?"
-4. ENVIO DO LINK PARCEIRO: Quando o cliente concordar em receber o catálogo ou desejar concluir, envie o link do WhatsApp para que um de nossos parceiros consultores envie o catálogo imediatamente para ele.
+    // Find option match
+    const matchedOption = currentStateConfig.options.find(opt => {
+      const optionTextClean = opt.text.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const inputTextClean = message.toLowerCase().replace(/[^a-z0-9]/g, '');
+      return optionTextClean.includes(inputTextClean) || inputTextClean.includes(optionTextClean);
+    });
 
-Exemplo de frase final com link:
-"Excelente escolha! 🌟 Vou te direcionar para um dos nossos parceiros que irá te enviar o catálogo completo agora mesmo. Clique aqui para falar com ele no WhatsApp: 👉 [LINK]"
-
-LINK DO WHATSAPP PARCEIRO: ${generateWhatsAppLink('Olá! Gostaria de receber o catálogo de produtos da VouComprarFácil.')}
-HORÁRIO DE ATENDIMENTO: ${whatsappConfig.hours}`
-    };
-
-    const messages = [
-      systemPrompt,
-      ...contextMessages.map(m => ({ role: m.role, content: m.content })),
-      { role: 'user', content: message }
-    ];
-
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    console.log('API Key disponível:', !!API_KEY);
-    if (!API_KEY) {
-      return res.status(500).json({ error: 'API Key não configurada no servidor' });
-    }
-    const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
-      {
-        model: 'openrouter/free',
-        messages: messages
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${API_KEY}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://chat-minimax.vercel.app',
-          'X-Title': 'Chat IA MiniMax'
-        }
+    if (matchedOption) {
+      nextStateId = matchedOption.nextState;
+    } else {
+      // Global keyword match fallback
+      const lowerMsg = message.toLowerCase();
+      if (lowerMsg.includes('inicio') || lowerMsg.includes('oi') || lowerMsg.includes('olá') || lowerMsg.includes('ola') || lowerMsg.includes('começar') || lowerMsg.includes('reset') || lowerMsg.includes('menu')) {
+        nextStateId = 'inicio';
+      } else if (lowerMsg.includes('categoria') || lowerMsg.includes('produto') || lowerMsg.includes('suplemento')) {
+        nextStateId = 'categorias';
+      } else if (lowerMsg.includes('promo') || lowerMsg.includes('desconto') || lowerMsg.includes('oferta')) {
+        nextStateId = 'promocoes';
+      } else if (lowerMsg.includes('vendedor') || lowerMsg.includes('comprar') || lowerMsg.includes('preco') || lowerMsg.includes('preço') || lowerMsg.includes('falar')) {
+        nextStateId = 'falar_vendedor';
+      } else if (lowerMsg.includes('entrega') || lowerMsg.includes('frete') || lowerMsg.includes('prazo')) {
+        nextStateId = 'entrega';
+      } else {
+        // Keep same state if unrecognized
+        nextStateId = currentSessionState;
       }
-    );
+    }
 
-    const assistantResponse = response.data.choices[0].message.content;
+    userStates.set(session, nextStateId);
+    const nextStateConfig = getFlowState(nextStateId);
+
+    let responseMessage = nextStateConfig.message;
+    if (!matchedOption && nextStateId === currentSessionState && nextStateId !== 'inicio') {
+      responseMessage = `Não entendi sua escolha. Por favor, selecione uma das opções abaixo:\n\n` + responseMessage;
+    }
 
     saveMessage(session, 'user', message);
-    saveMessage(session, 'assistant', assistantResponse);
+    saveMessage(session, 'assistant', responseMessage);
 
     res.json({
-      response: assistantResponse,
+      response: responseMessage,
+      options: nextStateConfig.options.map(opt => ({ text: opt.text })),
       sessionId: session
     });
   } catch (error) {
-    console.error('Erro no chat:', error.message);
-    if (error.response) {
-      console.error('API Response:', error.response.data);
-      if (error.response.status === 429) {
-        return res.status(429).json({ error: 'Limite de mensagens gratuitas da IA atingido (Erro 429 - Too Many Requests). Aguarde alguns instantes antes de enviar nova mensagem.' });
-      }
-    }
+    console.error('Erro no chatbot local:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
 
 app.get('/chat/context/:sessionId', (req, res) => {
   const { sessionId } = req.params;
-  const messages = getContextMessages(sessionId, 15);
+  const messages = getContextMessages(sessionId, 8);
   res.json({ messages });
 });
 

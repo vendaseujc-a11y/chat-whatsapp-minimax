@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = 'minimax/minimax-m2.5:free';
+const MODEL = 'meta-llama/llama-3.1-8b-instruct:free';
 const BASE_URL = 'https://openrouter.ai/api/v1';
 
 async function chat(messages) {

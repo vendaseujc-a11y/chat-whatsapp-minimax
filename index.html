@@ -2,7 +2,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ff5e00">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
     <title>VouComprarFácil - Atendimento Futurista</title>
     <!-- Google Fonts: Orbitron for tech headers, Outfit for clean body, Space Grotesk for interactive text -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -921,9 +926,9 @@
             background: var(--glass-card);
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius-md);
-            padding: 14px;
+            padding: 9px 14px 12px 14px;
             display: grid;
-            grid-template-columns: 40px 1fr;
+            grid-template-columns: 40px minmax(0, 1fr);
             gap: 14px;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
@@ -1050,20 +1055,25 @@
         .product-info-wrap {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         .product-name-txt {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 9.5px;
             color: var(--text-primary);
-            line-height: 1.4;
+            line-height: 1.3;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            margin-top: -3px;
         }
 
         .product-desc-txt {
-            font-size: 11.5px;
+            font-size: 9px;
             color: var(--text-secondary);
-            margin: 4px 0 8px 0;
+            margin: 3px 0 6px 0;
             line-height: 1.4;
         }
 
@@ -1077,7 +1087,7 @@
         .product-price-tag {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 13.5px;
+            font-size: 10px;
             color: var(--accent-secondary);
         }
 
@@ -1085,10 +1095,10 @@
             background: rgba(255, 94, 0, 0.1);
             border: 1px solid rgba(255, 94, 0, 0.3);
             color: #fdba74;
-            padding: 5px 10px;
-            border-radius: 8px;
+            padding: 4px 8px;
+            border-radius: 6px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -1098,6 +1108,238 @@
         }
 
         .add-to-stack-btn:hover {
+            background: var(--accent-gradient);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
+        }
+
+        /* Menu Category Styles */
+        .menu-category-section {
+            margin-bottom: 20px;
+        }
+
+        .menu-category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px dashed rgba(0, 240, 255, 0.15);
+            padding-bottom: 6px;
+        }
+
+        .menu-category-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-product-row {
+            background: rgba(20, 20, 35, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--border-radius-md);
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .menu-product-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: transparent;
+            transition: all 0.25s ease;
+        }
+
+        .menu-product-row:hover {
+            background: rgba(30, 30, 50, 0.55);
+            border-color: rgba(0, 240, 255, 0.15);
+            transform: translateX(2px);
+        }
+
+        .menu-product-row:hover::before {
+            background: var(--accent-secondary);
+        }
+
+        .menu-product-row.in-combo {
+            border-color: rgba(255, 94, 0, 0.25);
+            background: rgba(255, 94, 0, 0.03);
+        }
+
+        .menu-product-row.in-combo::before {
+            background: var(--accent-neon);
+        }
+
+        .menu-product-row.promo-row {
+            border-right: 1px solid rgba(255, 94, 0, 0.3);
+        }
+
+        .menu-product-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .menu-product-icon {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 50%;
+            background: rgba(255, 94, 0, 0.05);
+            border: 1px solid var(--accent-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.1);
+        }
+
+        .menu-product-row.in-combo .menu-product-icon {
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 8px rgba(255, 94, 0, 0.15);
+        }
+
+        .menu-product-details {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .menu-product-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .menu-product-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .menu-promo-badge {
+            background: var(--accent-neon);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 7px;
+            font-weight: 900;
+            padding: 1px 4px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .menu-product-desc {
+            font-size: 8.5px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+
+        .menu-product-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .menu-product-price {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            color: var(--accent-secondary);
+            min-width: 65px;
+            text-align: right;
+        }
+
+        .menu-product-row.in-combo .menu-product-price {
+            color: #fdba74;
+        }
+
+        .menu-action-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 78px;
+            justify-content: flex-end;
+        }
+
+        .menu-qty-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .menu-qty-btn:hover {
+            background: var(--accent-secondary);
+            color: black;
+            border-color: transparent;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+        }
+
+        .menu-qty-btn.plus:hover {
+            background: var(--accent-neon);
+            color: white;
+            box-shadow: 0 0 8px rgba(255, 94, 0, 0.3);
+        }
+
+        .menu-qty-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-primary);
+            min-width: 14px;
+            text-align: center;
+        }
+
+        .menu-add-combo-btn {
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            color: #22d3ee;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 8.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .menu-add-combo-btn:hover {
             background: var(--accent-gradient);
             color: white;
             border-color: transparent;
@@ -1181,7 +1423,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
             animation: stackItemIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            min-width: 0;
         }
 
         @keyframes stackItemIn {
@@ -1193,6 +1437,8 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            min-width: 0;
+            flex: 1;
         }
 
         .stack-item-icon {
@@ -1237,6 +1483,31 @@
         .stack-qty-btn:hover {
             background: rgba(255, 94, 0, 0.2);
             border-color: var(--accent-neon);
+        }
+
+        .stack-delete-btn {
+            height: 24px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 68, 68, 0.15);
+            background: rgba(255, 68, 68, 0.05);
+            color: #ff6b6b;
+            font-size: 9px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-left: 4px;
+            padding: 0 6px;
+            gap: 2px;
+        }
+
+        .stack-delete-btn:hover {
+            background: rgba(255, 68, 68, 0.25);
+            border-color: #ff4444;
+            color: #ffffff;
+            transform: scale(1.05);
         }
 
         /* Order Finalize Area */
@@ -1538,8 +1809,8 @@
             }
 
             .product-cyber-card {
-                padding: 10px 12px !important;
-                grid-template-columns: 36px 1fr !important; /* Smaller icon column to give text more space */
+                padding: 7px 12px 9px 12px !important;
+                grid-template-columns: 36px minmax(0, 1fr) !important; /* Smaller icon column to give text more space without overflow */
                 gap: 10px !important;
                 border-radius: 12px !important;
             }
@@ -1553,20 +1824,23 @@
 
             .product-info-wrap {
                 gap: 1px !important;
+                min-width: 0 !important;
             }
 
             .product-name-txt {
-                font-size: 13px !important;
-                line-height: 1.3 !important;
+                font-size: 8.5px !important;
+                line-height: 1.2 !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
+                white-space: normal !important;
+                margin-top: -2px !important;
             }
 
             .product-desc-txt {
-                font-size: 11px !important;
+                font-size: 8px !important;
                 color: rgba(255, 255, 255, 0.6) !important; /* Higher contrast, clean readable description */
-                margin: 4px 0 6px 0 !important;
-                line-height: 1.35 !important;
+                margin: 2px 0 4px 0 !important;
+                line-height: 1.3 !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
             }
@@ -1577,13 +1851,13 @@
             }
 
             .product-price-tag {
-                font-size: 12.5px !important;
+                font-size: 9px !important;
             }
 
             .add-to-stack-btn {
-                padding: 4px 8px !important;
-                font-size: 10px !important;
-                border-radius: 6px !important;
+                padding: 3px 6px !important;
+                font-size: 8px !important;
+                border-radius: 5px !important;
             }
         }
 
@@ -2055,7 +2329,7 @@
                 🛍️ Catálogo
             </button>
             <button class="tab-btn" onclick="switchMobileTab('stack')">
-                ⚡ Seu Combo <span class="tab-badge" id="stackMobileBadge">0</span>
+                🛒 Carrinho <span class="tab-badge" id="stackMobileBadge">0</span>
             </button>
         </nav>
 
@@ -2077,23 +2351,13 @@
                     </div>
 
                     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 4px 0;">
-                        <!-- Adaptive Profile Badge -->
-                        <div class="adaptive-profile-badge" id="adaptiveProfileBadge" style="cursor: pointer;" title="IA com Auto-Aprendizado Ativo (Clique para resetar)" onclick="resetActiveGoal()">
-                            <span class="status-dot"></span>
-                            <span id="adaptiveProfileText">IA Neutra 🔄</span>
-                        </div>
-                        <!-- Voice Toggle Button -->
-                        <button class="voice-toggle-btn" id="voiceToggleBtn" onclick="toggleVoiceAssistant()" title="Ativar/Desativar Leitura por Voz da IA">
-                            <span>🔊 Voz IA</span>
-                            <div class="voice-wave-anim">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </button>
                         <!-- Admin Access Button -->
                         <button class="voice-toggle-btn" id="adminLoginBtn" onclick="openAdminModal()" title="Painel do Administrador" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); color: #d8b4fe;">
                             <span>🔑 Admin</span>
+                        </button>
+                        <!-- PWA Install Button (hidden by default) -->
+                        <button class="voice-toggle-btn" id="installAppBtn" style="display: none; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: #34d399;" title="Instalar Aplicativo no Celular">
+                            <span>📱 Instalar App</span>
                         </button>
                     </div>
 
@@ -2163,32 +2427,35 @@
 
                 <!-- Cyber Stack Builder Drawer -->
                 <div class="stack-builder-container" id="stackSection">
-                    <div class="section-header stack-header">
-                        <h2>⚡ Seu Combo Atual</h2>
+                    <div class="section-header stack-header" style="margin-bottom: 12px;">
+                        <h2>🛒 Seu Carrinho</h2>
                     </div>
 
-                    <!-- Quick Add Product Grid (smaller squares describing each registered product) -->
-                    <div class="stack-quick-add-section">
-                        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">➕ Adicionar ao Combo:</div>
-                        <div class="stack-quick-add-grid" id="stackQuickAddGrid">
-                            <!-- Loaded dynamically -->
+                    <!-- Scrollable Cart Content Wrapper -->
+                    <div class="cart-scroll-wrapper" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 4px;">
+                        
+                        <!-- Items container -->
+                        <div class="stack-item-list" id="stackItemList" style="overflow-y: visible; margin-bottom: 0;">
+                            <!-- Loaded dynamically or shows empty state -->
                         </div>
-                    </div>
 
-                    <!-- Items container -->
-                    <div class="stack-item-list" id="stackItemList">
-                        <!-- Loaded dynamically or shows empty state -->
-                    </div>
-
-                    <!-- Stack Summary & Finalization -->
-                    <div class="stack-footer">
-                        <div class="stack-summary-row">
-                            <span class="summary-label">Estimativa Total:</span>
-                            <span class="summary-value" id="stackTotal">R$ 0,00</span>
+                        <!-- Stack Summary & Finalization -->
+                        <div class="stack-footer" style="margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 15px;">
+                            <div class="stack-summary-row" style="margin-bottom: 12px;">
+                                <span class="summary-label">Total do Carrinho:</span>
+                                <span class="summary-value" id="stackTotal">R$ 0,00</span>
+                            </div>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <button class="btn-checkout-stack" id="btnCheckout" onclick="finalizeStack()" style="width: 100%;" disabled>
+                                    🛒 Finalizar Compra (WhatsApp)
+                                </button>
+                                <a href="https://wa.me/17996705407?text=Olá! Gostaria de falar com um consultor da VouComprarFácil. 🌟" target="_blank" class="admin-btn" style="background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25); color: #00f0ff; text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; padding: 10px 14px;" id="btnContact">
+                                    📞 Entrar em Contato
+                                </a>
+                            </div>
                         </div>
-                        <button class="btn-checkout-stack" id="btnCheckout" onclick="finalizeStack()" disabled>
-                            💬 Solicitar Combo no WhatsApp
-                        </button>
+
                     </div>
                 </div>
 
@@ -2419,6 +2686,19 @@
                     
                     // Voice assistant speaker: Read aloud if active
                     speakAssistantResponse(data.response);
+
+                    // Dynamically render chatbot flow options if returned
+                    if (data.options && data.options.length > 0) {
+                        const quickRepliesContainer = document.querySelector('.quick-replies-container');
+                        if (quickRepliesContainer) {
+                            quickRepliesContainer.innerHTML = data.options.map(opt => `
+                                <button class="quick-reply-chip" onclick="sendQuickReply('${opt.text}')">${opt.text}</button>
+                            `).join('');
+                        }
+                    } else {
+                        // Restore standard chips
+                        renderAdaptiveChips(activeUserGoal);
+                    }
                     return;
 
                 } catch (error) {
@@ -2547,29 +2827,80 @@
             console.log('Falha total ao buscar catálogo de produtos.');
         }
 
-        // Render products as futuristic items
+        // Render products as a categorized interactive menu
         function renderProducts(products) {
             const grid = document.getElementById('productsGrid');
             if (!grid) return;
 
-            grid.innerHTML = products.map(p => `
-                <div class="product-cyber-card ${p.promo ? 'promo-card' : ''}" onclick="focusProduct('${p.name}', '${p.image}')">
-                    <div class="product-avatar-wrap" onclick="event.stopPropagation(); addToStack(${p.id})" title="Adicionar ao Combo">
-                        ${p.image}
-                        <span class="avatar-add-badge">＋<span class="badge-text">Interesse</span></span>
-                    </div>
-                    <div class="product-info-wrap">
-                        <div class="product-name-txt">${p.name}</div>
-                        <div class="product-desc-txt">${p.description}</div>
-                        <div class="product-action-bar">
-                            <span class="product-price-tag">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
-                            <button class="add-to-stack-btn" onclick="event.stopPropagation(); addToStack(${p.id})">
-                                ➕ Combo
-                            </button>
+            // Group products by category
+            const categories = {};
+            products.forEach(p => {
+                const cat = p.category || 'Outros';
+                if (!categories[cat]) {
+                    categories[cat] = [];
+                }
+                categories[cat].push(p);
+            });
+
+            // Map categories to appropriate emojis
+            const catEmojis = {
+                'Proteínas': '🥩',
+                'Força': '💪',
+                'Energia': '⚡',
+                'Recuperação': '💊',
+                'Emagrecimento': '🔥',
+                'Outros': '📦'
+            };
+
+            let html = '';
+            for (const [catName, catProducts] of Object.entries(categories)) {
+                const emoji = catEmojis[catName] || '🏷️';
+                html += `
+                    <div class="menu-category-section">
+                        <div class="menu-category-title">
+                            <span>${emoji}</span> ${catName}
+                        </div>
+                        <div class="menu-category-items">
+                            ${catProducts.map(p => {
+                                const stackItem = cyberStack.find(item => item.product.id === p.id);
+                                const quantityInStack = stackItem ? stackItem.quantity : 0;
+                                const hasQuantityClass = quantityInStack > 0 ? 'in-combo' : '';
+                                
+                                return `
+                                    <div class="menu-product-row ${p.promo ? 'promo-row' : ''} ${hasQuantityClass}" onclick="focusProduct('${p.name}', '${p.image}')">
+                                        <div class="menu-product-left">
+                                            <span class="menu-product-icon">${p.image}</span>
+                                            <div class="menu-product-details">
+                                                <div class="menu-product-header">
+                                                    <span class="menu-product-name">${p.name}</span>
+                                                    ${p.promo ? '<span class="menu-promo-badge">PROMO</span>' : ''}
+                                                </div>
+                                                <div class="menu-product-desc" title="${p.description}">${p.description}</div>
+                                            </div>
+                                        </div>
+                                        <div class="menu-product-right" onclick="event.stopPropagation();">
+                                            <span class="menu-product-price">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+                                            <div class="menu-action-controls">
+                                                ${quantityInStack > 0 ? `
+                                                    <button class="menu-qty-btn minus" onclick="removeFromStack(${p.id})">−</button>
+                                                    <span class="menu-qty-display">${quantityInStack}</span>
+                                                    <button class="menu-qty-btn plus" onclick="addToStack(${p.id})">＋</button>
+                                                ` : `
+                                                    <button class="menu-add-combo-btn" onclick="addToStack(${p.id})">
+                                                        <span>➕ Combo</span>
+                                                    </button>
+                                                `}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }
+
+            grid.innerHTML = html;
         }
 
         // Focus and select product to query IA
@@ -2605,7 +2936,7 @@
 
             saveStackCache();
             renderStack();
-            showSystemToast(`Adicionado: ${product.name} no seu combo! ⚡`);
+            showSystemToast(`Adicionado: ${product.name} no seu carrinho! 🛒`);
         }
 
         function removeFromStack(productId) {
@@ -2622,6 +2953,17 @@
 
             saveStackCache();
             renderStack();
+        }
+
+        function deleteFromStack(productId) {
+            // Trigger physical haptic feedback click for removal (double soft click)
+            triggerHaptic([40, 50, 40]);
+
+            cyberStack = cyberStack.filter(item => item.product.id !== productId);
+
+            saveStackCache();
+            renderStack();
+            showSystemToast(`Produto removido do carrinho! 🗑️`);
         }
 
         function increaseStackQty(productId) {
@@ -2643,6 +2985,11 @@
         }
 
         function renderStack() {
+            // Re-render catalog menu to sync inline counts/states
+            if (typeof productsData !== 'undefined' && productsData.length > 0) {
+                renderProducts(productsData);
+            }
+
             // Render the Quick Add Grid of smaller squares for all registered products!
             const quickAddGrid = document.getElementById('stackQuickAddGrid');
             if (quickAddGrid && typeof productsData !== 'undefined') {
@@ -2671,8 +3018,8 @@
             if (cyberStack.length === 0) {
                 stackItemList.innerHTML = `
                     <div class="stack-empty">
-                        <div class="stack-empty-icon">🎒</div>
-                        <p>Seu combo está vazio. Toque em <strong>➕ Combo</strong> no catálogo para começar seu stack!</p>
+                        <div class="stack-empty-icon">🛒</div>
+                        <p>Seu carrinho está vazio. Adicione produtos do cardápio para começar!</p>
                     </div>
                 `;
                 stackTotalText.textContent = "R$ 0,00";
@@ -2684,15 +3031,16 @@
             stackItemList.innerHTML = cyberStack.map(item => `
                 <div class="stack-cyber-item">
                     <div class="stack-item-meta">
-                        <span class="stack-item-icon">${item.product.image}</span>
-                        <div>
-                            <div class="stack-item-name">${item.product.name}</div>
+                        <span class="stack-item-icon">${item.product.image || '🛍️'}</span>
+                        <div style="min-width: 0; flex: 1;">
+                            <div class="stack-item-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;" title="${item.product.name || 'Produto'}">${item.product.name || 'Produto'}</div>
                             <div class="stack-item-qty">${item.quantity}x • R$ ${(item.product.price * item.quantity).toFixed(2).replace('.', ',')}</div>
                         </div>
                     </div>
                     <div class="stack-item-controls">
-                        <button class="stack-qty-btn" onclick="removeFromStack(${item.product.id})">−</button>
-                        <button class="stack-qty-btn" onclick="increaseStackQty(${item.product.id})">＋</button>
+                        <button class="stack-qty-btn" onclick="removeFromStack(${item.product.id})" title="Diminuir quantidade">−</button>
+                        <button class="stack-qty-btn" onclick="increaseStackQty(${item.product.id})" title="Aumentar quantidade">＋</button>
+                        <button class="stack-delete-btn" onclick="deleteFromStack(${item.product.id})" title="Excluir produto do carrinho">🗑️ Excluir</button>
                     </div>
                 </div>
             `).join('');
@@ -2710,11 +3058,11 @@
             // Trigger success checkout haptic pattern
             triggerHaptic([100, 50, 100]);
 
-            const itemsText = cyberStack.map(item => `⚡ ${item.quantity}x ${item.product.name} (${item.product.image})`).join('\n');
+            const itemsText = cyberStack.map(item => `🛒 ${item.quantity}x ${item.product.name}`).join('\n');
             const totalSum = cyberStack.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
             const rawProductsNameString = cyberStack.map(item => `${item.quantity}x ${item.product.name}`).join(', ');
 
-            const defaultWaMsg = `Olá! Montei meu combo de suplementos de alta performance na VouComprarFácil:\n\n${itemsText}\n\n*Estimativa do Combo: R$ ${totalSum.toFixed(2).replace('.', ',')}*\n\nGostaria de finalizar meu pedido com desconto especial e receber o catálogo completo! 🛍️✨`;
+            const defaultWaMsg = `Olá! Montei meu carrinho de suplementos na VouComprarFácil:\n\n${itemsText}\n\n*Total do Carrinho: R$ ${totalSum.toFixed(2).replace('.', ',')}*\n\nGostaria de finalizar meu pedido com desconto especial e falar com um consultor! 🛍️✨`;
 
             try {
                 // Post requested product chain to get WhatsApp Partner link
@@ -3259,6 +3607,38 @@
 
         // Run on startup
         (async function init() {
+            // Register PWA Service Worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(reg => console.log('Service Worker registrado!', reg))
+                        .catch(err => console.error('Erro ao registrar Service Worker', err));
+                });
+            }
+
+            // PWA Installation Prompter Setup
+            let deferredPrompt;
+            const installBtn = document.getElementById('installAppBtn');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                if (installBtn) {
+                    installBtn.style.display = 'inline-flex';
+                }
+            });
+
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    if (!deferredPrompt) return;
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`PWA install prompt user choice: ${outcome}`);
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none';
+                });
+            }
+
             // Load learned goal focus
             activeUserGoal = localStorage.getItem('voucomprafacil_goal') || null;
             applyGoalTheme(activeUserGoal);
