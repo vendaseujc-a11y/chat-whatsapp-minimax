@@ -2879,6 +2879,7 @@
                             loginSuccess = true;
 
                             if (adminTenantId !== tenantId) {
+                                sessionStorage.setItem('voucomprafacil_admin_open', 'true');
                                 window.location.search = `?store=${adminTenantId}`;
                                 return;
                             }
@@ -2929,6 +2930,7 @@
                             triggerHaptic([50, 30, 50]);
 
                             if (adminTenantId !== tenantId) {
+                                sessionStorage.setItem('voucomprafacil_admin_open', 'true');
                                 window.location.search = `?store=${adminTenantId}`;
                                 return;
                             }
@@ -3004,6 +3006,7 @@
                             triggerHaptic([50, 30, 50]);
                             registerSuccess = true;
 
+                            sessionStorage.setItem('voucomprafacil_admin_open', 'true');
                             window.location.search = `?store=${adminTenantId}`;
                             break;
 
@@ -3055,6 +3058,7 @@
 
                     showSystemToast('Loja salva localmente (servidor offline). 🚀');
                     triggerHaptic([50, 30, 50]);
+                    sessionStorage.setItem('voucomprafacil_admin_open', 'true');
                     window.location.search = `?store=${adminTenantId}`;
                 }
             } catch(e) {
@@ -3398,6 +3402,12 @@
 
             // Customize welcoming message based on active learned goal
             customizeWelcomeGreeting(activeUserGoal);
+
+            // Automatically reopen admin panel if redirected after login
+            if (sessionStorage.getItem('voucomprafacil_admin_open') === 'true') {
+                sessionStorage.removeItem('voucomprafacil_admin_open');
+                openAdminModal();
+            }
 
             // Bind voice microphone button
             const micBtn = document.getElementById('micButton');
