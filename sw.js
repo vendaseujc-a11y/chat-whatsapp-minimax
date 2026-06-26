@@ -1,4 +1,4 @@
-const CACHE_NAME = 'voucomprafacil-cache-v1';
+const CACHE_NAME = 'voucomprafacil-cache-v2';
 const ASSETS = [
   '/',
   '/index.html',
@@ -35,23 +35,17 @@ self.addEventListener('fetch', (e) => {
   }
   
   e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(e.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
-        }
+    fetch(e.request).then((networkResponse) => {
+      if (networkResponse && networkResponse.status === 200) {
         const responseToCache = networkResponse.clone();
         caches.open(CACHE_NAME).then((cache) => {
           cache.put(e.request, responseToCache);
         });
-        return networkResponse;
-      }).catch(() => {
-        // Offline fallback
-        return caches.match('/');
-      });
+      }
+      return networkResponse;
+    }).catch(() => {
+      return caches.match(e.request);
     })
   );
 });
+

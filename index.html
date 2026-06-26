@@ -13,29 +13,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #050508;
-            --bg-cyber-dark: #0a0a14;
-            --accent-neon: #ff5e00;         /* Neon athletic orange */
-            --accent-secondary: #00f0ff;    /* Cyber cyan */
-            --accent-purple: #8b5cf6;       /* Hyper purple */
-            --accent-gradient: linear-gradient(135deg, var(--accent-neon) 0%, #ff8c00 50%, var(--accent-secondary) 100%);
-            --accent-gradient-glow: linear-gradient(135deg, rgba(255, 94, 0, 0.3) 0%, rgba(0, 240, 255, 0.3) 100%);
+            --bg-dark: #090a10;             /* Clean obsidian dark */
+            --bg-card: rgba(17, 18, 26, 0.5); /* Glass card */
+            --accent-primary: #10b981;      /* Emerald success/action */
+            --accent-secondary: #059669;    /* Darker emerald hover */
+            --accent-gold: #fbbf24;         /* Gold details/promotions */
+            --accent-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --accent-gradient-glow: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.25) 100%);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --text-muted: #4b5563;
-            --border-color: rgba(255, 255, 255, 0.06);
-            --border-neon: rgba(0, 240, 255, 0.15);
-            --glass-bg: rgba(13, 13, 23, 0.7);
-            --glass-card: rgba(20, 20, 35, 0.45);
-            --glass-card-hover: rgba(30, 30, 50, 0.65);
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(16, 185, 129, 0.3);
             --success: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.2);
             --error: #f43f5e;
-            --shadow-glow: 0 0 30px rgba(255, 94, 0, 0.15);
-            --cyan-glow: 0 0 30px rgba(0, 240, 255, 0.15);
-            --border-radius-lg: 24px;
-            --border-radius-md: 16px;
-            --border-radius-sm: 10px;
+            --shadow-glow: 0 0 25px rgba(16, 185, 129, 0.15);
+            --cyan-glow: 0 0 25px rgba(16, 185, 129, 0.15);
+            --border-radius-lg: 20px;
+            --border-radius-md: 14px;
+            --border-radius-sm: 8px;
         }
 
         * {
@@ -44,21 +40,20 @@
             box-sizing: border-box;
         }
 
-        /* High-tech Custom Scrollbar */
+        /* Modern Smooth Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.2);
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 94, 0, 0.3);
+            background: rgba(16, 185, 129, 0.3);
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-neon);
-            box-shadow: 0 0 10px var(--accent-neon);
+            background: var(--accent-primary);
         }
 
         body {
@@ -71,60 +66,32 @@
             position: relative;
         }
 
-        /* Animated Futuristic Background */
-        body::before {
-            content: '';
+        /* Subtle Blurred Decorative Bubbles */
+        .decorative-blob {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(255, 94, 0, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: -2;
-        }
-
-        /* Digital grid overlay */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            opacity: 0.95;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.12;
             z-index: -1;
-        }
-
-        /* Cybernetic Scanlines */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.15) 50%
-            );
-            background-size: 100% 4px;
-            z-index: 9999;
             pointer-events: none;
-            opacity: 0.2;
+        }
+        .blob-1 {
+            top: -50px;
+            left: -50px;
+            background: var(--accent-primary);
+        }
+        .blob-2 {
+            bottom: -50px;
+            right: -50px;
+            background: var(--accent-gold);
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
             position: relative;
             z-index: 2;
             height: 100vh;
@@ -135,119 +102,117 @@
             overflow: hidden;
         }
 
-        /* Header Redesign */
+        /* Header redesign: Clean & Commercial */
         header {
             text-align: center;
-            padding: 20px 0 10px 0;
+            padding: 8px 0;
             animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 6px;
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
+            from { opacity: 0; transform: translateY(-15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .logo {
             display: inline-flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 6px;
+            gap: 8px;
+            margin-bottom: 2px;
         }
 
         .logo-icon {
-            width: 52px;
-            height: 52px;
+            width: 34px;
+            height: 34px;
             background: var(--accent-gradient);
-            border-radius: 16px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 18px;
             box-shadow: var(--shadow-glow);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: logoPulse 3s infinite ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             position: relative;
         }
 
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1) rotate(0deg); box-shadow: var(--shadow-glow); }
-            50% { transform: scale(1.05) rotate(5deg); box-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
-        }
-
-        .logo-icon::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 16px;
-            border: 2px solid var(--accent-secondary);
-            animation: hologramRing 2s infinite linear;
-            opacity: 0.5;
-        }
-
-        @keyframes hologramRing {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.4); opacity: 0; }
-        }
-
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 32px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            background: var(--accent-gradient);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 2px 10px rgba(255, 94, 0, 0.2));
-            text-transform: uppercase;
         }
 
         .subtitle {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             color: var(--text-secondary);
-            font-size: 14px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 4px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            margin-top: 1px;
         }
 
         .subtitle span {
-            color: var(--accent-secondary);
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            color: var(--accent-primary);
             font-weight: 600;
         }
 
-        /* Mobile Tab Navigation */
-        .mobile-tabs {
-            display: none;
-            background: rgba(10, 10, 20, 0.85);
-            backdrop-filter: blur(12px);
+        .local-info-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 10px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .local-info-bar span {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 3px 8px;
+            border-radius: 20px;
             border: 1px solid var(--border-color);
-            border-radius: var(--border-radius-md);
-            padding: 6px;
-            margin-bottom: 15px;
-            gap: 5px;
-            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Mobile Tab Bottom Navigation */
+        .mobile-tabs {
+            display: flex;
+            background: rgba(13, 14, 21, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 16px;
+            gap: 8px;
+            z-index: 100;
+            flex-shrink: 0;
+            width: 100%;
         }
 
         .tab-btn {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 12px 8px;
-            border-radius: 12px;
+            padding: 10px 6px;
+            border-radius: var(--border-radius-sm);
             color: var(--text-secondary);
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
         .tab-btn.active {
@@ -257,100 +222,80 @@
         }
 
         .tab-badge {
-            background: var(--accent-secondary);
-            color: var(--bg-dark);
+            background: var(--accent-gold);
+            color: #000;
             border-radius: 20px;
             padding: 1px 6px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
-            font-family: 'Orbitron', sans-serif;
-            box-shadow: 0 0 8px var(--accent-secondary);
+            font-family: 'Space Grotesk', sans-serif;
         }
 
-        /* Main Futuristic Split Layout Grid */
+        /* Main Dashboard Split Layout Grid */
         .dashboard-grid {
             flex: 1;
             display: grid;
-            grid-template-columns: 1fr 420px;
-            gap: 24px;
-            margin-top: 15px;
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin-top: 5px;
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
             min-height: 0; /* Important for flex child scrollability */
+            height: 100%;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* LEFT SIDE: Chat UI */
         .chat-section {
-            display: flex;
+            display: none;
             flex-direction: column;
-            background: var(--glass-bg);
+            background: var(--bg-card);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: var(--border-radius-lg);
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.1);
             overflow: hidden;
             position: relative;
+            height: 100%;
+            min-height: 0;
         }
 
-        .chat-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--accent-gradient);
+        .chat-section.tab-active {
+            display: flex !important;
         }
 
         /* Chat Header */
         .chat-header {
-            padding: 18px 24px;
+            padding: 10px 14px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(10, 10, 20, 0.6);
+            background: rgba(13, 14, 21, 0.4);
         }
 
         .assistant-status {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         /* Hologram Ring Robot Avatar */
         .hologram-avatar {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, rgba(5, 5, 10, 0.8) 100%);
-            border: 1.5px solid var(--accent-secondary);
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(5, 5, 10, 0.8) 100%);
+            border: 1.5px solid var(--accent-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             position: relative;
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
-        }
-
-        .hologram-avatar::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 1px dashed var(--accent-secondary);
-            animation: rotateHologram 8s infinite linear;
-        }
-
-        @keyframes rotateHologram {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
         }
 
         .hologram-avatar .glow-dot {
@@ -362,7 +307,7 @@
             bottom: -1px;
             right: -1px;
             border: 1px solid var(--bg-dark);
-            box-shadow: 0 0 8px var(--success);
+            box-shadow: 0 0 6px var(--success);
         }
 
         .bot-meta-info {
@@ -373,7 +318,7 @@
         .bot-title {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-primary);
             display: flex;
             align-items: center;
@@ -381,18 +326,18 @@
         }
 
         .bot-badge {
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            color: var(--accent-secondary);
-            font-size: 9px;
-            font-family: 'Orbitron', sans-serif;
-            padding: 1px 6px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--accent-primary);
+            font-size: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 1px 5px;
             border-radius: 20px;
             letter-spacing: 0.5px;
         }
 
         .bot-status-text {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--success);
             display: flex;
             align-items: center;
@@ -413,62 +358,31 @@
             100% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 6px var(--success); }
         }
 
-        /* Configurações da Sessão */
         .session-panel {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .session-panel label {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .session-input-neon {
-            background: rgba(5, 5, 10, 0.6);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius-sm);
-            padding: 6px 12px;
-            color: var(--accent-secondary);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            font-weight: 500;
-            outline: none;
-            width: 110px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .session-input-neon:focus {
-            border-color: var(--accent-secondary);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+            display: none !important;
         }
 
         /* Messages Area */
         .chat-messages {
             flex: 1;
-            padding: 24px;
+            padding: 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            gap: 16px;
             min-height: 0;
-            background: radial-gradient(circle at center, rgba(13, 13, 27, 0.3) 0%, transparent 100%);
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.03) 0%, transparent 100%);
         }
 
         .message {
             display: flex;
-            gap: 14px;
-            max-width: 80%;
-            animation: messageSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            gap: 10px;
+            max-width: 90%;
+            animation: messageSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
         @keyframes messageSlideIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
@@ -479,16 +393,16 @@
         }
 
         .message-avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: var(--border-radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 15px;
             flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .message.user .message-avatar {
@@ -498,35 +412,32 @@
         }
 
         .message.assistant .message-avatar {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-            border: 1px solid var(--accent-secondary);
-            color: var(--accent-secondary);
-            box-shadow: var(--cyan-glow);
-            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
         }
 
         .message-bubble {
-            padding: 14px 18px;
+            padding: 12px 16px;
             border-radius: var(--border-radius-md);
-            line-height: 1.6;
-            font-size: 14.5px;
+            line-height: 1.5;
+            font-size: 14px;
             position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         .message.user .message-bubble {
-            background: linear-gradient(135deg, #ff5e00 0%, #d85000 100%);
+            background: var(--accent-gradient);
             color: white;
             border-top-right-radius: 2px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .message.assistant .message-bubble {
-            background: var(--glass-card);
+            background: rgba(25, 27, 38, 0.8);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             border-top-left-radius: 2px;
-            border-left: 3px solid var(--accent-secondary);
+            border-left: 3px solid var(--accent-primary);
         }
 
         /* High-tech List Item Formatting inside Chat Bubbles */
@@ -536,17 +447,16 @@
             gap: 8px;
             margin: 6px 0;
             padding-left: 4px;
-            font-size: 13.5px;
-            line-height: 1.45;
+            font-size: 13px;
+            line-height: 1.4;
             color: var(--text-primary);
         }
 
         .list-bullet-item::before {
-            content: '⚡';
-            color: var(--accent-secondary);
-            font-size: 11px;
-            margin-top: 3px;
-            text-shadow: 0 0 6px var(--accent-secondary);
+            content: '✓';
+            color: var(--accent-primary);
+            font-weight: bold;
+            font-size: 12px;
             flex-shrink: 0;
         }
 
@@ -554,107 +464,81 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            margin: 10px 0;
-            padding: 10px 14px;
+            margin: 8px 0;
+            padding: 8px 12px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            font-size: 13.5px;
-            line-height: 1.45;
+            border-radius: var(--border-radius-sm);
+            font-size: 13px;
+            line-height: 1.4;
             color: var(--text-primary);
-            transition: all 0.2s ease;
-        }
-
-        .list-number-item:hover {
-            background: rgba(255, 94, 0, 0.04);
-            border-color: rgba(255, 94, 0, 0.2);
-            box-shadow: inset 0 0 8px rgba(255, 94, 0, 0.02);
         }
 
         .list-number-badge {
             background: var(--accent-gradient);
             color: white;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            font-weight: 900;
-            width: 20px;
-            height: 20px;
-            border-radius: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: var(--shadow-glow);
-            margin-top: 1px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Smart WhatsApp CTA card style */
+        /* WhatsApp CTA button */
         .whatsapp-chat-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
             border: none;
             color: white;
-            padding: 12px 24px;
-            border-radius: 14px;
+            padding: 10px 16px;
+            border-radius: 10px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             text-decoration: none;
             cursor: pointer;
-            margin-top: 14px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+            transition: all 0.25s ease;
             width: 100%;
         }
 
         .whatsapp-chat-btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 6px 22px rgba(37, 211, 102, 0.5), 0 0 10px rgba(37, 211, 102, 0.2);
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35);
         }
 
         .wa-icon {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             fill: currentColor;
-            animation: pulse-ring 1.5s infinite;
         }
 
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(0.95); }
-        }
-
-        /* Cyber Link styled */
-        .cyber-link {
-            color: var(--accent-secondary);
-            text-decoration: underline;
-            font-weight: 600;
-        }
-        .cyber-link:hover {
-            color: white;
-            text-shadow: 0 0 8px var(--accent-secondary);
-        }
-
-        /* Quick Action Chips */
+        /* Quick Replies Horizontal Slider */
         .quick-replies-container {
             display: flex;
-            flex-wrap: wrap;
             gap: 8px;
-            padding: 8px 24px;
-            background: rgba(10, 10, 20, 0.2);
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 8px 16px;
+            background: rgba(13, 14, 21, 0.2);
+            border-top: 1px solid var(--border-color);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .quick-replies-container::-webkit-scrollbar {
+            display: none;
         }
 
         .quick-reply-chip {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
             color: var(--text-secondary);
             padding: 8px 14px;
             border-radius: 20px;
@@ -662,73 +546,31 @@
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .quick-reply-chip:hover {
-            background: rgba(255, 94, 0, 0.08);
-            border-color: var(--accent-neon);
+            background: rgba(16, 185, 129, 0.08);
+            border-color: var(--accent-primary);
             color: var(--text-primary);
-            transform: translateY(-1.5px);
-            box-shadow: 0 4px 10px rgba(255, 94, 0, 0.1);
         }
 
-        /* Typing Indicator styled */
-        .typing-indicator {
-            align-self: flex-start;
-            display: flex;
-            gap: 5px;
-            padding: 14px 20px;
-            background: var(--glass-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius-md);
-            border-top-left-radius: 2px;
-            border-left: 3px solid var(--accent-secondary);
-            width: fit-content;
-            animation: messageSlideIn 0.3s ease-out;
-        }
-
-        .typing-indicator span {
-            width: 7px;
-            height: 7px;
-            background: var(--accent-secondary);
-            border-radius: 50%;
-            animation: typingPulse 1.4s infinite;
-            box-shadow: 0 0 5px var(--accent-secondary);
-        }
-
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typingPulse {
-            0%, 60%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
-            30% { transform: translateY(-5px) scale(1.15); opacity: 1; }
-        }
-
-        /* Input Controls Area */
+        /* Chat Input Field */
         .chat-input-area {
-            padding: 20px 24px;
+            padding: 10px 14px;
             border-top: 1px solid var(--border-color);
-            background: rgba(10, 10, 20, 0.8);
+            background: rgba(13, 14, 21, 0.9);
             position: relative;
-        }
-
-        .input-glow-bar {
-            position: absolute;
-            top: -1px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, var(--accent-secondary) 50%, transparent 100%);
-            opacity: 0.5;
         }
 
         .input-layout-wrapper {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: flex-end;
         }
 
@@ -739,26 +581,30 @@
 
         textarea {
             width: 100%;
-            padding: 16px 20px;
-            padding-right: 56px;
-            background: rgba(5, 5, 10, 0.7);
+            padding: 10px 42px 10px 14px;
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
-            border-radius: var(--border-radius-md);
+            border-radius: 12px;
             color: var(--text-primary);
             font-family: 'Outfit', sans-serif;
-            font-size: 14.5px;
+            font-size: 16px; /* Avoid Safari auto-zoom */
             resize: none;
-            min-height: 56px;
-            max-height: 140px;
+            min-height: 40px;
+            max-height: 110px;
             outline: none;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
         }
 
         .mic-cyber-btn {
             position: absolute;
-            right: 14px;
-            bottom: 12px;
+            right: 6px;
+            bottom: 4px;
             background: transparent;
             border: none;
             color: var(--text-secondary);
@@ -769,146 +615,107 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             z-index: 5;
         }
 
         .mic-cyber-btn:hover {
-            color: var(--accent-secondary);
-            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-primary);
         }
 
         .mic-cyber-btn.recording {
             color: var(--error);
-            background: rgba(244, 63, 94, 0.15);
-            box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+            background: rgba(244, 63, 94, 0.1);
             animation: pulse-recording 1.2s infinite alternate;
         }
 
         @keyframes pulse-recording {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
-        }
-
-        textarea:focus {
-            border-color: var(--accent-neon);
-            box-shadow: 0 0 15px rgba(255, 94, 0, 0.25), inset 0 2px 8px rgba(0,0,0,0.5);
-        }
-
-        textarea::placeholder {
-            color: rgba(255,255,255,0.25);
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
 
         .send-cyber-btn {
-            width: 56px;
-            height: 56px;
+            width: 40px;
+            height: 40px;
             background: var(--accent-gradient);
             border: none;
-            border-radius: var(--border-radius-md);
+            border-radius: 12px;
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.25s ease;
             box-shadow: var(--shadow-glow);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .send-cyber-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: all 0.6s ease;
+            flex-shrink: 0;
         }
 
         .send-cyber-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 94, 0, 0.4);
-        }
-
-        .send-cyber-btn:hover::before {
-            left: 100%;
-        }
-
-        .send-cyber-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
         }
 
         .send-cyber-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 16px;
+            height: 16px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2.5;
-            transition: all 0.3s ease;
         }
-
-        .send-cyber-btn:hover svg {
-            transform: translate(2px, -2px);
-        }
-
 
         /* RIGHT SIDE: Sidebar (Catalog + Stack Builder) */
         .sidebar-section {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 0;
             min-height: 0;
+            height: 100%;
         }
 
         /* Catalog Card Section */
         .catalog-container {
-            flex: 1.2;
-            display: flex;
+            display: none;
             flex-direction: column;
-            background: var(--glass-bg);
+            background: var(--bg-card);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: var(--border-radius-lg);
             border: 1px solid var(--border-color);
-            padding: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            padding: 12px 14px;
             min-height: 0;
+            height: 100%;
+            flex: 1;
+        }
+
+        .catalog-container.tab-active {
+            display: flex !important;
         }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
         }
 
         .section-header h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
             font-weight: 700;
-            color: var(--accent-neon);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: var(--accent-primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .search-badge {
-            background: rgba(255, 94, 0, 0.15);
-            color: #fdba74;
-            border: 1px solid rgba(255, 94, 0, 0.3);
-            font-size: 10px;
-            font-family: 'Space Grotesk', sans-serif;
-            padding: 2px 8px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #a7f3d0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-size: 9px;
+            padding: 2px 6px;
             border-radius: 20px;
         }
 
@@ -917,139 +724,66 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding-right: 4px;
+            gap: 10px;
+            padding-right: 2px;
         }
 
-        /* High-tech Product Card Design */
+        /* Premium Product Card Design for Local Commerce */
         .product-cyber-card {
-            background: var(--glass-card);
+            background: rgba(25, 27, 38, 0.4);
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius-md);
-            padding: 9px 14px 12px 14px;
+            padding: 8px 12px;
             display: grid;
-            grid-template-columns: 40px minmax(0, 1fr);
-            gap: 14px;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            grid-template-columns: 36px minmax(0, 1fr);
+            gap: 10px;
+            transition: all 0.25s ease;
             position: relative;
-            overflow: hidden;
-        }
-
-        .product-cyber-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: transparent;
-            transition: all 0.3s ease;
         }
 
         .product-cyber-card:hover {
-            background: var(--glass-card-hover);
-            border-color: rgba(0, 240, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 240, 255, 0.05);
-        }
-
-        .product-cyber-card:hover::before {
-            background: var(--accent-secondary);
+            background: rgba(25, 27, 38, 0.7);
+            border-color: var(--accent-primary);
+            transform: translateY(-1px);
         }
 
         .product-cyber-card.promo-card {
-            border: 1.5px solid rgba(255, 94, 0, 0.2);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            background: rgba(251, 191, 36, 0.02);
         }
         .product-cyber-card.promo-card::after {
             content: '🔥 PROMO';
             position: absolute;
             top: 0;
             right: 0;
-            background: var(--accent-neon);
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 8px;
+            background: var(--accent-gold);
+            color: #000;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 7.5px;
             font-weight: 800;
-            padding: 2px 8px;
+            padding: 1px 6px;
             border-bottom-left-radius: 8px;
-            letter-spacing: 0.5px;
         }
 
         .product-avatar-wrap {
-            width: 40px;
-            height: 40px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            background: rgba(255, 94, 0, 0.05);
-            border: 1.5px solid var(--accent-secondary);
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid var(--accent-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 16px;
             align-self: start;
-            position: relative;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255, 94, 0, 0.15);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 10;
+            transition: all 0.25s ease;
         }
 
         .product-avatar-wrap:hover {
-            transform: scale(1.15) rotate(10deg);
+            transform: scale(1.1);
             background: var(--accent-gradient);
-            border-color: white;
-            box-shadow: 0 0 20px rgba(255, 94, 0, 0.45);
-        }
-
-        .avatar-add-badge {
-            position: absolute;
-            bottom: -3.5px;
-            right: -3.5px;
-            width: 15px;
-            height: 15px;
-            background: white;
-            color: black;
-            border: 1px solid var(--accent-secondary);
-            border-radius: 50%;
-            font-size: 9px;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 12;
-            overflow: hidden;
-            white-space: nowrap;
-            padding: 0;
-        }
-
-        .badge-text {
-            font-size: 7.5px;
-            font-weight: 800;
-            margin-left: 2px;
-            opacity: 0;
-            max-width: 0;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            display: inline-block;
-            vertical-align: middle;
-            font-family: 'Space Grotesk', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .product-avatar-wrap:hover .avatar-add-badge {
-            width: 72px; /* Expands to hold the text! */
-            border-radius: 8px;
-            background: white;
-            color: var(--accent-neon);
-            border-color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            padding: 0 6px;
-        }
-
-        .product-avatar-wrap:hover .badge-text {
-            opacity: 1;
-            max-width: 50px;
+            color: white;
         }
 
         .product-info-wrap {
@@ -1061,158 +795,137 @@
         .product-name-txt {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 9.5px;
+            font-size: 13px;
             color: var(--text-primary);
-            line-height: 1.3;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            margin-top: -3px;
+            line-height: 1.2;
         }
 
         .product-desc-txt {
-            font-size: 9px;
+            font-size: 11px;
             color: var(--text-secondary);
-            margin: 3px 0 6px 0;
-            line-height: 1.4;
+            margin: 2px 0 4px 0;
+            line-height: 1.3;
         }
 
         .product-action-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: auto;
+            margin-top: 4px;
         }
 
         .product-price-tag {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 10px;
-            color: var(--accent-secondary);
+            font-size: 12px;
+            color: var(--accent-gold);
         }
 
         .add-to-stack-btn {
-            background: rgba(255, 94, 0, 0.1);
-            border: 1px solid rgba(255, 94, 0, 0.3);
-            color: #fdba74;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
             padding: 4px 8px;
             border-radius: 6px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         .add-to-stack-btn:hover {
             background: var(--accent-gradient);
             color: white;
             border-color: transparent;
-            box-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
         }
 
         /* Menu Category Styles */
         .menu-category-section {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .menu-category-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
             font-weight: 800;
-            color: var(--accent-secondary);
+            color: var(--accent-primary);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
-            border-bottom: 1px dashed rgba(0, 240, 255, 0.15);
-            padding-bottom: 6px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 4px;
         }
 
         .menu-category-items {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .menu-product-row {
-            background: rgba(20, 20, 35, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(25, 27, 38, 0.3);
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius-md);
-            padding: 10px 12px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 8px;
+            transition: all 0.2s ease;
             position: relative;
             cursor: pointer;
         }
 
-        .menu-product-row::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: transparent;
-            transition: all 0.25s ease;
-        }
-
         .menu-product-row:hover {
-            background: rgba(30, 30, 50, 0.55);
-            border-color: rgba(0, 240, 255, 0.15);
-            transform: translateX(2px);
-        }
-
-        .menu-product-row:hover::before {
-            background: var(--accent-secondary);
+            background: rgba(25, 27, 38, 0.6);
+            border-color: var(--accent-primary);
         }
 
         .menu-product-row.in-combo {
-            border-color: rgba(255, 94, 0, 0.25);
-            background: rgba(255, 94, 0, 0.03);
+            border-color: var(--accent-primary);
+            background: rgba(16, 185, 129, 0.02);
         }
 
-        .menu-product-row.in-combo::before {
-            background: var(--accent-neon);
+        .menu-product-row.glow-recommendation {
+            border-color: var(--accent-gold) !important;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4) !important;
+            animation: pulse-recommendation 1.5s infinite alternate;
         }
 
-        .menu-product-row.promo-row {
-            border-right: 1px solid rgba(255, 94, 0, 0.3);
+        @keyframes pulse-recommendation {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 5px rgba(251, 191, 36, 0.2);
+            }
+            100% {
+                transform: scale(1.02);
+                box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+            }
         }
 
         .menu-product-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
             min-width: 0;
         }
 
         .menu-product-icon {
-            width: 34px;
-            height: 34px;
-            min-width: 34px;
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
             border-radius: 50%;
-            background: rgba(255, 94, 0, 0.05);
-            border: 1px solid var(--accent-secondary);
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid var(--accent-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 0 8px rgba(0, 240, 255, 0.1);
-        }
-
-        .menu-product-row.in-combo .menu-product-icon {
-            border-color: var(--accent-neon);
-            box-shadow: 0 0 8px rgba(255, 94, 0, 0.15);
+            font-size: 14px;
         }
 
         .menu-product-details {
@@ -1231,65 +944,57 @@
         .menu-product-name {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-primary);
             line-height: 1.2;
         }
 
         .menu-promo-badge {
-            background: var(--accent-neon);
-            color: white;
-            font-family: 'Orbitron', sans-serif;
+            background: var(--accent-gold);
+            color: black;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 7px;
             font-weight: 900;
             padding: 1px 4px;
             border-radius: 4px;
-            letter-spacing: 0.5px;
-            display: inline-block;
         }
 
         .menu-product-desc {
-            font-size: 8.5px;
+            font-size: 10px;
             color: var(--text-secondary);
-            margin-top: 2px;
-            line-height: 1.3;
+            margin-top: 1px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 180px;
+            max-width: 160px;
         }
 
         .menu-product-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             flex-shrink: 0;
         }
 
         .menu-product-price {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 10px;
-            color: var(--accent-secondary);
-            min-width: 65px;
+            font-size: 11px;
+            color: var(--accent-gold);
             text-align: right;
-        }
-
-        .menu-product-row.in-combo .menu-product-price {
-            color: #fdba74;
         }
 
         .menu-action-controls {
             display: flex;
             align-items: center;
             gap: 6px;
-            min-width: 78px;
+            min-width: 72px;
             justify-content: flex-end;
         }
 
         .menu-qty-btn {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 1px solid rgba(255, 255, 255, 0.15);
             background: rgba(255, 255, 255, 0.05);
@@ -1300,80 +1005,62 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .menu-qty-btn:hover {
-            background: var(--accent-secondary);
-            color: black;
-            border-color: transparent;
-            box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
-        }
-
-        .menu-qty-btn.plus:hover {
-            background: var(--accent-neon);
+            background: var(--accent-primary);
             color: white;
-            box-shadow: 0 0 8px rgba(255, 94, 0, 0.3);
+            border-color: transparent;
         }
 
         .menu-qty-display {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-primary);
-            min-width: 14px;
+            min-width: 12px;
             text-align: center;
         }
 
         .menu-add-combo-btn {
-            background: rgba(0, 240, 255, 0.08);
-            border: 1px solid rgba(0, 240, 255, 0.25);
-            color: #22d3ee;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
             padding: 4px 8px;
             border-radius: 6px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 8.5px;
+            font-size: 9px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
-            white-space: nowrap;
         }
 
         .menu-add-combo-btn:hover {
             background: var(--accent-gradient);
             color: white;
             border-color: transparent;
-            box-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
         }
 
-
-        /* Cyber Stack Builder Section */
+        /* Cart/Stack Section styling */
         .stack-builder-container {
-            flex: 0.8;
-            display: flex;
+            display: none;
             flex-direction: column;
-            background: linear-gradient(135deg, rgba(13, 13, 23, 0.85) 0%, rgba(20, 20, 35, 0.85) 100%);
-            border: 1px solid var(--border-neon);
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius-lg);
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 240, 255, 0.05);
+            padding: 14px;
             min-height: 0;
+            height: 100%;
+            flex: 1;
             position: relative;
             overflow: hidden;
         }
 
-        .stack-builder-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-secondary), transparent);
-        }
-
-        .stack-header h2 {
-            color: var(--accent-secondary) !important;
+        .stack-builder-container.tab-active {
+            display: flex !important;
         }
 
         .stack-item-list {
@@ -1381,653 +1068,150 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding-right: 4px;
-        }
-
-        .stack-empty {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--text-secondary);
             gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .stack-empty-icon {
-            font-size: 32px;
-            opacity: 0.3;
-            animation: pulse-slow 3s infinite alternate;
-        }
-
-        @keyframes pulse-slow {
-            0% { transform: scale(0.9); opacity: 0.2; }
-            100% { transform: scale(1.1); opacity: 0.5; }
-        }
-
-        .stack-empty p {
-            font-size: 12px;
-            max-width: 200px;
-            line-height: 1.4;
-        }
-
-        /* Combo Stack Card Item */
         .stack-cyber-item {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 12px;
-            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 8px 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            animation: stackItemIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-            min-width: 0;
-        }
-
-        @keyframes stackItemIn {
-            from { opacity: 0; transform: scale(0.9) translateX(15px); }
-            to { opacity: 1; transform: scale(1) translateX(0); }
-        }
-
-        .stack-item-meta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 0;
-            flex: 1;
-        }
-
-        .stack-item-icon {
-            font-size: 20px;
+            gap: 6px;
         }
 
         .stack-item-name {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-primary);
         }
 
         .stack-item-qty {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            color: var(--accent-secondary);
-            margin-top: 2px;
-        }
-
-        .stack-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10.5px;
+            color: var(--accent-gold);
         }
 
         .stack-qty-btn {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
             color: var(--text-primary);
-            font-size: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .stack-qty-btn:hover {
-            background: rgba(255, 94, 0, 0.2);
-            border-color: var(--accent-neon);
         }
 
         .stack-delete-btn {
-            height: 24px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 68, 68, 0.15);
-            background: rgba(255, 68, 68, 0.05);
-            color: #ff6b6b;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            margin-left: 4px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.05);
+            color: #fca5a5;
             padding: 0 6px;
-            gap: 2px;
+            border-radius: 6px;
+            height: 22px;
+            font-size: 9px;
+            cursor: pointer;
         }
 
-        .stack-delete-btn:hover {
-            background: rgba(255, 68, 68, 0.25);
-            border-color: #ff4444;
-            color: #ffffff;
-            transform: scale(1.05);
-        }
-
-        /* Order Finalize Area */
         .stack-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .stack-summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .summary-label {
-            font-size: 12px;
-            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
         }
 
         .summary-value {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 15px;
-            color: var(--accent-secondary);
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            font-size: 16px;
+            color: var(--accent-gold);
         }
 
         .btn-checkout-stack {
             background: var(--accent-gradient);
             color: white;
             border: none;
-            padding: 12px 18px;
-            border-radius: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: 700;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-glow);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            transition: all 0.25s ease;
         }
 
         .btn-checkout-stack:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(255, 94, 0, 0.4);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
         }
 
-
-        /* Floating Partner WhatsApp Button (Bottom-Right Badge) */
-        .floating-wa-btn {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
-            color: white;
-            padding: 14px 22px;
-            border-radius: 50px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
-            z-index: 999;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .floating-wa-btn:hover {
-            transform: scale(1.05) translateY(-3px);
-            box-shadow: 0 14px 35px rgba(37, 211, 102, 0.5);
-        }
-
-        .toast-system {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(244, 63, 94, 0.95);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 14px 28px;
-            border-radius: var(--border-radius-md);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            animation: slideUpToast 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 10000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        @keyframes slideUpToast {
-            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        /* Responsiveness: Large screens get dual-view, small screen gets single tabbed panels */
-        @media (max-width: 1023px) {
-            .mobile-tabs {
-                display: flex;
-                flex-shrink: 0;
-                margin-bottom: 10px;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                gap: 0;
-                flex: 1;
-                min-height: 0;
-                height: 100%;
-            }
-
-            /* Toggle visibility based on active tab */
-            .chat-section, .catalog-container, .stack-builder-container {
-                display: none !important;
-            }
-
-            .chat-section.tab-active, 
-            .catalog-container.tab-active, 
-            .stack-builder-container.tab-active {
-                display: flex !important;
-            }
-
-            .container {
-                padding: 10px;
-                height: 100vh;
-                height: 100dvh;
-                min-height: 0;
-                overflow: hidden;
-            }
-
-            header {
-                padding: 6px 0 2px 0 !important;
-                flex-shrink: 0;
-            }
-
-            .logo {
-                gap: 8px !important;
-                margin-bottom: 2px !important;
-            }
-
-            .logo-icon {
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 16px !important;
-                border-radius: 8px !important;
-            }
-
-            .logo-icon::after {
-                border-radius: 8px !important;
-            }
-
-            h1 {
-                font-size: 20px !important;
-            }
-
-            .subtitle {
-                font-size: 10px !important;
-                letter-spacing: 1px !important;
-                margin-top: 1px !important;
-            }
-
-            .session-panel {
-                display: none !important;
-            }
-
-            .chat-header {
-                padding: 10px 14px !important;
-            }
-
-            .chat-section {
-                height: 100% !important;
-                min-height: 0 !important;
-            }
-
-            .sidebar-section {
-                height: 100% !important;
-                min-height: 0 !important;
-                gap: 0 !important;
-            }
-
-            .catalog-container, .stack-builder-container {
-                height: 100% !important;
-                min-height: 0 !important;
-                flex: 1 !important;
-            }
-
-            .quick-replies-container {
-                flex-wrap: nowrap !important;
-                overflow-x: auto !important;
-                padding: 8px 16px !important;
-                scrollbar-width: none; /* Firefox */
-            }
-
-            .quick-replies-container::-webkit-scrollbar {
-                display: none; /* Chrome, Safari, Opera */
-            }
-
-            .quick-reply-chip {
-                flex-shrink: 0 !important;
-                white-space: nowrap !important;
-            }
-
-            .message {
-                max-width: 90%;
-            }
-
-            .floating-wa-btn {
-                bottom: 16px;
-                right: 16px;
-                padding: 12px 18px;
-                font-size: 13px;
-            }
-
-            /* Responsive and premium message input field optimization for mobile */
-            .chat-input-area {
-                padding: 12px 16px !important;
-                background: rgba(10, 10, 20, 0.95) !important;
-            }
-
-            .input-layout-wrapper {
-                gap: 8px !important;
-                align-items: flex-end !important;
-            }
-
-            .text-input-container {
-                flex: 1 !important;
-            }
-
-            textarea {
-                padding: 12px 46px 12px 14px !important; /* Perfect safety bounds for text, preventing mic overlap */
-                font-size: 16px !important; /* Crucial to completely prevent iOS Safari auto-zoom on focus! */
-                min-height: 48px !important;
-                max-height: 120px !important;
-                border-radius: 12px !important;
-                line-height: 1.4 !important;
-            }
-
-            .mic-cyber-btn {
-                right: 8px !important;
-                bottom: 8px !important;
-                width: 32px !important;
-                height: 32px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-
-            .send-cyber-btn {
-                width: 48px !important;
-                height: 48px !important;
-                border-radius: 12px !important;
-                flex-shrink: 0 !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-
-            .send-cyber-btn svg {
-                width: 18px !important;
-                height: 18px !important;
-            }
-
-            /* Optimized Catalog UI for Mobile (prevents distortions and enhances readability) */
-            .catalog-container {
-                padding: 12px 14px !important;
-            }
-
-            .section-header {
-                margin-bottom: 12px !important;
-                padding-bottom: 8px !important;
-            }
-
-            .section-header h2 {
-                font-size: 15px !important;
-            }
-
-            .search-badge {
-                font-size: 9px !important;
-                padding: 2px 6px !important;
-            }
-
-            .catalog-scroll {
-                gap: 10px !important;
-            }
-
-            .product-cyber-card {
-                padding: 7px 12px 9px 12px !important;
-                grid-template-columns: 36px minmax(0, 1fr) !important; /* Smaller icon column to give text more space without overflow */
-                gap: 10px !important;
-                border-radius: 12px !important;
-            }
-
-            .product-avatar-wrap {
-                width: 36px !important;
-                height: 36px !important;
-                border-radius: 50% !important; /* Circular avatar on mobile */
-                font-size: 18px !important;
-            }
-
-            .product-info-wrap {
-                gap: 1px !important;
-                min-width: 0 !important;
-            }
-
-            .product-name-txt {
-                font-size: 8.5px !important;
-                line-height: 1.2 !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-                white-space: normal !important;
-                margin-top: -2px !important;
-            }
-
-            .product-desc-txt {
-                font-size: 8px !important;
-                color: rgba(255, 255, 255, 0.6) !important; /* Higher contrast, clean readable description */
-                margin: 2px 0 4px 0 !important;
-                line-height: 1.3 !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-
-            .product-action-bar {
-                margin-top: 4px !important;
-                gap: 6px !important;
-            }
-
-            .product-price-tag {
-                font-size: 9px !important;
-            }
-
-            .add-to-stack-btn {
-                padding: 3px 6px !important;
-                font-size: 8px !important;
-                border-radius: 5px !important;
-            }
-        }
-
-        /* NEXT-GEN SMARTPHONE & DYNAMIC THEMES */
+        /* Dynamic Goal Themes Override */
         body.theme-massa {
-            --accent-neon: #ff3e00;
-            --accent-secondary: #ff8c00;
-            --accent-gradient: linear-gradient(135deg, #ff3e00 0%, #ff6a00 50%, #ffaa00 100%);
-            --shadow-glow: 0 0 30px rgba(255, 62, 0, 0.25);
+            --accent-primary: #d97706;
+            --accent-secondary: #fbbf24;
+            --accent-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --shadow-glow: 0 0 25px rgba(245, 158, 11, 0.2);
         }
 
         body.theme-secar {
-            --accent-neon: #00f0ff;
-            --accent-secondary: #0072ff;
-            --accent-gradient: linear-gradient(135deg, #00f0ff 0%, #00bcff 50%, #0072ff 100%);
-            --shadow-glow: 0 0 30px rgba(0, 240, 255, 0.25);
+            --accent-primary: #0ea5e9;
+            --accent-secondary: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+            --shadow-glow: 0 0 25px rgba(14, 165, 233, 0.2);
         }
 
         body.theme-energia {
-            --accent-neon: #adff2f;
-            --accent-secondary: #00ff88;
-            --accent-gradient: linear-gradient(135deg, #adff2f 0%, #7cfc00 50%, #00ff88 100%);
-            --shadow-glow: 0 0 30px rgba(173, 255, 47, 0.25);
+            --accent-primary: #84cc16;
+            --accent-secondary: #a3e635;
+            --accent-gradient: linear-gradient(135deg, #a3e635 0%, #22c55e 100%);
+            --shadow-glow: 0 0 25px rgba(132, 204, 22, 0.2);
         }
 
-        /* Haptic-Tactile press active compression effects */
-        .quick-reply-chip:active, 
-        .add-to-stack-btn:active, 
-        .send-cyber-btn:active, 
-        .mic-cyber-btn:active,
-        .stack-qty-btn:active,
-        .whatsapp-chat-btn:active,
-        .tab-btn:active,
-        .voice-toggle-btn:active {
-            transform: scale(0.94);
-            filter: brightness(1.2);
-            transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Tactile pressed animations */
+        .quick-reply-chip:active,
+        .add-to-stack-btn:active,
+        .send-cyber-btn:active,
+        .tab-btn:active {
+            transform: scale(0.95);
         }
 
-        /* Adaptive auto-learning status badge */
+        /* Profile goal badges */
         .adaptive-profile-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             padding: 4px 10px;
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             font-size: 11px;
-            font-weight: 600;
             color: var(--text-secondary);
             font-family: 'Space Grotesk', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            animation: pulse-badge-glow 3s infinite alternate;
         }
 
-        body.theme-massa .adaptive-profile-badge {
-            background: rgba(255, 62, 0, 0.08);
-            border-color: rgba(255, 62, 0, 0.3);
-            color: #ff9d80;
-        }
-
-        body.theme-secar .adaptive-profile-badge {
-            background: rgba(0, 240, 255, 0.08);
-            border-color: rgba(0, 240, 255, 0.3);
-            color: #99f6ff;
-        }
-
-        body.theme-energia .adaptive-profile-badge {
-            background: rgba(173, 255, 47, 0.08);
-            border-color: rgba(173, 255, 47, 0.3);
-            color: #e5ffb3;
-        }
-
-        .adaptive-profile-badge .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--text-muted);
-            box-shadow: 0 0 8px var(--text-muted);
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        body.theme-massa .adaptive-profile-badge .status-dot {
-            background: #ff3e00;
-            box-shadow: 0 0 10px #ff3e00, 0 0 20px rgba(255, 62, 0, 0.5);
-            animation: pulse-dot-active 1s infinite alternate;
-        }
-
-        body.theme-secar .adaptive-profile-badge .status-dot {
-            background: #00f0ff;
-            box-shadow: 0 0 10px #00f0ff, 0 0 20px rgba(0, 240, 255, 0.5);
-            animation: pulse-dot-active 1s infinite alternate;
-        }
-
-        body.theme-energia .adaptive-profile-badge .status-dot {
-            background: #adff2f;
-            box-shadow: 0 0 10px #adff2f, 0 0 20px rgba(173, 255, 47, 0.5);
-            animation: pulse-dot-active 1s infinite alternate;
-        }
-
-        /* Voice Assistant toggle button in header */
+        /* Voice wave anims */
         .voice-toggle-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: var(--border-radius-sm);
+            font-size: 11px;
             cursor: pointer;
             font-family: 'Space Grotesk', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .voice-toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
         }
 
         .voice-toggle-btn.voice-active {
-            background: rgba(0, 240, 255, 0.12);
-            border-color: var(--accent-secondary);
-            color: var(--accent-secondary);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
-            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
-        }
-
-        .voice-toggle-btn .voice-wave-anim {
-            display: none;
-            align-items: center;
-            gap: 2px;
-            height: 10px;
-        }
-
-        .voice-toggle-btn.voice-active .voice-wave-anim {
-            display: inline-flex;
-        }
-
-        .voice-toggle-btn .voice-wave-anim span {
-            width: 2px;
-            height: 100%;
-            background-color: var(--accent-secondary);
-            animation: voice-bar-bounce 1s infinite ease-in-out alternate;
-        }
-
-        .voice-toggle-btn .voice-wave-anim span:nth-child(2) { animation-delay: 0.15s; }
-        .voice-toggle-btn .voice-wave-anim span:nth-child(3) { animation-delay: 0.3s; }
-
-        @keyframes voice-bar-bounce {
-            0% { height: 30%; }
-            100% { height: 100%; }
-        }
-
-        @keyframes pulse-badge-glow {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-1px); }
-        }
-
-        @keyframes pulse-dot-active {
-            0% { opacity: 0.4; }
-            100% { opacity: 1; }
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
         }
 
         /* High-Tech Admin Cyber Modal Styles */
@@ -2055,15 +1239,15 @@
         }
 
         .cyber-modal {
-            background: linear-gradient(135deg, rgba(15, 15, 30, 0.95) 0%, rgba(5, 5, 15, 0.98) 100%);
-            border: 1.5px solid var(--border-neon);
+            background: linear-gradient(135deg, rgba(23, 27, 41, 0.98) 0%, rgba(13, 14, 21, 0.99) 100%);
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius-lg);
             width: 95%;
             max-width: 500px;
             max-height: 85vh;
             overflow-y: auto;
             padding: 24px;
-            box-shadow: 0 0 40px rgba(0, 240, 255, 0.25);
+            box-shadow: var(--shadow-glow);
             transform: scale(0.9);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
@@ -2078,19 +1262,15 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 12px;
         }
 
         .cyber-modal-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
             font-weight: 700;
-            color: var(--accent-secondary);
-            text-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--accent-primary);
         }
 
         .cyber-modal-close {
@@ -2099,18 +1279,13 @@
             color: var(--text-secondary);
             font-size: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .cyber-modal-close:hover {
-            color: var(--error);
         }
 
         .admin-form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .admin-form-group label {
@@ -2118,168 +1293,112 @@
             font-size: 11px;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .admin-input {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius-sm);
-            padding: 10px 14px;
+            padding: 8px 12px;
             color: white;
-            font-family: 'Outfit', sans-serif;
-            font-size: 14px;
+            font-size: 13.5px;
             outline: none;
-            transition: all 0.3s ease;
         }
 
         .admin-input:focus {
-            border-color: var(--accent-secondary);
-            box-shadow: 0 0 10px rgba(255, 94, 0, 0.15);
+            border-color: var(--accent-primary);
         }
 
         .admin-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .admin-btn {
             background: var(--accent-gradient);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
+            padding: 10px 18px;
+            border-radius: var(--border-radius-sm);
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: var(--shadow-glow);
-            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .admin-btn:hover {
-            transform: translateY(-1.5px);
-            box-shadow: 0 0 20px rgba(255, 94, 0, 0.35);
-        }
-
-        /* Products List in Admin Panel */
         .admin-products-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-height: 250px;
+            gap: 8px;
+            max-height: 200px;
             overflow-y: auto;
-            margin-bottom: 20px;
-            padding-right: 4px;
         }
 
         .admin-product-row {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 8px 12px;
-            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6px 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .admin-product-meta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .admin-product-actions {
-            display: flex;
-            gap: 6px;
-        }
-
         .admin-action-btn {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 10.5px;
             cursor: pointer;
             border: none;
-            transition: all 0.2s ease;
         }
 
         .admin-action-btn.edit {
-            background: rgba(0, 240, 255, 0.1);
-            color: #67e8f9;
-            border: 1px solid rgba(0, 240, 255, 0.25);
-        }
-
-        .admin-action-btn.edit:hover {
-            background: var(--accent-secondary);
-            color: white;
-            border-color: transparent;
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
         }
 
         .admin-action-btn.delete {
-            background: rgba(244, 63, 94, 0.1);
-            color: #fda4af;
-            border: 1px solid rgba(244, 63, 94, 0.25);
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
         }
 
-        .admin-action-btn.delete:hover {
-            background: #e11d48;
-            color: white;
-            border-color: transparent;
-        }
-
-        /* High-tech Quick Add Product Grid Styles */
         .stack-quick-add-section {
-            margin-bottom: 18px;
-            border-bottom: 1.5px dashed rgba(255, 255, 255, 0.05);
-            padding-bottom: 16px;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
         }
 
         .stack-quick-add-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns fit perfectly on desktop and mobile */
-            gap: 8px;
-            max-height: 190px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            max-height: 150px;
             overflow-y: auto;
-            padding-right: 4px;
         }
 
         .stack-product-chip {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 8px 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            min-height: 80px;
-            position: relative;
+            transition: all 0.2s ease;
         }
 
         .stack-product-chip:hover {
-            background: rgba(255, 94, 0, 0.06);
-            border-color: var(--accent-secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 94, 0, 0.15);
-        }
-
-        .stack-product-chip-icon {
-            font-size: 16px;
-            margin-bottom: 3px;
-            display: inline-block;
+            border-color: var(--accent-primary);
+            background: rgba(16, 185, 129, 0.05);
         }
 
         .stack-product-chip-name {
@@ -2287,38 +1406,123 @@
             font-size: 9px;
             font-weight: 700;
             color: var(--text-primary);
-            line-height: 1.2;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            width: 100%;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .stack-product-chip-price {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 8px;
-            color: var(--accent-secondary);
-            margin-top: 3px;
+            color: var(--accent-gold);
             font-weight: 600;
+        }
+
+        /* Floating Partner WhatsApp Button (Bottom-Right Badge) */
+        .floating-wa-btn {
+            position: fixed;
+            bottom: 65px; /* Floats safely above bottom nav tab bar */
+            right: 16px;
+            background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 12.5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            z-index: 99;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsiveness: Large screens get dual-view, small screen gets single tabbed panels */
+        @media (min-width: 1024px) {
+            .mobile-tabs {
+                display: none !important;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr 420px;
+                gap: 16px;
+            }
+
+            .chat-section, .catalog-container, .stack-builder-container {
+                display: flex !important;
+            }
+
+            .container {
+                padding: 16px;
+            }
+
+            header {
+                padding: 12px 0 !important;
+            }
+
+            .logo-icon {
+                width: 40px !important;
+                height: 40px !important;
+                font-size: 22px !important;
+            }
+
+            h1 {
+                font-size: 28px !important;
+            }
+
+            .subtitle {
+                font-size: 13px !important;
+            }
+
+            .chat-header {
+                padding: 14px 20px !important;
+            }
+
+            .catalog-container {
+                padding: 16px !important;
+            }
+
+            .stack-builder-container {
+                padding: 16px !important;
+            }
+
+            .chat-input-area {
+                padding: 14px 20px !important;
+            }
+
+            textarea {
+                padding: 12px 42px 12px 14px !important;
+                font-size: 14.5px !important;
+            }
+
+            .floating-wa-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 18px;
+                font-size: 13.5px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
+    <div class="decorative-blob blob-1"></div>
+    <div class="decorative-blob blob-2"></div>
 
     <div class="container">
         <!-- Modern Header -->
         <header>
             <div class="logo">
-                <div class="logo-icon">⚡</div>
+                <div class="logo-icon">🌿</div>
                 <h1>VouComprarFácil</h1>
             </div>
-            <p class="subtitle">Atendimento Inteligente <span>Cyber-VouComprarFacil</span></p>
+            <p class="subtitle">Seu Suplemento Inteligente <span>• Atendimento Local Express</span></p>
+            <div class="local-info-bar">
+                <span>📍 Loja: <span id="storeAddress">Av. Brigadeiro Faria Lima, 1500</span> <a href="#" onclick="editStoreAddress(event)" style="color: var(--accent-gold); margin-left: 4px; text-decoration: underline; font-weight: bold; font-size: 9px;">(Editar)</a></span>
+                <span>🛵 Entrega Grátis na Região</span>
+                <span>⏱️ Seg a Sáb: 8h às 20h</span>
+            </div>
         </header>
+
 
         <!-- Mobile Navigation Tabs (visible only on mobile/tablet) -->
         <nav class="mobile-tabs" id="mobileTabs">
@@ -2447,8 +1651,8 @@
                             </div>
                             
                             <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <button class="btn-checkout-stack" id="btnCheckout" onclick="finalizeStack()" style="width: 100%;" disabled>
-                                    🛒 Finalizar Compra (WhatsApp)
+                                <button class="btn-checkout-stack" id="btnCheckout" onclick="openCheckoutModal()" style="width: 100%;" disabled>
+                                    🛒 Finalizar no WhatsApp
                                 </button>
                                 <a href="https://wa.me/17996705407?text=Olá! Gostaria de falar com um consultor da VouComprarFácil. 🌟" target="_blank" class="admin-btn" style="background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25); color: #00f0ff; text-decoration: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; padding: 10px 14px;" id="btnContact">
                                     📞 Entrar em Contato
@@ -2473,15 +1677,69 @@
             
             <!-- Auth View -->
             <div id="adminAuthView">
-                <div class="admin-form-group">
-                    <label for="adminPasscode">Código de Acesso Seguro</label>
-                    <input type="password" class="admin-input" id="adminPasscode" placeholder="Digite o código gerado...">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button class="tab-btn active" id="authLoginTabBtn" onclick="switchAuthTab('login')" style="flex: 1;">Entrar</button>
+                    <button class="tab-btn" id="authRegisterTabBtn" onclick="switchAuthTab('register')" style="flex: 1;">Registrar Loja</button>
                 </div>
-                <button class="admin-btn" onclick="verifyAdminPasscode()">Acessar Painel 🔒</button>
+                
+                <div id="loginForm">
+                    <div class="admin-form-group">
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" class="admin-input" id="loginEmail" placeholder="admin@sualoja.com">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" class="admin-input" id="loginPassword" placeholder="••••••••">
+                    </div>
+                    <button class="admin-btn" onclick="submitLogin()" style="width: 100%;">Entrar no Painel 🔒</button>
+                </div>
+
+                <div id="registerForm" style="display: none;">
+                    <div class="admin-form-group">
+                        <label for="regEmail">E-mail da Conta</label>
+                        <input type="email" class="admin-input" id="regEmail" placeholder="admin@sualoja.com">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="regPassword">Senha</label>
+                        <input type="password" class="admin-input" id="regPassword" placeholder="Crie uma senha segura">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="regStoreName">Nome da Loja</label>
+                        <input type="text" class="admin-input" id="regStoreName" placeholder="Ex: VouComprarFácil">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="regPhone">WhatsApp de Vendas</label>
+                        <input type="text" class="admin-input" id="regPhone" placeholder="Ex: 5517996705407">
+                    </div>
+                    <button class="admin-btn" onclick="submitRegister()" style="width: 100%;">Registrar e Acessar 🚀</button>
+                </div>
             </div>
 
             <!-- Dashboard View (hidden by default) -->
             <div id="adminDashboardView" style="display: none;">
+                <!-- Customer Store Link Banner -->
+                <div class="admin-store-link-banner" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--border-radius-sm); padding: 12px; margin-bottom: 20px; text-align: center;">
+                    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">🔗 LINK DA SUA LOJA PARA CLIENTES</div>
+                    <a id="storeShareLink" href="#" target="_blank" style="color: var(--accent-primary); font-weight: 600; text-decoration: none; word-break: break-all; font-size: 13px;">Carregando link da loja...</a>
+                </div>
+                <!-- Store Settings section -->
+                <div style="margin-bottom: 20px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 20px;">
+                    <div class="cyber-modal-title" style="font-size: 13px; margin-bottom: 12px; color: var(--accent-gold);">⚙️ CONFIGURAÇÕES DA LOJA</div>
+                    <div class="admin-form-group">
+                        <label for="cfgStoreName">Nome da Loja</label>
+                        <input type="text" class="admin-input" id="cfgStoreName">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="cfgPhone">WhatsApp de Atendimento</label>
+                        <input type="text" class="admin-input" id="cfgPhone">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="cfgWelcome">Mensagem de Boas-Vindas da IA</label>
+                        <textarea class="admin-input" id="cfgWelcome" rows="3" style="resize: none;"></textarea>
+                    </div>
+                    <button class="admin-btn" onclick="saveStoreSettings()" style="background: var(--accent-gold); color: black; width: 100%;">Salvar Configurações 💾</button>
+                </div>
+
                 <!-- Product Form (Add/Edit) -->
                 <div style="margin-bottom: 20px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 20px;">
                     <div class="cyber-modal-title" style="font-size: 13px; margin-bottom: 12px; color: var(--accent-neon);" id="formTitle">➕ ADICIONAR / EDITAR SUPLEMENTO</div>
@@ -2502,6 +1760,9 @@
                                 <option value="Energia">Energia ⚡</option>
                                 <option value="Recuperação">Recuperação 💊</option>
                                 <option value="Emagrecimento">Emagrecimento 🔥</option>
+                                <option value="Produtos gerais">Produtos gerais 📦</option>
+                                <option value="mercado">Mercado 🛒</option>
+                                <option value="lojas do comercio">Lojas do comércio 🏪</option>
                             </select>
                         </div>
                         <div class="admin-form-group">
@@ -2514,6 +1775,10 @@
                         <div class="admin-form-group">
                             <label for="prodPrice">Preço (R$)</label>
                             <input type="number" step="0.01" class="admin-input" id="prodPrice" placeholder="Ex: 139.90">
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="prodStock">Estoque (Qtd)</label>
+                            <input type="number" class="admin-input" id="prodStock" placeholder="Ex: 10" value="10">
                         </div>
                         <div class="admin-form-group" style="flex-direction: row; align-items: center; gap: 8px; margin-top: 24px;">
                             <input type="checkbox" id="prodPromo" style="width: 18px; height: 18px; cursor: pointer;">
@@ -2534,8 +1799,45 @@
 
                 <!-- Products Database List -->
                 <div class="cyber-modal-title" style="font-size: 13px; margin-bottom: 12px; color: var(--accent-secondary);">🛍️ PRODUTOS NO BANCO</div>
-                <div class="admin-products-list" id="adminProductsList">
+                <div class="admin-products-list" id="adminProductsList" style="margin-bottom: 20px;">
                     <!-- Rendered dynamically -->
+                </div>
+
+                <button class="admin-btn" onclick="logoutAdmin()" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.25); box-shadow: none; width: 100%;">Desconectar / Sair da Conta 🚪</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cyber Modal for WhatsApp Checkout -->
+    <div class="cyber-modal-overlay" id="checkoutModalOverlay">
+        <div class="cyber-modal">
+            <div class="cyber-modal-header">
+                <div class="cyber-modal-title">🛒 FINALIZAR COMPRA VIA WHATSAPP</div>
+                <button class="cyber-modal-close" onclick="closeCheckoutModal()">✕</button>
+            </div>
+            
+            <div id="checkoutForm">
+                <div class="admin-form-group">
+                    <label for="checkoutName">Nome Completo</label>
+                    <input type="text" class="admin-input" id="checkoutName" placeholder="Ex: João Silva" required>
+                </div>
+                
+                <div class="admin-form-group">
+                    <label for="checkoutAddress">Endereço de Entrega</label>
+                    <textarea class="admin-input" id="checkoutAddress" rows="3" placeholder="Rua, Número, Bairro, Cidade - Ex: Rua das Flores, 123, Centro - Santa Fé do Sul" style="resize: none;" required></textarea>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="checkoutPayment">Forma de Pagamento</label>
+                    <select class="admin-input" id="checkoutPayment" style="background: black; color: white;">
+                        <option value="Pix">Pix</option>
+                        <option value="Cartão na Entrega">Cartão na Entrega</option>
+                    </select>
+                </div>
+
+                <div class="admin-row" style="margin-top: 20px;">
+                    <button class="admin-btn" onclick="submitCheckoutWhatsApp()" style="background: var(--accent-gradient);">Confirmar e Enviar 🚀</button>
+                    <button class="admin-btn" onclick="closeCheckoutModal()" style="background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); box-shadow: none;">Cancelar ❌</button>
                 </div>
             </div>
         </div>
@@ -2543,6 +1845,12 @@
 
     <!-- Frontend Core Application logic -->
     <script>
+        // Configurações Globais do WhatsApp (Editar o número abaixo caso necessário)
+        let WHATSAPP_PHONE = '5517996705407';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let tenantId = parseInt(urlParams.get('store')) || 1;
+
         const isLocalFile = window.location.protocol === 'file:';
         const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         
@@ -2666,7 +1974,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ message: textContent, sessionId })
+                        body: JSON.stringify({ message: textContent, sessionId, tenantId })
                     });
 
                     removeTypingIndicator();
@@ -2683,6 +1991,10 @@
                     const data = await response.json();
                     API_URL = url; // Remember working endpoint
                     addMessage('assistant', data.response);
+
+                    if (data.recommendation) {
+                        handleProductRecommendation(data.recommendation);
+                    }
                     
                     // Voice assistant speaker: Read aloud if active
                     speakAssistantResponse(data.response);
@@ -2812,7 +2124,7 @@
         async function loadProducts() {
             for (const url of API_URLS) {
                 try {
-                    const response = await fetch(`${url}/products`);
+                    const response = await fetch(`${url}/products?tenantId=${tenantId}`);
                     if (response.ok) {
                         const data = await response.json();
                         productsData = data.products || [];
@@ -2849,6 +2161,9 @@
                 'Energia': '⚡',
                 'Recuperação': '💊',
                 'Emagrecimento': '🔥',
+                'Produtos gerais': '📦',
+                'mercado': '🛒',
+                'lojas do comercio': '🏪',
                 'Outros': '📦'
             };
 
@@ -2867,13 +2182,14 @@
                                 const hasQuantityClass = quantityInStack > 0 ? 'in-combo' : '';
                                 
                                 return `
-                                    <div class="menu-product-row ${p.promo ? 'promo-row' : ''} ${hasQuantityClass}" onclick="focusProduct('${p.name}', '${p.image}')">
+                                    <div class="menu-product-row ${p.promo ? 'promo-row' : ''} ${hasQuantityClass}" data-id="${p.id}" onclick="focusProduct('${p.name}', '${p.image}')">
                                         <div class="menu-product-left">
                                             <span class="menu-product-icon">${p.image}</span>
                                             <div class="menu-product-details">
                                                 <div class="menu-product-header">
                                                     <span class="menu-product-name">${p.name}</span>
                                                     ${p.promo ? '<span class="menu-promo-badge">PROMO</span>' : ''}
+                                                    ${p.stock === 0 ? '<span class="menu-promo-badge" style="background: var(--error); border-color: rgba(244,63,94,0.3); color:#fff; font-size:9px;">ESGOTADO</span>' : ''}
                                                 </div>
                                                 <div class="menu-product-desc" title="${p.description}">${p.description}</div>
                                             </div>
@@ -2881,7 +2197,11 @@
                                         <div class="menu-product-right" onclick="event.stopPropagation();">
                                             <span class="menu-product-price">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
                                             <div class="menu-action-controls">
-                                                ${quantityInStack > 0 ? `
+                                                ${p.stock === 0 ? `
+                                                    <button class="menu-add-combo-btn" style="background: rgba(255,255,255,0.05); color: var(--text-muted); cursor: not-allowed; border-color: transparent;" disabled>
+                                                        <span>Esgotado</span>
+                                                    </button>
+                                                ` : quantityInStack > 0 ? `
                                                     <button class="menu-qty-btn minus" onclick="removeFromStack(${p.id})">−</button>
                                                     <span class="menu-qty-display">${quantityInStack}</span>
                                                     <button class="menu-qty-btn plus" onclick="addToStack(${p.id})">＋</button>
@@ -2924,6 +2244,11 @@
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
 
+            if (product.stock !== undefined && product.stock === 0) {
+                showSystemToast(`Desculpe, ${product.name} está temporariamente sem estoque! 😢`);
+                return;
+            }
+
             // Trigger physical haptic feedback click for addition (firm click)
             triggerHaptic(60);
 
@@ -2937,6 +2262,48 @@
             saveStackCache();
             renderStack();
             showSystemToast(`Adicionado: ${product.name} no seu carrinho! 🛒`);
+        }
+
+        function handleProductRecommendation(rec) {
+            const prodId = parseInt(rec.id);
+            const action = rec.action; // "highlight" or "add_to_cart"
+
+            if (action === 'highlight') {
+                const card = document.querySelector(`.menu-product-row[data-id="${prodId}"]`);
+                if (card) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add('glow-recommendation');
+                    showSystemToast('Produto em destaque no menu! ✨');
+                    triggerHaptic([50, 50]);
+                    
+                    setTimeout(() => {
+                        card.classList.remove('glow-recommendation');
+                    }, 5000);
+                }
+            } else if (action === 'add_to_cart') {
+                const product = productsData.find(p => p.id === prodId);
+                if (product) {
+                    if (product.stock !== undefined && product.stock === 0) {
+                        showSystemToast(`Desculpe, ${product.name} está esgotado! 😢`);
+                        return;
+                    }
+                    addToStack(prodId);
+                    
+                    const card = document.querySelector(`.menu-product-row[data-id="${prodId}"]`);
+                    if (card) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.classList.add('glow-recommendation');
+                        setTimeout(() => {
+                            card.classList.remove('glow-recommendation');
+                        }, 5000);
+                    }
+                    
+                    const cartSidebar = document.getElementById('cartSidebar');
+                    if (cartSidebar) {
+                        cartSidebar.classList.add('open');
+                    }
+                }
+            }
         }
 
         function removeFromStack(productId) {
@@ -3051,41 +2418,56 @@
             btnCheckout.disabled = false;
         }
 
-        // Pre-build stack combo and trigger WhatsApp
-        async function finalizeStack() {
+        // Open/Close and submit checkout modal
+        function openCheckoutModal() {
             if (cyberStack.length === 0) return;
+            triggerHaptic(30);
+            document.getElementById('checkoutModalOverlay').classList.add('active');
+        }
 
-            // Trigger success checkout haptic pattern
-            triggerHaptic([100, 50, 100]);
+        function closeCheckoutModal() {
+            triggerHaptic(30);
+            document.getElementById('checkoutModalOverlay').classList.remove('active');
+        }
 
-            const itemsText = cyberStack.map(item => `🛒 ${item.quantity}x ${item.product.name}`).join('\n');
-            const totalSum = cyberStack.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-            const rawProductsNameString = cyberStack.map(item => `${item.quantity}x ${item.product.name}`).join(', ');
+        async function submitCheckoutWhatsApp() {
+            const name = document.getElementById('checkoutName').value.trim();
+            const address = document.getElementById('checkoutAddress').value.trim();
+            const payment = document.getElementById('checkoutPayment').value;
 
-            const defaultWaMsg = `Olá! Montei meu carrinho de suplementos na VouComprarFácil:\n\n${itemsText}\n\n*Total do Carrinho: R$ ${totalSum.toFixed(2).replace('.', ',')}*\n\nGostaria de finalizar meu pedido com desconto especial e falar com um consultor! 🛍️✨`;
-
-            try {
-                // Post requested product chain to get WhatsApp Partner link
-                const response = await fetch(`${API_URL}/whatsapp/link`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ product: rawProductsNameString })
-                });
-                const data = await response.json();
-                
-                // Customize URL with the full list stack
-                let finalLink = data.link;
-                if (finalLink.includes('text=')) {
-                    // Inject rich formatted stack details
-                    const baseUri = finalLink.split('text=')[0];
-                    finalLink = `${baseUri}text=${encodeURIComponent(defaultWaMsg)}`;
-                }
-                
-                window.open(finalLink, '_blank');
-            } catch (e) {
-                // Fallback to local link generation
-                window.open(`https://wa.me/17996705407?text=${encodeURIComponent(defaultWaMsg)}`, '_blank');
+            if (!name || !address) {
+                showSystemToast('Por favor, preencha todos os campos obrigatórios.');
+                return;
             }
+
+            // Collect items and prices
+            const totalSum = cyberStack.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            const itemsText = cyberStack.map(item => `• ${item.quantity}x ${item.product.name} (R$ ${item.product.price.toFixed(2).replace('.', ',')})`).join('\n');
+
+            // Format message exactly as requested
+            const message = `🛒 *NOVO PEDIDO - VNI VENDER +*\n\n` +
+                            `👤 *Cliente:* ${name}\n` +
+                            `📍 *Entrega:* ${address}\n` +
+                            `💳 *Pagamento:* ${payment}\n\n` +
+                            `--- \n` +
+                            `📦 *Itens do Pedido:*\n` +
+                            `${itemsText}\n\n` +
+                            `--- \n` +
+                            `💰 *Total:* R$ ${totalSum.toFixed(2).replace('.', ',')}\n\n` +
+                            `_(Desejo finalizar a compra com o atendente)_`;
+
+            const finalLink = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+            
+            // Open WhatsApp link in new tab
+            window.open(finalLink, '_blank');
+            
+            // Close the modal
+            closeCheckoutModal();
+        }
+
+        // Pre-build stack combo and trigger WhatsApp (legacy support if needed, but redirects to modal)
+        async function finalizeStack() {
+            openCheckoutModal();
         }
 
         // ==========================================
@@ -3394,45 +2776,67 @@
         }
 
         // ==========================================
-        // INITIALIZATION
+        // INITIALIZATION & TENANT CONTEXT
         // ==========================================
+        let storeName = 'VouComprarFácil';
+
+        async function loadStoreContext() {
+            try {
+                // Fetch settings from active backend tenant
+                const response = await fetch(`${API_URL}/api/store/settings/${tenantId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    storeName = data.store_name;
+                    WHATSAPP_PHONE = data.whatsapp_phone;
+                    
+                    // Update header title dynamically
+                    const titleEl = document.querySelector('header h1');
+                    if (titleEl) titleEl.innerText = storeName;
+                    
+                    // Update welcome greeting message if default welcome bubble exists
+                    const welcomeBubble = document.querySelector('.chat-messages .message.assistant .message-bubble');
+                    if (welcomeBubble && !activeUserGoal) {
+                        welcomeBubble.innerHTML = formatContent(data.welcome_message);
+                    }
+                    
+                    // Update contact button
+                    const btnContact = document.getElementById('btnContact');
+                    if (btnContact) {
+                        btnContact.href = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Olá! Gostaria de falar com um consultor da ' + storeName + '. 🌟')}`;
+                    }
+                }
+            } catch(e) {
+                console.error('Falha ao carregar contexto da loja', e);
+            }
+        }
 
         async function loadWhatsApp() {
-            for (const url of API_URLS) {
-                try {
-                    const response = await fetch(`${url}/whatsapp`);
-                    if (response.ok) {
-                        const data = await response.json();
-                        whatsappLink = data.link;
-                        const btn = document.getElementById('whatsappBtn');
-                        if (btn) {
-                            btn.href = whatsappLink;
-                        }
-                        return;
-                    }
-                } catch (e) {
-                    console.log(`Endpoint ${url} offline para buscar WhatsApp.`);
-                }
+            // Already updated dynamically via loadStoreContext() settings
+            const btn = document.getElementById('whatsappBtn');
+            if (btn) {
+                btn.href = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Olá! Gostaria de falar com um consultor da ' + storeName + '. 🌟')}`;
             }
         }
 
         // ==========================================
-        // ADMIN CONSOLE MANAGEMENT MOTORS
+        // ADMIN CONSOLE MANAGEMENT MOTORS (SaaS Multi-tenant)
         // ==========================================
-        let adminPasscode = '';
+        let adminToken = localStorage.getItem('voucomprafacil_token') || '';
+        let adminTenantId = parseInt(localStorage.getItem('voucomprafacil_lojaId')) || null;
 
         function openAdminModal() {
             triggerHaptic(30);
             document.getElementById('adminModalOverlay').classList.add('active');
             
-            // If already verified, direct to dashboard
-            if (adminPasscode) {
+            if (adminToken && adminTenantId === tenantId) {
                 document.getElementById('adminAuthView').style.display = 'none';
                 document.getElementById('adminDashboardView').style.display = 'block';
+                loadConfigFields();
                 renderAdminProductsList();
             } else {
                 document.getElementById('adminAuthView').style.display = 'block';
                 document.getElementById('adminDashboardView').style.display = 'none';
+                switchAuthTab('login');
             }
         }
 
@@ -3441,36 +2845,332 @@
             document.getElementById('adminModalOverlay').classList.remove('active');
         }
 
-        async function verifyAdminPasscode() {
-            const inputVal = document.getElementById('adminPasscode').value.trim();
-            if (!inputVal) {
-                showSystemToast('Digite o código de acesso');
+        function switchAuthTab(tab) {
+            triggerHaptic(20);
+            if (tab === 'login') {
+                document.getElementById('authLoginTabBtn').classList.add('active');
+                document.getElementById('authRegisterTabBtn').classList.remove('active');
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+            } else {
+                document.getElementById('authLoginTabBtn').classList.remove('active');
+                document.getElementById('authRegisterTabBtn').classList.add('active');
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+            }
+        }
+
+        async function submitLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showSystemToast('Preencha o e-mail e a senha');
+                return;
+            }
+
+            // Mostrar estado de carregamento
+            const loginBtn = document.querySelector('#loginForm .admin-btn');
+            const originalBtnText = loginBtn ? loginBtn.innerHTML : '';
+            if (loginBtn) loginBtn.innerHTML = '⏳ Entrando...';
+
+            try {
+                // PASSO 1: Sincronizar dados locais com o servidor antes de tentar logar
+                // Isso garante que contas registradas localmente estejam disponíveis no Vercel
+                await syncLocalData();
+
+                // PASSO 2: Tentar login em todos os endpoints disponíveis
+                let loginSuccess = false;
+                for (const url of API_URLS) {
+                    try {
+                        const response = await fetch(`${url}/api/auth/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            adminToken = data.token;
+                            adminTenantId = data.tenantId;
+                            API_URL = url; // Lembrar endpoint que funcionou
+                            localStorage.setItem('voucomprafacil_token', adminToken);
+                            localStorage.setItem('voucomprafacil_lojaId', String(adminTenantId));
+
+                            if (data.tenant) {
+                                const localStores = JSON.parse(localStorage.getItem('voucomprafacil_local_stores') || '[]');
+                                const filtered = localStores.filter(s => s.id !== adminTenantId);
+                                filtered.push(data.tenant);
+                                localStorage.setItem('voucomprafacil_local_stores', JSON.stringify(filtered));
+                            }
+
+                            showSystemToast('Acesso administrativo liberado! 🔓');
+                            triggerHaptic([50, 30, 50]);
+                            loginSuccess = true;
+
+                            if (adminTenantId !== tenantId) {
+                                window.location.search = `?store=${adminTenantId}`;
+                                return;
+                            }
+
+                            document.getElementById('adminAuthView').style.display = 'none';
+                            document.getElementById('adminDashboardView').style.display = 'block';
+                            loadConfigFields();
+                            renderAdminProductsList();
+                            break;
+
+                        } else if (response.status === 401) {
+                            // Credenciais erradas - não tentar outros endpoints
+                            const data = await response.json();
+                            showSystemToast(data.error || 'Credenciais incorretas ❌');
+                            triggerHaptic(100);
+                            loginSuccess = true; // marcar como tratado (não é erro de conexão)
+                            break;
+                        }
+                    } catch(e) {
+                        console.log(`Endpoint ${url} offline para login.`);
+                    }
+                }
+
+                // PASSO 3: Fallback local - verificar credenciais no localStorage
+                if (!loginSuccess) {
+                    const localStores = JSON.parse(localStorage.getItem('voucomprafacil_local_stores') || '[]');
+                    const localTenant = localStores.find(s => s.email === email);
+                    if (localTenant) {
+                        // Verificar senha via hash SHA-256 no browser
+                        const encoder = new TextEncoder();
+                        const data = encoder.encode(password);
+                        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                        const hashArray = Array.from(new Uint8Array(hashBuffer));
+                        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                        
+                        if (hashHex === localTenant.password_hash) {
+                            adminToken = localStorage.getItem('voucomprafacil_token') || 'local-token-' + localTenant.id;
+                            adminTenantId = localTenant.id;
+                            localStorage.setItem('voucomprafacil_token', adminToken);
+                            localStorage.setItem('voucomprafacil_lojaId', String(adminTenantId));
+
+                            showSystemToast('Login local realizado! (servidor offline) 🔓');
+                            triggerHaptic([50, 30, 50]);
+
+                            if (adminTenantId !== tenantId) {
+                                window.location.search = `?store=${adminTenantId}`;
+                                return;
+                            }
+
+                            document.getElementById('adminAuthView').style.display = 'none';
+                            document.getElementById('adminDashboardView').style.display = 'block';
+                            loadConfigFields();
+                            renderAdminProductsList();
+                        } else {
+                            showSystemToast('Senha incorreta ❌');
+                            triggerHaptic(100);
+                        }
+                    } else {
+                        showSystemToast('Servidor indisponível. Verifique sua conexão. ❌');
+                        triggerHaptic(100);
+                    }
+                }
+            } catch(e) {
+                showSystemToast('Erro inesperado: ' + (e.message || 'verifique sua conexão'));
+                console.error(e);
+            } finally {
+                if (loginBtn) loginBtn.innerHTML = originalBtnText;
+            }
+        }
+
+        async function submitRegister() {
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const store_name = document.getElementById('regStoreName').value.trim();
+            const whatsapp_phone = document.getElementById('regPhone').value.trim();
+
+            if (!email || !password || !store_name || !whatsapp_phone) {
+                showSystemToast('Preencha todos os campos obrigatórios');
+                return;
+            }
+
+            const regBtn = document.querySelector('#registerForm .admin-btn');
+            const originalRegBtnText = regBtn ? regBtn.innerHTML : '';
+            if (regBtn) regBtn.innerHTML = '⏳ Cadastrando...';
+
+            try {
+                let registerSuccess = false;
+                for (const url of API_URLS) {
+                    try {
+                        const response = await fetch(`${url}/api/auth/register`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password, store_name, whatsapp_phone })
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            adminToken = data.token;
+                            adminTenantId = data.tenantId;
+                            API_URL = url;
+                            localStorage.setItem('voucomprafacil_token', adminToken);
+                            localStorage.setItem('voucomprafacil_lojaId', String(adminTenantId));
+
+                            if (data.tenant) {
+                                const localStores = JSON.parse(localStorage.getItem('voucomprafacil_local_stores') || '[]');
+                                const filtered = localStores.filter(s => s.id !== adminTenantId);
+                                filtered.push(data.tenant);
+                                localStorage.setItem('voucomprafacil_local_stores', JSON.stringify(filtered));
+                            }
+
+                            showSystemToast('Loja cadastrada com sucesso! 🚀');
+                            triggerHaptic([50, 30, 50]);
+                            registerSuccess = true;
+
+                            window.location.search = `?store=${adminTenantId}`;
+                            break;
+
+                        } else {
+                            const data = await response.json();
+                            showSystemToast(data.error || 'Erro ao registrar loja ❌');
+                            triggerHaptic(100);
+                            registerSuccess = true; // erro tratado
+                            break;
+                        }
+                    } catch(e) {
+                        console.log(`Endpoint ${url} offline para registro.`);
+                    }
+                }
+
+                if (!registerSuccess) {
+                    // Fallback: salvar conta localmente se servidor indisponível
+                    const encoder = new TextEncoder();
+                    const data = encoder.encode(password);
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const passwordHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+                    const localStores = JSON.parse(localStorage.getItem('voucomprafacil_local_stores') || '[]');
+                    const emailExists = localStores.some(s => s.email === email);
+                    if (emailExists) {
+                        showSystemToast('E-mail já cadastrado localmente. Tente fazer login. ❌');
+                        return;
+                    }
+
+                    const newLocalId = Date.now(); // ID temporário único
+                    const welcomeMessage = `Olá! Seja muito bem-vindo à **${store_name}**! ⚡💪\n\nSou seu consultor virtual.`;
+                    const newTenant = {
+                        id: newLocalId,
+                        email,
+                        password_hash: passwordHash,
+                        store_name,
+                        whatsapp_phone,
+                        welcome_message: welcomeMessage
+                    };
+                    localStores.push(newTenant);
+                    localStorage.setItem('voucomprafacil_local_stores', JSON.stringify(localStores));
+
+                    adminTenantId = newLocalId;
+                    const localToken = 'local-token-' + newLocalId;
+                    adminToken = localToken;
+                    localStorage.setItem('voucomprafacil_token', localToken);
+                    localStorage.setItem('voucomprafacil_lojaId', String(newLocalId));
+
+                    showSystemToast('Loja salva localmente (servidor offline). 🚀');
+                    triggerHaptic([50, 30, 50]);
+                    window.location.search = `?store=${adminTenantId}`;
+                }
+            } catch(e) {
+                showSystemToast('Erro inesperado: ' + (e.message || 'verifique sua conexão'));
+                console.error(e);
+            } finally {
+                if (regBtn) regBtn.innerHTML = originalRegBtnText;
+            }
+        }
+
+        function logoutAdmin() {
+            triggerHaptic(50);
+            adminToken = '';
+            adminTenantId = null;
+            localStorage.removeItem('voucomprafacil_token');
+            localStorage.removeItem('voucomprafacil_lojaId');
+            showSystemToast('Desconectado com sucesso.');
+            document.getElementById('adminAuthView').style.display = 'block';
+            document.getElementById('adminDashboardView').style.display = 'none';
+        }
+
+        async function syncLocalData() {
+            try {
+                const stores = JSON.parse(localStorage.getItem('voucomprafacil_local_stores') || '[]');
+                const products = JSON.parse(localStorage.getItem('voucomprafacil_local_products') || '[]');
+                
+                if (stores.length > 0 || products.length > 0) {
+                    await fetch(`${API_URL}/api/sync`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ stores, products })
+                    });
+                }
+            } catch (e) {
+                console.error('Falha ao sincronizar dados locais', e);
+            }
+        }
+
+        async function loadConfigFields() {
+            try {
+                const shareLinkEl = document.getElementById('storeShareLink');
+                if (shareLinkEl) {
+                    const storeUrl = `${window.location.origin}${window.location.pathname}?store=${tenantId}`;
+                    shareLinkEl.href = storeUrl;
+                    shareLinkEl.innerText = storeUrl;
+                }
+
+                const response = await fetch(`${API_URL}/api/store/settings/${tenantId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('cfgStoreName').value = data.store_name || '';
+                    document.getElementById('cfgPhone').value = data.whatsapp_phone || '';
+                    document.getElementById('cfgWelcome').value = data.welcome_message || '';
+                }
+            } catch(e) {
+                console.error('Falha ao carregar configurações', e);
+            }
+        }
+
+        async function saveStoreSettings() {
+            const store_name = document.getElementById('cfgStoreName').value.trim();
+            const whatsapp_phone = document.getElementById('cfgPhone').value.trim();
+            const welcome_message = document.getElementById('cfgWelcome').value.trim();
+
+            if (!store_name || !whatsapp_phone) {
+                showSystemToast('Nome da loja e WhatsApp são obrigatórios');
                 return;
             }
 
             try {
-                const response = await fetch(`${API_URL}/api/admin/verify`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ passcode: inputVal })
+                const response = await fetch(`${API_URL}/api/store/settings`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ store_name, whatsapp_phone, welcome_message })
                 });
 
                 if (response.ok) {
-                    adminPasscode = inputVal;
-                    showSystemToast('Acesso administrativo liberado! 🔓');
-                    triggerHaptic([50, 30, 50]);
-                    
-                    document.getElementById('adminAuthView').style.display = 'none';
-                    document.getElementById('adminDashboardView').style.display = 'block';
-                    renderAdminProductsList();
+                    const localStores = JSON.parse(localStorage.getItem('voucomprafacil_local_stores') || '[]');
+                    const matchIdx = localStores.findIndex(s => s.id === adminTenantId);
+                    if (matchIdx !== -1) {
+                        localStores[matchIdx].store_name = store_name;
+                        localStores[matchIdx].whatsapp_phone = whatsapp_phone;
+                        localStores[matchIdx].welcome_message = welcome_message;
+                        localStorage.setItem('voucomprafacil_local_stores', JSON.stringify(localStores));
+                    }
+                    showSystemToast('Configurações salvas! ⚙️');
+                    triggerHaptic([50, 50]);
+                    await loadStoreContext();
                 } else {
                     const data = await response.json();
-                    showSystemToast(data.error || 'Código de acesso incorreto ❌');
-                    triggerHaptic(100);
+                    showSystemToast(data.error || 'Erro ao salvar configurações');
                 }
             } catch(e) {
                 showSystemToast('Erro de conexão ao servidor');
-                console.error(e);
             }
         }
 
@@ -3484,7 +3184,7 @@
                         <span>${p.image}</span>
                         <div>
                             <strong style="font-size: 13px; color: white;">${p.name}</strong>
-                            <div style="font-size: 11px; color: var(--accent-secondary);">R$ ${p.price.toFixed(2).replace('.', ',')} | ${p.category}</div>
+                            <div style="font-size: 11px; color: var(--accent-secondary);">R$ ${p.price.toFixed(2).replace('.', ',')} | ${p.category} | Estoque: ${p.stock !== undefined ? p.stock : 10}</div>
                         </div>
                     </div>
                     <div class="admin-product-actions">
@@ -3501,6 +3201,7 @@
             document.getElementById('prodCategory').value = 'Proteínas';
             document.getElementById('prodEmoji').value = '💪';
             document.getElementById('prodPrice').value = '';
+            document.getElementById('prodStock').value = '10';
             document.getElementById('prodPromo').checked = false;
             document.getElementById('prodDescription').value = '';
             document.getElementById('formTitle').innerText = '➕ ADICIONAR / EDITAR SUPLEMENTO';
@@ -3515,6 +3216,7 @@
             document.getElementById('prodCategory').value = p.category || 'Proteínas';
             document.getElementById('prodEmoji').value = p.image || '💪';
             document.getElementById('prodPrice').value = p.price;
+            document.getElementById('prodStock').value = p.stock !== undefined ? p.stock : 10;
             document.getElementById('prodPromo').checked = !!p.promo;
             document.getElementById('prodDescription').value = p.description || '';
             document.getElementById('formTitle').innerText = '✏️ EDITAR SUPLEMENTO';
@@ -3526,6 +3228,7 @@
             const category = document.getElementById('prodCategory').value;
             const image = document.getElementById('prodEmoji').value.trim();
             const price = parseFloat(document.getElementById('prodPrice').value);
+            const stock = parseInt(document.getElementById('prodStock').value) || 0;
             const promo = document.getElementById('prodPromo').checked;
             const description = document.getElementById('prodDescription').value.trim();
 
@@ -3539,6 +3242,7 @@
                 category,
                 image,
                 price,
+                stock,
                 promo,
                 description
             };
@@ -3550,15 +3254,34 @@
             try {
                 const response = await fetch(`${API_URL}/api/admin/products`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ passcode: adminPasscode, product })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ product })
                 });
 
                 if (response.ok) {
                     const data = await response.json();
                     productsData = data.products;
                     
-                    // Re-render both local and remote lists
+                    const localProds = JSON.parse(localStorage.getItem('voucomprafacil_local_products') || '[]');
+                    const filteredLocal = localProds.filter(p => p.tenant_id !== adminTenantId);
+                    productsData.forEach(p => {
+                        filteredLocal.push({
+                            id: p.id,
+                            tenant_id: adminTenantId,
+                            name: p.name,
+                            category: p.category,
+                            image: p.image,
+                            price: p.price,
+                            promo: p.promo,
+                            description: p.description,
+                            stock: p.stock
+                        });
+                    });
+                    localStorage.setItem('voucomprafacil_local_products', JSON.stringify(filteredLocal));
+
                     renderProducts(productsData);
                     renderAdminProductsList();
                     clearAdminForm();
@@ -3581,15 +3304,34 @@
             try {
                 const response = await fetch(`${API_URL}/api/admin/products/delete`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ passcode: adminPasscode, id })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ id })
                 });
 
                 if (response.ok) {
                     const data = await response.json();
                     productsData = data.products;
                     
-                    // Re-render both local and remote lists
+                    const localProds = JSON.parse(localStorage.getItem('voucomprafacil_local_products') || '[]');
+                    const filteredLocal = localProds.filter(p => p.tenant_id !== adminTenantId);
+                    productsData.forEach(p => {
+                        filteredLocal.push({
+                            id: p.id,
+                            tenant_id: adminTenantId,
+                            name: p.name,
+                            category: p.category,
+                            image: p.image,
+                            price: p.price,
+                            promo: p.promo,
+                            description: p.description,
+                            stock: p.stock
+                        });
+                    });
+                    localStorage.setItem('voucomprafacil_local_products', JSON.stringify(filteredLocal));
+
                     renderProducts(productsData);
                     renderAdminProductsList();
                     
@@ -3605,8 +3347,33 @@
             }
         }
 
+        function editStoreAddress(event) {
+            if (event) event.preventDefault();
+            const currentAddress = document.getElementById('storeAddress').innerText;
+            const newAddress = prompt('Digite o novo endereço da loja:', currentAddress);
+            if (newAddress !== null && newAddress.trim() !== '') {
+                document.getElementById('storeAddress').innerText = newAddress.trim();
+                localStorage.setItem('voucomprafacil_store_address', newAddress.trim());
+                showSystemToast('Endereço atualizado com sucesso! 📍');
+                triggerHaptic(50);
+            }
+        }
+
         // Run on startup
         (async function init() {
+            // Sync local storage hydration data to backend memory first (SaaS Vercel fallback)
+            await syncLocalData();
+
+            // Load store details dynamically first
+            await loadStoreContext();
+
+            // Load custom address if saved
+            const savedAddress = localStorage.getItem('voucomprafacil_store_address');
+            if (savedAddress) {
+                const addrEl = document.getElementById('storeAddress');
+                if (addrEl) addrEl.innerText = savedAddress;
+            }
+
             // Register PWA Service Worker
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {

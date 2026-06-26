@@ -1,159 +1,244 @@
 const fs = require('fs');
 const path = require('path');
 
-const jsonPath = path.join(__dirname, 'products.json');
+const fallbackProducts = [];
 
-// In-memory cache to ensure dynamic products work in serverless/read-only environments
-let cachedProducts = null;
-
-// Helper to load products dynamically from JSON file
-function loadProducts() {
-  if (cachedProducts !== null) {
-    return cachedProducts;
-  }
-
-  try {
-    if (fs.existsSync(jsonPath)) {
-      const data = fs.readFileSync(jsonPath, 'utf8');
-      cachedProducts = JSON.parse(data);
-      return cachedProducts;
+function getAllProducts(tenantId = 1) {
+  tenantId = parseInt(tenantId) || 1;
+  
+  if (process.env.VERCEL || !global.db) {
+    if (global.productsMemory && global.productsMemory.length > 0) {
+      const filtered = tenantId === 1 
+        ? global.productsMemory 
+        : global.productsMemory.filter(p => p.tenant_id === tenantId);
+      
+      return filtered.map(p => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        image: p.image,
+        price: p.price,
+        promo: p.promo,
+        description: p.description,
+        stock: p.stock !== undefined ? p.stock : 10,
+        tenantId: p.tenant_id
+      }));
     }
-  } catch (e) {
-    console.error('Erro ao carregar produtos do JSON:', e);
+    return fallbackProducts;
   }
   
-  // Fallback to static list if JSON is missing or corrupt
-  const fallbackList = [
-    {
-      id: 1,
-      name: "100% Whey Prime Integralmedica",
-      category: "Proteínas",
-      image: "💪",
-      price: 139.90,
-      promo: true,
-      description: "Whey Protein concentrado de alta qualidade, ideal para ganho de massa muscular e recuperação pós-treino."
-    },
-    {
-      id: 2,
-      name: "Creatina Creapure Max Titanium",
-      category: "Força",
-      image: "⚡",
-      price: 99.90,
-      promo: false,
-      description: "Creatina monohidratada 100% pura com selo Creapure, garantindo máxima absorção, força e explosão muscular."
-    },
-    {
-      id: 3,
-      name: "Whey Gold Standard Optimum Nutrition",
-      category: "Proteínas",
-      image: "⭐",
-      price: 249.90,
-      promo: true,
-      description: "O Whey Protein isolado mais vendido do mundo. Elevada pureza proteica e sabor incomparável."
-    },
-    {
-      id: 4,
-      name: "Pré-Treino C4 Beta Pump Pro",
-      category: "Energia",
-      image: "🔥",
-      price: 119.90,
-      promo: false,
-      description: "Pré-treino ultra concentrado para máximo foco, energia explosiva e vasodilatação durante os treinos mais intensos."
-    },
-    {
-      id: 5,
-      name: "BCAA Powder Max Titanium",
-      category: "Recuperação",
-      image: "💊",
-      price: 79.90,
-      promo: false,
-      description: "Aminoácidos de cadeia ramificada essenciais para reduzir a fadiga muscular e acelerar a síntese proteica."
-    }
-  ];
-  cachedProducts = fallbackList;
-  return cachedProducts;
-}
-
-// Helper to save products back to JSON file
-function saveProducts(productsList) {
-  // Always update in-memory cache first to guarantee instant updates in any environment
-  cachedProducts = productsList;
-
-  try {
-    fs.writeFileSync(jsonPath, JSON.stringify(productsList, null, 2), 'utf8');
-    return true;
-  } catch (e) {
-    // Graceful warning for read-only serverless filesystems (e.g., Vercel)
-    console.warn('Aviso: Gravação no arquivo falhou (esperado no Vercel). Banco de dados atualizado em memória:', e.message);
-    return true; // Return true as memory cache is successfully updated
+  const db = global.db;
+  let stmt;
+  if (tenantId === 1) {
+    stmt = db.prepare('SELECT id, name, category, image, price, promo, description, stock, tenant_id FROM products');
+  } else {
+    stmt = db.prepare('SELECT id, name, category, image, price, promo, description, stock, tenant_id FROM products WHERE tenant_id = ?');
+    stmt.bind([tenantId]);
   }
+  const products = [];
+  while (stmt.step()) {
+    const row = stmt.get();
+    products.push({
+      id: row[0],
+      name: row[1],
+      category: row[2],
+      image: row[3],
+      price: row[4],
+      promo: row[5] === 1,
+      description: row[6],
+      stock: row[7],
+      tenantId: row[8]
+    });
+  }
+  stmt.free();
+  return products;
 }
 
-function getAllProducts() {
-  return loadProducts();
+function getProductById(id, tenantId = 1) {
+  tenantId = parseInt(tenantId) || 1;
+  id = parseInt(id);
+  
+  if (process.env.VERCEL || !global.db) {
+    const item = (global.productsMemory && global.productsMemory.length > 0)
+      ? global.productsMemory.find(p => p.id === id && p.tenant_id === tenantId)
+      : fallbackProducts.find(p => p.id === id && p.tenant_id === tenantId);
+    
+    if (item) {
+      return {
+        id: item.id,
+        name: item.name,
+        category: item.category,
+        image: item.image,
+        price: item.price,
+        promo: item.promo,
+        description: item.description,
+        stock: item.stock !== undefined ? item.stock : 10,
+        tenantId: tenantId
+      };
+    }
+    return null;
+  }
+  
+  const db = global.db;
+  const stmt = db.prepare('SELECT id, name, category, image, price, promo, description, stock FROM products WHERE id = ? AND tenant_id = ?');
+  stmt.bind([id, tenantId]);
+  let product = null;
+  if (stmt.step()) {
+    const row = stmt.get();
+    product = {
+      id: row[0],
+      name: row[1],
+      category: row[2],
+      image: row[3],
+      price: row[4],
+      promo: row[5] === 1,
+      description: row[6],
+      stock: row[7],
+      tenantId: tenantId
+    };
+  }
+  stmt.free();
+  return product;
 }
 
-function getProductById(id) {
-  return loadProducts().find(p => p.id === id);
+function getProductsByCategory(category, tenantId = 1) {
+  tenantId = parseInt(tenantId) || 1;
+  return getAllProducts(tenantId).filter(p => p.category.toLowerCase() === category.toLowerCase());
 }
 
-function getProductsByCategory(category) {
-  return loadProducts().filter(p => p.category === category);
+function getPromos(tenantId = 1) {
+  tenantId = parseInt(tenantId) || 1;
+  return getAllProducts(tenantId).filter(p => p.promo);
 }
 
-function getPromos() {
-  return loadProducts().filter(p => p.promo);
-}
-
-function searchProducts(query) {
+function searchProducts(query, tenantId = 1) {
+  tenantId = parseInt(tenantId) || 1;
   const lowerQuery = query.toLowerCase();
-  return loadProducts().filter(p => 
+  return getAllProducts(tenantId).filter(p => 
     p.name.toLowerCase().includes(lowerQuery) ||
     p.description.toLowerCase().includes(lowerQuery) ||
     p.category.toLowerCase().includes(lowerQuery)
   );
 }
 
-// Admin handler to add or update a product
-function addOrUpdateProduct(productData) {
-  const productsList = loadProducts();
-  const index = productsList.findIndex(p => p.id === productData.id || (productData.name && p.name.toLowerCase() === productData.name.toLowerCase()));
-  
-  if (index !== -1) {
-    // Update existing product
-    const existing = productsList[index];
-    productsList[index] = {
-      ...existing,
-      ...productData,
-      price: parseFloat(productData.price) || existing.price,
-      promo: typeof productData.promo === 'boolean' ? productData.promo : existing.promo
-    };
-  } else {
-    // Add new product
-    const nextId = productsList.length > 0 ? Math.max(...productsList.map(p => p.id)) + 1 : 1;
-    productsList.push({
-      id: nextId,
-      name: productData.name,
-      category: productData.category || 'Suplemento',
-      image: productData.image || '💪',
-      price: parseFloat(productData.price) || 0.0,
-      promo: !!productData.promo,
-      description: productData.description || ''
-    });
+function saveDbState() {
+  if (global.db && !process.env.VERCEL) {
+    try {
+      const dataExport = global.db.export();
+      const buffer = Buffer.from(dataExport);
+      const dbPath = path.join(__dirname, '..', '..', 'database.sqlite');
+      fs.writeFileSync(dbPath, buffer);
+    } catch (e) {
+      console.error('Falha ao salvar estado do SQLite:', e.message);
+    }
   }
-  
-  return saveProducts(productsList);
 }
 
-// Admin handler to delete a product
-function deleteProduct(id) {
-  const productsList = loadProducts();
-  const filtered = productsList.filter(p => p.id !== id);
-  return saveProducts(filtered);
+function addOrUpdateProduct(productData, tenantId = 1) {
+  tenantId = parseInt(tenantId) || 1;
+  const stockVal = productData.stock !== undefined ? parseInt(productData.stock) : 10;
+  
+  if (process.env.VERCEL || !global.db) {
+    const targetArray = (global.productsMemory && global.productsMemory.length > 0) ? global.productsMemory : fallbackProducts;
+    const existingId = parseInt(productData.id);
+    const index = targetArray.findIndex(p => p.id === existingId && p.tenant_id === tenantId);
+    
+    if (index !== -1) {
+      targetArray[index] = {
+        ...targetArray[index],
+        name: productData.name,
+        category: productData.category || 'Suplemento',
+        image: productData.image || '💪',
+        price: parseFloat(productData.price) || 0.0,
+        promo: typeof productData.promo === 'boolean' ? productData.promo : !!productData.promo,
+        description: productData.description || '',
+        stock: stockVal
+      };
+    } else {
+      const nextId = targetArray.length > 0 ? Math.max(...targetArray.map(p => p.id)) + 1 : 1;
+      targetArray.push({
+        id: nextId,
+        tenant_id: tenantId,
+        name: productData.name,
+        category: productData.category || 'Suplemento',
+        image: productData.image || '💪',
+        price: parseFloat(productData.price) || 0.0,
+        promo: !!productData.promo,
+        description: productData.description || '',
+        stock: stockVal
+      });
+    }
+    return true;
+  }
+
+  const db = global.db;
+  const existingId = parseInt(productData.id);
+  
+  let exists = false;
+  if (existingId) {
+    const stmt = db.prepare('SELECT id FROM products WHERE id = ? AND tenant_id = ?');
+    stmt.bind([existingId, tenantId]);
+    exists = stmt.step();
+    stmt.free();
+  }
+
+  if (exists) {
+    db.run(`
+      UPDATE products 
+      SET name = ?, category = ?, image = ?, price = ?, promo = ?, description = ?, stock = ? 
+      WHERE id = ? AND tenant_id = ?
+    `, [
+      productData.name,
+      productData.category,
+      productData.image,
+      parseFloat(productData.price) || 0.0,
+      productData.promo ? 1 : 0,
+      productData.description || '',
+      stockVal,
+      existingId,
+      tenantId
+    ]);
+  } else {
+    db.run(`
+      INSERT INTO products (tenant_id, name, category, image, price, promo, description, stock) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      tenantId,
+      productData.name,
+      productData.category || 'Suplemento',
+      productData.image || '💪',
+      parseFloat(productData.price) || 0.0,
+      productData.promo ? 1 : 0,
+      productData.description || '',
+      stockVal
+    ]);
+  }
+
+  saveDbState();
+  return true;
+}
+
+function deleteProduct(id, tenantId = 1) {
+  tenantId = parseInt(tenantId) || 1;
+  id = parseInt(id);
+  
+  if (process.env.VERCEL || !global.db) {
+    const targetArray = (global.productsMemory && global.productsMemory.length > 0) ? global.productsMemory : fallbackProducts;
+    const index = targetArray.findIndex(p => p.id === id && p.tenant_id === tenantId);
+    if (index !== -1) {
+      targetArray.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
+  const db = global.db;
+  db.run('DELETE FROM products WHERE id = ? AND tenant_id = ?', [id, tenantId]);
+  saveDbState();
+  return true;
 }
 
 module.exports = {
-  loadProducts,
   getAllProducts,
   getProductById,
   getProductsByCategory,
