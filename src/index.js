@@ -205,7 +205,7 @@ app.post('/api/auth/register', (req, res) => {
   }
 });
 
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: 'E-mail e senha são obrigatórios' });
@@ -213,6 +213,16 @@ app.post('/api/auth/login', (req, res) => {
 
   try {
     if (process.env.VERCEL || !global.db) {
+      try {
+        const { loadFromKv, TENANTS_KEY } = require('./config/kvPersistence');
+        const cloudTenants = await loadFromKv(TENANTS_KEY);
+        if (cloudTenants && Array.isArray(cloudTenants)) {
+          global.tenantsMemory = cloudTenants;
+        }
+      } catch (e) {
+        console.error('Erro ao recarregar tenants no login:', e.message);
+      }
+      
       const tenant = global.tenantsMemory.find(t => t.email === email);
       if (tenant && verifyPassword(password, tenant.password_hash)) {
         const token = generateToken(tenant.id);
@@ -251,11 +261,21 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 // Store settings API
-app.get('/api/store/settings/:tenantId', (req, res) => {
+app.get('/api/store/settings/:tenantId', async (req, res) => {
   const tenantId = parseInt(req.params.tenantId) || 1;
   
   try {
     if (process.env.VERCEL || !global.db) {
+      try {
+        const { loadFromKv, TENANTS_KEY } = require('./config/kvPersistence');
+        const cloudTenants = await loadFromKv(TENANTS_KEY);
+        if (cloudTenants && Array.isArray(cloudTenants)) {
+          global.tenantsMemory = cloudTenants;
+        }
+      } catch (e) {
+        console.error('Erro ao recarregar tenants nos settings:', e.message);
+      }
+
       const tenant = global.tenantsMemory.find(t => t.id === tenantId);
       if (tenant) {
         return res.json({
@@ -458,6 +478,18 @@ app.post('/chat', async (req, res) => {
     const session = sessionId || 'default';
     
     // Fetch products and store settings
+    if (process.env.VERCEL || !global.db) {
+      try {
+        const { loadFromKv, PRODUCTS_KEY } = require('./config/kvPersistence');
+        const cloudProducts = await loadFromKv(PRODUCTS_KEY);
+        if (cloudProducts && Array.isArray(cloudProducts)) {
+          global.productsMemory = cloudProducts;
+        }
+      } catch (e) {
+        console.error('Erro ao carregar produtos no chat:', e.message);
+      }
+    }
+    
     const products = getAllProducts(activeTenantId);
     let storeName = 'VouComprarFácil';
     let welcomeMessage = '';
@@ -475,6 +507,16 @@ app.post('/chat', async (req, res) => {
       }
       stmt.free();
     } else if (global.tenantsMemory) {
+      try {
+        const { loadFromKv, TENANTS_KEY } = require('./config/kvPersistence');
+        const cloudTenants = await loadFromKv(TENANTS_KEY);
+        if (cloudTenants && Array.isArray(cloudTenants)) {
+          global.tenantsMemory = cloudTenants;
+        }
+      } catch (e) {
+        console.error('Erro ao recarregar tenants no chat:', e.message);
+      }
+      
       const tenant = global.tenantsMemory.find(t => t.id === activeTenantId);
       if (tenant) {
         storeName = tenant.store_name;
@@ -639,19 +681,52 @@ app.get('/chat/context/:sessionId', (req, res) => {
   res.json({ messages });
 });
 
-app.get('/products', (req, res) => {
+app.get('/products', async (req, res) => {
   const tenantId = parseInt(req.query.tenantId) || 1;
+  if (process.env.VERCEL || !global.db) {
+    try {
+      const { loadFromKv, PRODUCTS_KEY } = require('./config/kvPersistence');
+      const cloudProducts = await loadFromKv(PRODUCTS_KEY);
+      if (cloudProducts && Array.isArray(cloudProducts)) {
+        global.productsMemory = cloudProducts;
+      }
+    } catch (e) {
+      console.error('Erro ao carregar produtos:', e.message);
+    }
+  }
   res.json({ products: getAllProducts(tenantId) });
 });
 
-app.get('/products/promos', (req, res) => {
+app.get('/products/promos', async (req, res) => {
   const tenantId = parseInt(req.query.tenantId) || 1;
+  if (process.env.VERCEL || !global.db) {
+    try {
+      const { loadFromKv, PRODUCTS_KEY } = require('./config/kvPersistence');
+      const cloudProducts = await loadFromKv(PRODUCTS_KEY);
+      if (cloudProducts && Array.isArray(cloudProducts)) {
+        global.productsMemory = cloudProducts;
+      }
+    } catch (e) {
+      console.error('Erro ao carregar promoções:', e.message);
+    }
+  }
   res.json({ products: getPromos(tenantId) });
 });
 
-app.get('/products/search', (req, res) => {
+app.get('/products/search', async (req, res) => {
   const tenantId = parseInt(req.query.tenantId) || 1;
   const { q } = req.query;
+  if (process.env.VERCEL || !global.db) {
+    try {
+      const { loadFromKv, PRODUCTS_KEY } = require('./config/kvPersistence');
+      const cloudProducts = await loadFromKv(PRODUCTS_KEY);
+      if (cloudProducts && Array.isArray(cloudProducts)) {
+        global.productsMemory = cloudProducts;
+      }
+    } catch (e) {
+      console.error('Erro ao buscar produtos:', e.message);
+    }
+  }
   if (!q) {
     return res.json({ products: getAllProducts(tenantId) });
   }
