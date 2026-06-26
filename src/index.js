@@ -136,7 +136,7 @@ app.post('/api/auth/register', (req, res) => {
       }
 
       const newId = global.tenantsMemory.length + 1;
-      const welcomeMessage = `Olá! Seja muito bem-vindo à **${store_name}**! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:`;
+      const welcomeMessage = `Olá! Seja muito bem-vindo à **${store_name}**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊`;
       
       const tenantObj = {
         id: newId,
@@ -171,7 +171,7 @@ app.post('/api/auth/register', (req, res) => {
     stmtCheck.free();
 
     const passwordHash = hashPassword(password);
-    const welcomeMessage = `Olá! Seja muito bem-vindo à **${store_name}**! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:`;
+    const welcomeMessage = `Olá! Seja muito bem-vindo à **${store_name}**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊`;
 
     db.run(`
       INSERT INTO tenants (email, password_hash, store_name, whatsapp_phone, welcome_message)
@@ -358,7 +358,7 @@ app.put('/api/store/settings', authMiddleware, (req, res) => {
 const userStates = new Map();
 
 function getFlowState(stateId, tenantId = 1) {
-  let welcomeMsg = `Olá! Seja muito bem-vindo! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:`;
+  let welcomeMsg = `Olá! Seja muito bem-vindo! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊`;
   let whatsappPhone = '5517996705407';
   
   if (global.db && !process.env.VERCEL) {
@@ -381,11 +381,24 @@ function getFlowState(stateId, tenantId = 1) {
 
   const generateWhatsAppLink = (text) => `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(text)}`;
 
+  const products = getAllProducts(tenantId);
+  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+  const catEmojis = {
+    'Proteínas': '🥩',
+    'Força': '💪',
+    'Energia': '⚡',
+    'Recuperação': '💊',
+    'Emagrecimento': '🔥',
+    'Produtos gerais': '📦',
+    'mercado': '🛒',
+    'lojas do comercio': '🏪'
+  };
+
   const flowTree = {
     inicio: {
       message: welcomeMsg,
       options: [
-        { text: "Ver Categorias de Suplementos 💪", nextState: "categorias" },
+        { text: "Ver Categorias de Produtos 🛍️", nextState: "categorias" },
         { text: "Ver Promoções Ativas 🔥", nextState: "promocoes" },
         { text: "Falar com Consultor / Comprar 🛒", nextState: "falar_vendedor" },
         { text: "Informações de Entrega 📦", nextState: "entrega" }
@@ -394,21 +407,14 @@ function getFlowState(stateId, tenantId = 1) {
     categorias: {
       message: `Escolha qual categoria de produtos você gostaria de explorar hoje:`,
       options: [
-        { text: "Proteínas 🥩", nextState: "cat_Proteínas" },
-        { text: "Força 💪", nextState: "cat_Força" },
-        { text: "Energia ⚡", nextState: "cat_Energia" },
-        { text: "Recuperação 💊", nextState: "cat_Recuperação" },
-        { text: "Emagrecimento 🔥", nextState: "cat_Emagrecimento" },
-        { text: "Produtos gerais 📦", nextState: "cat_Produtos gerais" },
-        { text: "Mercado 🛒", nextState: "cat_mercado" },
-        { text: "Lojas do comércio 🏪", nextState: "cat_lojas do comercio" },
+        ...categories.map(cat => ({ text: `${cat} ${catEmojis[cat] || '📦'}`, nextState: `cat_${cat}` })),
         { text: "Voltar ao Menu Principal 🔄", nextState: "inicio" }
       ]
     },
     entrega: {
       message: `📦 **Informações de Entrega:**\n\n- **Prazo de Envio:** Todos os pedidos são despachados em até 24 horas úteis!\n- **Frete:** Temos condições de frete grátis dependendo da sua região e do valor do pedido (consulte o vendedor).\n- **Embalagem:** Enviamos tudo em caixas discretas e super seguras.\n\nComo gostaria de prosseguir?`,
       options: [
-        { text: "Ver Categorias de Suplementos 💪", nextState: "categorias" },
+        { text: "Ver Categorias de Produtos 🛍️", nextState: "categorias" },
         { text: "Falar com Consultor 🛒", nextState: "falar_vendedor" },
         { text: "Voltar ao Menu Principal 🔄", nextState: "inicio" }
       ]
@@ -423,12 +429,12 @@ function getFlowState(stateId, tenantId = 1) {
 
   if (stateId.startsWith('cat_')) {
     const categoryName = stateId.replace('cat_', '');
-    const products = getAllProducts(tenantId).filter(p => p.category.toLowerCase() === categoryName.toLowerCase());
-    let messageText = `🥩 **Suplementos de ${categoryName} disponíveis:**\n\n`;
-    if (products.length === 0) {
+    const catProducts = products.filter(p => p.category.toLowerCase() === categoryName.toLowerCase());
+    let messageText = `📦 **Produtos de ${categoryName} disponíveis:**\n\n`;
+    if (catProducts.length === 0) {
       messageText += `Nenhum produto cadastrado nesta categoria no momento.`;
     } else {
-      products.forEach(p => {
+      catProducts.forEach(p => {
         messageText += `${p.image} **${p.name}**\n${p.description}\n\n`;
       });
       messageText += `⚠️ *Nota: Por regras da loja, os valores atualizados e promoções de kits são passados pelo consultor.*`;
@@ -445,7 +451,7 @@ function getFlowState(stateId, tenantId = 1) {
 
   if (stateId === 'promocoes') {
     const promos = getPromos(tenantId);
-    let messageText = `🔥 **Suplementos em Promoção no momento:**\n\n`;
+    let messageText = `🔥 **Produtos em Promoção no momento:**\n\n`;
     if (promos.length === 0) {
       messageText += `Nenhum produto com promoção ativa no momento. Consulte o vendedor para descontos manuais!`;
     } else {
@@ -535,22 +541,31 @@ app.post('/chat', async (req, res) => {
         `- ID: ${p.id}, Nome: ${p.name}, Categoria: ${p.category}, Preço: R$ ${p.price.toFixed(2)}, Estoque: ${p.stock}, Descrição: ${p.description}`
       ).join('\n');
 
-      const systemPrompt = `Você é o consultor inteligente da loja de suplementos esportivos "${storeName}".
-Seu objetivo principal é vender e direcionar toda a conversa para os produtos cadastrados no nosso catálogo abaixo.
+      const systemPrompt = `Você é o assistente virtual oficial e consultor de vendas inteligente da loja "${storeName}".
 
-Abaixo está o catálogo atualizado em tempo real da loja com os produtos disponíveis:
+COMPORTAMENTO DE VENDEDOR UNIVERSAL:
+- Você é 100% GENÉRICO E ADAPTÁVEL a qualquer tipo de comércio (Roupas, Eletrônicos, Cosméticos, Suplementos, Autopeças, etc.).
+- Você não assume o nicho da loja previamente; você descobre o que a loja vende analisando dinamicamente o catálogo de produtos abaixo.
+- Seu tom de voz deve ser amigável, focado em conversão e prestativo, adaptando-se perfeitamente ao contexto do produto que o cliente busca.
+- Sua abordagem de início ou recepção de conversa deve focar sempre na pergunta: "O que você procura hoje?".
+
+Abaixo está o catálogo atualizado em tempo real da loja com os produtos cadastrados no banco de dados:
 ${productCatalog}
 
-DIRETRIZES DE CONVERSA E ABORDAGEM:
-1. Toda conversa com o cliente deve ser direcionada para os produtos que estão cadastrados no catálogo acima. Quando o cliente descrever seu objetivo (por exemplo, ganhar massa, emagrecer, ter mais energia ou recuperação), associe imediatamente a sua resposta a um produto específico do catálogo, detalhando seus benefícios.
-2. Tenha um tom de voz entusiasta e enérgico, utilizando emojis (ex: ✨🛍️💪⚡).
-3. Nunca cite ou ofereça produtos que não estejam no catálogo acima. Se o produto não estiver cadastrado, responda que no momento temos outras opções fantásticas em nosso cardápio e direcione para um produto similar cadastrado.
-4. Se o produto solicitado estiver com estoque (Estoque > 0), recomende-o diretamente. Se o produto estiver esgotado (Estoque == 0), avise de forma simpática que esgotou devido à alta procura e sugira um similar que esteja disponível no catálogo.
-5. Sempre direcione o cliente para finalizar a compra clicando no botão do WhatsApp ou adicionando o produto ao carrinho do site.
-6. Sempre que você indicar ou recomendar um produto cadastrado, adicione obrigatoriamente a tag JSON no final da resposta:
-   [RECOMMEND: {"id": ID_DO_PRODUTO, "action": "highlight" | "add_to_cart"}]
-   - Use "add_to_cart" se o cliente demonstrar intenção direta de compra ("adiciona no carrinho", "quero levar", "vou comprar").
-   - Use "highlight" se ele estiver pesquisando, tirando dúvidas ou pedindo recomendação.`;
+DIRETRIZES DE RECOMENDAÇÃO E BUSCA INTELIGENTE:
+1. Lógica de Busca Ampla: Sempre que o cliente pedir uma recomendação, perguntar se tem algo em estoque, ou falar sobre uma necessidade (ex: "preciso de um presente para minha mãe", "quero algo para correr", "estou procurando uma blusa preta", "algo para o frio"), simule a chamada da função 'buscarNoEstoque' varrendo mentalmente o catálogo acima. Busque correspondências no NOME do produto, na CATEGORIA ou dentro da DESCRIÇÃO técnica dos itens.
+2. Recomendação por Match de Contexto:
+   - Se o produto exato estiver disponível: Apresente-o destacando o nome, o valor e use um argumento de venda baseado na própria descrição que o lojista cadastrou.
+   - Se o cliente citar uma necessidade e o produto correspondente for encontrado via descrição ou categoria, faça a ponte lógica. Exemplo: Se o cliente quer "algo para frio" e encontra um casaco cuja descrição diz "ideal para o inverno", conecte esses pontos de forma persuasiva na sua resposta.
+   - Se houver variações (tamanhos, cores, voltagem) listadas na descrição ou nos atributos do produto, pergunte a preferência do cliente: "Temos o [Produto] disponível! Qual tamanho/cor/voltagem você prefere?".
+3. Se o produto estiver esgotado (Estoque == 0), avise educadamente que esgotou devido à alta procura e sugira imediatamente outro produto similar ou complementar do catálogo que tenha estoque disponível.
+4. Fechamento de Venda Proativo: Nunca termine uma recomendação sem um próximo passo claro de call-to-action (CTA). Sempre termine perguntando: "Gostaria que eu adicionasse este item ao seu carrinho?" ou "Posso reservar este para você?".
+5. Nunca cite preços que divirjam do catálogo acima e não invente produtos fora do catálogo.
+
+Sempre que indicar ou recomendar um produto, adicione obrigatoriamente a tag JSON no final da resposta:
+[RECOMMEND: {"id": ID_DO_PRODUTO, "action": "highlight" | "add_to_cart"}]
+- Use "add_to_cart" se o cliente demonstrar intenção direta de compra ("adiciona no carrinho", "quero levar", "vou comprar").
+- Use "highlight" se ele estiver pesquisando, tirando dúvidas ou pedindo recomendação.`;
 
       const messagesForAI = [
         { role: 'system', content: systemPrompt },
@@ -591,39 +606,18 @@ DIRETRIZES DE CONVERSA E ABORDAGEM:
         action = 'add_to_cart';
       }
 
-      if (lowerMsg.includes('whey') || lowerMsg.includes('proteina') || lowerMsg.includes('massa') || lowerMsg.includes('gold') || lowerMsg.includes('prime')) {
-        matchedProd = products.find(p => p.name.toLowerCase().includes('whey prime') && p.stock > 0) || products.find(p => p.category === 'Proteínas' && p.stock > 0);
-        if (matchedProd) {
-          responseText = `Com certeza! O **${matchedProd.name}** é uma excelente escolha proteica de alta qualidade para ganho de massa e recuperação muscular! 💪 Feito com as melhores matérias-primas do mercado. O preço é de R$ ${matchedProd.price.toFixed(2)}. ${action === 'add_to_cart' ? 'Estou adicionando ao seu carrinho agora mesmo!' : 'Gostaria que eu adicionasse ao seu carrinho?'}`;
-        }
-      } else if (lowerMsg.includes('creatina') || lowerMsg.includes('creapure') || lowerMsg.includes('força') || lowerMsg.includes('explosao')) {
-        matchedProd = products.find(p => p.name.toLowerCase().includes('creatina') && p.stock > 0);
-        if (matchedProd) {
-          responseText = `Ótima pedida! A **${matchedProd.name}** Creapure é perfeita para ganho de força, resistência e explosão nos treinos intensos! ⚡ Apenas R$ ${matchedProd.price.toFixed(2)}. ${action === 'add_to_cart' ? 'Adicionando ao seu carrinho!' : 'Quer garantir a sua agora?'}`;
-        }
-      } else if (lowerMsg.includes('bcaa') || lowerMsg.includes('recuperacao') || lowerMsg.includes('fadiga')) {
-        const bcaaProd = products.find(p => p.name.toLowerCase().includes('bcaa'));
-        if (bcaaProd && bcaaProd.stock === 0) {
-          matchedProd = products.find(p => p.name.toLowerCase().includes('whey prime') && p.stock > 0);
-          responseText = `Poxa! O nosso **BCAA Powder** está temporariamente esgotado devido à altíssima procura! 😢 Mas não se preocupe: para recuperação muscular rápida e redução da fadiga, eu recomendo fortemente o nosso **Whey Prime**! Ele já vem rico em BCAAs naturais em sua fórmula! 🥛💪 Quer aproveitar?`;
-          action = 'highlight';
-        } else {
-          matchedProd = bcaaProd;
-          if (matchedProd) {
-            responseText = `O **${matchedProd.name}** ajuda muito a diminuir a fadiga muscular e acelerar a síntese proteica pós-treino! 💊 R$ ${matchedProd.price.toFixed(2)}.`;
-          }
-        }
-      } else if (lowerMsg.includes('c4') || lowerMsg.includes('beta') || lowerMsg.includes('pump') || lowerMsg.includes('pre-treino') || lowerMsg.includes('pre treino') || lowerMsg.includes('energia') || lowerMsg.includes('disposição') || lowerMsg.includes('foco')) {
-        matchedProd = products.find(p => p.name.toLowerCase().includes('c4') && p.stock > 0) || products.find(p => p.category === 'Energia' && p.stock > 0);
-        if (matchedProd) {
-          responseText = `Prepare-se para um treino insano! 🔥 O **${matchedProd.name}** oferece foco mental apurado, vasodilatação e uma energia explosiva! Por apenas R$ ${matchedProd.price.toFixed(2)}. ${action === 'add_to_cart' ? 'Já coloquei no seu carrinho!' : 'Pronto para esmagar os pesos?'}`;
-        }
-      } else if (lowerMsg.includes('emagrecer') || lowerMsg.includes('peso') || lowerMsg.includes('gordura') || lowerMsg.includes('termogenico') || lowerMsg.includes('queimar')) {
-        matchedProd = products.find(p => p.category === 'Energia' && p.stock > 0) || products.find(p => p.stock > 0);
-        if (matchedProd) {
-          responseText = `Para acelerar a queima de gordura e te dar aquele gás extra no cardio, o pré-treino **${matchedProd.name}** funciona perfeitamente acelerando seu metabolismo! ⚡🔥 R$ ${matchedProd.price.toFixed(2)}. Quer levar?`;
-        }
+      // Check if user is searching for a specific product by name
+      matchedProd = products.find(p => lowerMsg.includes(p.name.toLowerCase()) && p.stock > 0);
+      
+      if (!matchedProd) {
+        // Try finding by category match
+        matchedProd = products.find(p => lowerMsg.includes(p.category.toLowerCase()) && p.stock > 0);
+      }
+
+      if (matchedProd) {
+        responseText = `Com certeza! O **${matchedProd.name}** (${matchedProd.category}) é uma excelente escolha! 🛍️✨\n\n${matchedProd.description}\n\nO valor de tabela é R$ ${matchedProd.price.toFixed(2)}. ${action === 'add_to_cart' ? 'Estou adicionando ao seu carrinho agora mesmo!' : 'Gostaria que eu adicionasse ao seu carrinho?'}`;
       } else {
+        // Default session state/menu flow
         const sessionKey = `${activeTenantId}:${session}`;
         const currentSessionState = userStates.get(sessionKey) || 'inicio';
         let nextStateId = null;
@@ -638,14 +632,23 @@ DIRETRIZES DE CONVERSA E ABORDAGEM:
         if (matchedOption) {
           nextStateId = matchedOption.nextState;
         } else {
-          nextStateId = currentSessionState;
+          // Fuzzy match on product description words
+          const fuzzyProd = products.find(p => p.description.toLowerCase().split(' ').some(word => word.length > 3 && lowerMsg.includes(word)) && p.stock > 0);
+          if (fuzzyProd) {
+            matchedProd = fuzzyProd;
+            responseText = `Acho que encontrei algo para você! O **${matchedProd.name}** pode ser exatamente o que você procura. 🛍️✨\n\n${matchedProd.description}\n\nPreço: R$ ${matchedProd.price.toFixed(2)}. Gostaria de adicionar ao carrinho?`;
+          } else {
+            nextStateId = currentSessionState;
+          }
         }
 
-        userStates.set(sessionKey, nextStateId);
-        const nextStateConfig = getFlowState(nextStateId, activeTenantId);
-        responseText = nextStateConfig.message;
-        if (!matchedOption && nextStateId === currentSessionState && nextStateId !== 'inicio') {
-          responseText = `Não entendi sua escolha. Por favor, selecione uma das opções abaixo:\n\n` + responseText;
+        if (!matchedProd) {
+          userStates.set(sessionKey, nextStateId);
+          const nextStateConfig = getFlowState(nextStateId, activeTenantId);
+          responseText = nextStateConfig.message;
+          if (!matchedOption && nextStateId === currentSessionState && nextStateId !== 'inicio') {
+            responseText = `Não entendi sua escolha. Por favor, selecione uma das opções abaixo:\n\n` + responseText;
+          }
         }
       }
 

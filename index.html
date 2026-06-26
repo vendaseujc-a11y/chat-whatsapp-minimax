@@ -1515,7 +1515,7 @@
                 <div class="logo-icon">🌿</div>
                 <h1>VouComprarFácil</h1>
             </div>
-            <p class="subtitle">Seu Suplemento Inteligente <span>• Atendimento Local Express</span></p>
+            <p class="subtitle">Sua Compra Fácil <span>• Atendimento Local Express</span></p>
             <div class="local-info-bar">
                 <span>📍 Loja: <span id="storeAddress">Av. Brigadeiro Faria Lima, 1500</span> <a href="#" onclick="editStoreAddress(event)" style="color: var(--accent-gold); margin-left: 4px; text-decoration: underline; font-weight: bold; font-size: 9px;">(Editar)</a></span>
                 <span>🛵 Entrega Grátis na Região</span>
@@ -1576,19 +1576,19 @@
                     <div class="message assistant">
                         <div class="message-avatar">🤖</div>
                         <div class="message-bubble">
-                            Olá! Seja extremamente bem-vindo à <strong>VouComprarFácil</strong>! ⚡💪<br><br>
-                            Sou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para decifrar os seus objetivos e indicar o produto ideal para o seu treino decolar!<br><br>
-                            Qual é a sua principal meta hoje? Escolha uma opção abaixo ou me diga com suas palavras! 😊
+                            Olá! Seja muito bem-vindo à nossa loja! 🛍️✨<br><br>
+                            Sou seu consultor virtual inteligente. O que você procura hoje?<br><br>
+                            Por favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Replies Chips -->
                 <div class="quick-replies-container">
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Quero ganhar massa muscular rápida 💪')">💪 Ganhar Massa</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Preciso de mais força e energia no treino ⚡')">⚡ Mais Força</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Como emagrecer e queimar gordura? 🔥')">🔥 Queimar Gordura</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre os melhores combos e promoções! 🎁')">🎁 Ver Promoções</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Ver Categorias de Produtos 🛍️')">Ver Categorias 🛍️</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Ver Promoções Ativas 🔥')">Ver Promoções 🔥</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Falar com Consultor / Comprar 🛒')">Falar com Consultor 🛒</button>
+                    <button class="quick-reply-chip" onclick="sendQuickReply('Informações de Entrega 📦')">Informações de Entrega 📦</button>
                 </div>
 
                 <!-- Message Input Control area -->
@@ -2130,6 +2130,7 @@
                         productsData = data.products || [];
                         renderProducts(productsData);
                         renderStack(); // Sync stack rendering with prices
+                        renderAdaptiveChips(activeUserGoal); // Update quick reply chips dynamically
                         return;
                     }
                 } catch (e) {
@@ -2494,21 +2495,6 @@
 
         // Semantic Classifier for Auto-Learning
         function detectUserGoal(text) {
-            if (!text) return null;
-            const lower = text.toLowerCase();
-            
-            // Keywords list
-            const massaKeywords = ['massa', 'muscul', 'hipertrofia', 'crescer', 'monstro', 'ganhar peso', 'whey', 'creatina', 'bomba', 'academia', 'força'];
-            const secarKeywords = ['secar', 'emagrecer', 'perder', 'gordura', 'definir', 'cardio', 'termogenico', 'queima', 'peso', 'slim'];
-            const energiaKeywords = ['energia', 'disposição', 'pre-treino', 'foco', 'focus', 'estimulante', 'cansado', 'acordar', 'disposicao', 'cafeina', 'power'];
-
-            let isMassa = massaKeywords.some(kw => lower.includes(kw));
-            let isSecar = secarKeywords.some(kw => lower.includes(kw));
-            let isEnergia = energiaKeywords.some(kw => lower.includes(kw));
-
-            if (isMassa) return 'massa';
-            if (isSecar) return 'secar';
-            if (isEnergia) return 'energia';
             return null;
         }
 
@@ -2536,31 +2522,11 @@
             const welcomeBubble = document.querySelector('.chat-messages .message.assistant .message-bubble');
             if (!welcomeBubble) return;
 
-            if (goal === 'massa') {
-                welcomeBubble.innerHTML = `
-                    Olá, campeão! 💪 Vejo que seu perfil de <strong>Ganho de Massa Muscular e Hipertrofia</strong> está ativo! ⚡<br><br>
-                    Tenho os melhores Wheys, Creatinas importadas e combos hipertróficos de ponta com ofertas imperdíveis. Pronto para construir o shape dos seus sonhos?<br><br>
-                    Como posso te ajudar no seu treino hoje? Escolha um atalho rápido ou fale comigo por texto ou voz! 😊
-                `;
-            } else if (goal === 'secar') {
-                welcomeBubble.innerHTML = `
-                    Olá, atleta! 🔥 Vejo que seu perfil de <strong>Definição e Emagrecimento</strong> está ativo! 📉<br><br>
-                    Preparei uma seleção especial de termogênicos de elite, L-Carnitina e BCAAs para queimar gordura aceleradamente e obter a definição máxima do shape.<br><br>
-                    O que vamos queimar hoje? Escolha um atalho rápido ou me diga seus objetivos! 😊
-                `;
-            } else if (goal === 'energia') {
-                welcomeBubble.innerHTML = `
-                    E aí, guerreiro! ⚡ Vejo que seu perfil de <strong>Explosão de Energia e Foco</strong> está ativo! 🔋<br><br>
-                    Pronto para superar seus limites no treino? Nossa linha de pré-treinos superconcentrados, cafeína e recuperadores de treino vai te levar ao próximo nível.<br><br>
-                    Qual é a sua meta de força hoje? Digite ou escolha um combo de energia abaixo! 😊
-                `;
-            } else {
-                welcomeBubble.innerHTML = `
-                    Olá! Seja extremamente bem-vindo à <strong>VouComprarFácil</strong>! ⚡💪<br><br>
-                    Sou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para decifrar os seus objetivos e indicar o produto ideal para o seu treino decolar!<br><br>
-                    Qual é a sua principal meta hoje? Escolha uma opção abaixo ou me diga com suas palavras! 😊
-                `;
-            }
+            welcomeBubble.innerHTML = `
+                Olá! Seja muito bem-vindo à nossa loja! 🛍️✨<br><br>
+                Sou seu consultor virtual inteligente. O que você procura hoje?<br><br>
+                Por favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊
+            `;
         }
 
         // Dynamically render customized quick action reply chips
@@ -2568,35 +2534,39 @@
             const container = document.querySelector('.quick-replies-container');
             if (!container) return;
 
-            if (goal === 'massa') {
-                container.innerHTML = `
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre o melhor combo para ganhar massa 💪')">💪 Combo Massa</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Quais os benefícios de combinar Whey e Creatina? 🧬')">🧬 Whey + Creatina</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Comparar Whey Prime com Whey Gold Standard ⭐')">⭐ Comparar Wheys</button>
-                    <button class="quick-reply-chip" onclick="resetActiveGoal()" style="border-color: rgba(255,255,255,0.25);">🔄 Mudar Foco</button>
-                `;
-            } else if (goal === 'secar') {
-                container.innerHTML = `
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Me indique suplementos para queimar gordura rápido 🔥')">🔥 Seca Gordura</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Como tomar o BCAA para definição muscular? 💊')">💊 BCAA para Definição</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Quero ver termogênicos em promoção 🎁')">📉 Termogênicos Tops</button>
-                    <button class="quick-reply-chip" onclick="resetActiveGoal()" style="border-color: rgba(255,255,255,0.25);">🔄 Mudar Foco</button>
-                `;
-            } else if (goal === 'energia') {
-                container.innerHTML = `
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Qual pré-treino vai me dar mais força e foco? ⚡')">⚡ Pré-Treino Forte</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Como acelerar a recuperação muscular pós-treino? 🔋')">🔋 Recuperação Rápida</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre os suplementos de força 🏋️')">🏋️ Combos de Força</button>
-                    <button class="quick-reply-chip" onclick="resetActiveGoal()" style="border-color: rgba(255,255,255,0.25);">🔄 Mudar Foco</button>
-                `;
-            } else {
-                container.innerHTML = `
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Quero ganhar massa muscular rápida 💪')">💪 Ganhar Massa</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Preciso de mais força e energia no treino ⚡')">⚡ Mais Força</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Como emagrecer e queimar gordura? 🔥')">🔥 Queimar Gordura</button>
-                    <button class="quick-reply-chip" onclick="sendQuickReply('Me mostre os melhores combos e promoções! 🎁')">🎁 Ver Promoções</button>
-                `;
+            let categories = [];
+            if (typeof productsData !== 'undefined' && productsData.length > 0) {
+                categories = [...new Set(productsData.map(p => p.category).filter(Boolean))];
             }
+
+            const catEmojis = {
+                'Proteínas': '🥩',
+                'Força': '💪',
+                'Energia': '⚡',
+                'Recuperação': '💊',
+                'Emagrecimento': '🔥',
+                'Produtos gerais': '📦',
+                'mercado': '🛒',
+                'lojas do comercio': '🏪'
+            };
+
+            let chipsHtml = '';
+            if (categories.length > 0) {
+                categories.slice(0, 3).forEach(cat => {
+                    const emoji = catEmojis[cat] || '📦';
+                    chipsHtml += `<button class="quick-reply-chip" onclick="sendQuickReply('${cat} ${emoji}')">${cat} ${emoji}</button>`;
+                });
+            } else {
+                chipsHtml += `<button class="quick-reply-chip" onclick="sendQuickReply('Ver Categorias de Produtos 🛍️')">Ver Categorias 🛍️</button>`;
+            }
+
+            chipsHtml += `
+                <button class="quick-reply-chip" onclick="sendQuickReply('Ver Promoções Ativas 🔥')">Promoções 🔥</button>
+                <button class="quick-reply-chip" onclick="sendQuickReply('Falar com Consultor / Comprar 🛒')">Vendedor 🛒</button>
+                <button class="quick-reply-chip" onclick="sendQuickReply('Informações de Entrega 📦')">Entrega 📦</button>
+            `;
+
+            container.innerHTML = chipsHtml;
         }
 
         // Reset the learned profile back to neutral
@@ -3065,7 +3035,7 @@
                     }
 
                     const newLocalId = Date.now(); // ID temporário único
-                    const welcomeMessage = `Olá! Seja muito bem-vindo à **${store_name}**! ⚡💪\n\nSou seu consultor virtual.`;
+                    const welcomeMessage = `Olá! Seja muito bem-vindo à **${store_name}**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊`;
                     const newTenant = {
                         id: newLocalId,
                         email,

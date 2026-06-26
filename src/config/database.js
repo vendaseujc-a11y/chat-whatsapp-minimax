@@ -21,6 +21,11 @@ async function initDatabase() {
 
   if (cloudTenants && Array.isArray(cloudTenants) && cloudTenants.length > 0) {
     global.tenantsMemory = cloudTenants;
+    const t1 = global.tenantsMemory.find(t => t.id === 1);
+    if (t1 && t1.welcome_message && !t1.welcome_message.includes('O que você procura hoje?')) {
+      t1.welcome_message = 'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊';
+      await saveToKv(TENANTS_KEY, global.tenantsMemory);
+    }
     console.log('Loaded tenants from cloud KV:', global.tenantsMemory.length);
   } else {
     global.tenantsMemory = [
@@ -30,7 +35,7 @@ async function initDatabase() {
         password_hash: hashPassword('VOUPRO9988'),
         store_name: 'VouComprarFácil',
         whatsapp_phone: '5517996705407',
-        welcome_message: 'Olá! Seja muito bem-vindo à **VouComprarFácil**! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:'
+        welcome_message: 'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
       }
     ];
     await saveToKv(TENANTS_KEY, global.tenantsMemory);
@@ -157,7 +162,7 @@ async function initDatabase() {
           hashPassword('VOUPRO9988'),
           'VouComprarFácil',
           '5517996705407',
-          'Olá! Seja muito bem-vindo à **VouComprarFácil**! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:'
+          'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
         ]);
         
         global.productsMemory.forEach(p => {
@@ -180,7 +185,13 @@ async function initDatabase() {
         fs.writeFileSync(dbPath, Buffer.from(dataExport));
       }
     } else {
-      stmt.free();
+      db.run(`
+        UPDATE tenants 
+        SET welcome_message = 'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
+        WHERE id = 1 AND welcome_message NOT LIKE '%O que você procura hoje?%'
+      `);
+      const dataExport = db.export();
+      fs.writeFileSync(dbPath, Buffer.from(dataExport));
     }
   } catch (e) {
     console.error('Falha ao carregar SQLite local:', e.message);
