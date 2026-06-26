@@ -36,6 +36,14 @@ async function initDatabase() {
         store_name: 'VouComprarFácil',
         whatsapp_phone: '5517996705407',
         welcome_message: 'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
+      },
+      {
+        id: 2,
+        email: 'jonatasc2009@gmail.com',
+        password_hash: hashPassword('VOUPRO9988'),
+        store_name: 'VouComprarFácil Jonatas',
+        whatsapp_phone: '5517996705407',
+        welcome_message: 'Olá! Seja muito bem-vindo! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
       }
     ];
     await saveToKv(TENANTS_KEY, global.tenantsMemory);
@@ -164,6 +172,17 @@ async function initDatabase() {
           '5517996705407',
           'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
         ]);
+        db.run(`
+          INSERT INTO tenants (id, email, password_hash, store_name, whatsapp_phone, welcome_message)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `, [
+          2,
+          'jonatasc2009@gmail.com',
+          hashPassword('VOUPRO9988'),
+          'VouComprarFácil Jonatas',
+          '5517996705407',
+          'Olá! Seja muito bem-vindo! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
+        ]);
         
         global.productsMemory.forEach(p => {
           db.run(`
@@ -190,6 +209,17 @@ async function initDatabase() {
         SET welcome_message = 'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
         WHERE id = 1 AND welcome_message NOT LIKE '%O que você procura hoje?%'
       `);
+      db.run(`
+        INSERT OR IGNORE INTO tenants (id, email, password_hash, store_name, whatsapp_phone, welcome_message)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `, [
+        2,
+        'jonatasc2009@gmail.com',
+        hashPassword('VOUPRO9988'),
+        'VouComprarFácil Jonatas',
+        '5517996705407',
+        'Olá! Seja muito bem-vindo! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
+      ]);
       const dataExport = db.export();
       fs.writeFileSync(dbPath, Buffer.from(dataExport));
     }
