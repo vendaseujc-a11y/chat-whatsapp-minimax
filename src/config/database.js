@@ -6,6 +6,8 @@ global.tenantsMemory = global.tenantsMemory || [];
 global.productsMemory = global.productsMemory || [];
 
 const crypto = require('crypto');
+const { loadFromKv, saveToKv, TENANTS_KEY, PRODUCTS_KEY } = require('./kvPersistence');
+
 function hashPassword(password) {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
@@ -13,23 +15,38 @@ function hashPassword(password) {
 async function initDatabase() {
   console.log('Inicializando banco de dados...');
   
-  // Seed memory stores immediately so they are always ready
-  if (global.tenantsMemory.length === 0) {
-    global.tenantsMemory.push({
-      id: 1,
-      email: 'loja1@teste.com',
-      password_hash: hashPassword('VOUPRO9988'),
-      store_name: 'VouComprarFácil',
-      whatsapp_phone: '5517996705407',
-      welcome_message: 'Olá! Seja muito bem-vindo à **VouComprarFácil**! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:'
-    });
-    
-    // Seed products
+  // Try to load from cloud KV first
+  const cloudTenants = await loadFromKv(TENANTS_KEY);
+  const cloudProducts = await loadFromKv(PRODUCTS_KEY);
+
+  if (cloudTenants && Array.isArray(cloudTenants) && cloudTenants.length > 0) {
+    global.tenantsMemory = cloudTenants;
+    console.log('Loaded tenants from cloud KV:', global.tenantsMemory.length);
+  } else {
+    global.tenantsMemory = [
+      {
+        id: 1,
+        email: 'loja1@teste.com',
+        password_hash: hashPassword('VOUPRO9988'),
+        store_name: 'VouComprarFácil',
+        whatsapp_phone: '5517996705407',
+        welcome_message: 'Olá! Seja muito bem-vindo à **VouComprarFácil**! ⚡💪\n\nSou seu consultor virtual inteligente especializado em suplementação esportiva de alto rendimento. Estou aqui para te ajudar a encontrar os melhores produtos para alcançar o shape dos seus sonhos!\n\nPor favor, escolha uma das opções abaixo para começarmos:'
+      }
+    ];
+    await saveToKv(TENANTS_KEY, global.tenantsMemory);
+  }
+
+  if (cloudProducts && Array.isArray(cloudProducts) && cloudProducts.length > 0) {
+    global.productsMemory = cloudProducts;
+    console.log('Loaded products from cloud KV:', global.productsMemory.length);
+  } else {
+    global.productsMemory = [];
+    // Populate default products if empty
     try {
       const fs = require('fs');
       const path = require('path');
       const productsJsonPath = path.join(__dirname, 'products.json');
-      if (false && fs.existsSync(productsJsonPath)) {
+      if (fs.existsSync(productsJsonPath)) {
         const productsList = JSON.parse(fs.readFileSync(productsJsonPath, 'utf8'));
         productsList.forEach(p => {
           const isBcaa = p.name.toLowerCase().includes('bcaa');
@@ -49,10 +66,11 @@ async function initDatabase() {
     } catch(e) {
       console.error('Falha ao ler products.json para memória:', e.message);
     }
+    await saveToKv(PRODUCTS_KEY, global.productsMemory);
   }
 
   if (process.env.VERCEL) {
-    console.log('Ambiente Vercel detectado: utilizando persistência puramente em memória (JS nativo)');
+    console.log('Ambiente Vercel detectado: utilizando persistência puramente em memória com sincronização via cloud KV');
     useMemory = true;
     return;
   }

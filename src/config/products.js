@@ -168,6 +168,14 @@ function addOrUpdateProduct(productData, tenantId = 1) {
         stock: stockVal
       });
     }
+    
+    try {
+      const { saveToKv, PRODUCTS_KEY } = require('./kvPersistence');
+      saveToKv(PRODUCTS_KEY, global.productsMemory);
+    } catch (e) {
+      console.error('Erro ao salvar no KV:', e.message);
+    }
+    
     return true;
   }
 
@@ -227,6 +235,14 @@ function deleteProduct(id, tenantId = 1) {
     const index = targetArray.findIndex(p => p.id === id && p.tenant_id === tenantId);
     if (index !== -1) {
       targetArray.splice(index, 1);
+      
+      try {
+        const { saveToKv, PRODUCTS_KEY } = require('./kvPersistence');
+        saveToKv(PRODUCTS_KEY, global.productsMemory);
+      } catch (e) {
+        console.error('Erro ao salvar no KV:', e.message);
+      }
+      
       return true;
     }
     return false;

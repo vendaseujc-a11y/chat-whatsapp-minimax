@@ -45,14 +45,19 @@ app.post('/api/sync', (req, res) => {
   const { stores, products } = req.body;
   
   if (process.env.VERCEL || !global.db) {
+    let modified = false;
     if (Array.isArray(stores)) {
       stores.forEach(s => {
         const exists = global.tenantsMemory.some(t => t.id === s.id || t.email === s.email);
         if (!exists) {
           global.tenantsMemory.push(s);
+          modified = true;
         } else {
           const idx = global.tenantsMemory.findIndex(t => t.id === s.id);
-          if (idx !== -1) global.tenantsMemory[idx] = s;
+          if (idx !== -1 && JSON.stringify(global.tenantsMemory[idx]) !== JSON.stringify(s)) {
+            global.tenantsMemory[idx] = s;
+            modified = true;
+          }
         }
       });
     }
@@ -71,23 +76,46 @@ app.post('/api/sync', (req, res) => {
             description: p.description,
             stock: p.stock
           });
+          modified = true;
         } else {
           const idx = global.productsMemory.findIndex(item => item.id === p.id && item.tenant_id === p.tenant_id);
           if (idx !== -1) {
-            global.productsMemory[idx] = {
-              id: p.id,
-              tenant_id: p.tenant_id,
-              name: p.name,
-              category: p.category,
-              image: p.image,
-              price: p.price,
-              promo: p.promo,
-              description: p.description,
-              stock: p.stock
-            };
+            const currentItem = global.productsMemory[idx];
+            if (
+              currentItem.name !== p.name ||
+              currentItem.category !== p.category ||
+              currentItem.image !== p.image ||
+              currentItem.price !== p.price ||
+              currentItem.promo !== p.promo ||
+              currentItem.description !== p.description ||
+              currentItem.stock !== p.stock
+            ) {
+              global.productsMemory[idx] = {
+                id: p.id,
+                tenant_id: p.tenant_id,
+                name: p.name,
+                category: p.category,
+                image: p.image,
+                price: p.price,
+                promo: p.promo,
+                description: p.description,
+                stock: p.stock
+              };
+              modified = true;
+            }
           }
         }
       });
+    }
+
+    if (modified) {
+      try {
+        const { saveToKv, TENANTS_KEY, PRODUCTS_KEY } = require('./config/kvPersistence');
+        saveToKv(TENANTS_KEY, global.tenantsMemory);
+        saveToKv(PRODUCTS_KEY, global.productsMemory);
+      } catch (e) {
+        console.error('Erro ao salvar no KV durante sync:', e.message);
+      }
     }
   }
   res.json({ success: true });
@@ -119,6 +147,13 @@ app.post('/api/auth/register', (req, res) => {
         welcome_message: welcomeMessage
       };
       global.tenantsMemory.push(tenantObj);
+
+      try {
+        const { saveToKv, TENANTS_KEY } = require('./config/kvPersistence');
+        saveToKv(TENANTS_KEY, global.tenantsMemory);
+      } catch (e) {
+        console.error('Erro ao salvar no KV durante register:', e.message);
+      }
 
       const token = generateToken(newId);
       return res.json({ success: true, token, tenantId: newId, tenant: tenantObj });
@@ -269,6 +304,14 @@ app.put('/api/store/settings', authMiddleware, (req, res) => {
         tenant.store_name = store_name;
         tenant.whatsapp_phone = whatsapp_phone;
         tenant.welcome_message = welcome_message || '';
+        
+        try {
+          const { saveToKv, TENANTS_KEY } = require('./config/kvPersistence');
+          saveToKv(TENANTS_KEY, global.tenantsMemory);
+        } catch (e) {
+          console.error('Erro ao salvar no KV durante update settings:', e.message);
+        }
+        
         return res.json({ success: true, message: 'Configurações atualizadas com sucesso' });
       }
       return res.status(404).json({ error: 'Loja não encontrada' });
