@@ -2919,12 +2919,10 @@
                             renderAdminProductsList();
                             break;
 
-                        } else if (response.status === 401) {
-                            // Credenciais erradas - não tentar outros endpoints
-                            const data = await response.json();
-                            showSystemToast(data.error || 'Credenciais incorretas ❌');
-                            triggerHaptic(100);
-                            loginSuccess = true; // marcar como tratado (não é erro de conexão)
+                        } else {
+                            // Servidor retornou erro (401, 500, etc)
+                            // NÃO exibir mensagem ainda: pode ser que o Vercel perdeu o usuário
+                            // na memória (cold start). O fallback local vai verificar.
                             break;
                         }
                     } catch(e) {
@@ -2933,24 +2931,31 @@
                 }
 
                 // PASSO 3: Fallback local - verificar credenciais no localStorage
+                // Sempre executado quando o servidor não confirmou o login.
+                // Isso cobre: Vercel cold start (usuário sumiu da memória), servidor offline, etc.
                 if (!loginSuccess) {
                     const localStores = JSON.parse(localStorage.getItem('voucomprafacil_local_stores') || '[]');
                     const localTenant = localStores.find(s => s.email === email);
-                    if (localTenant) {
-                        // Verificar senha via hash SHA-256 no browser
+
+                    if (localTenant && localTenant.password_hash) {
+                        // Verificar senha via SHA-256 no browser (mesmo algoritmo do Node.js)
                         const encoder = new TextEncoder();
-                        const data = encoder.encode(password);
-                        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                        const encodedPwd = encoder.encode(password);
+                        const hashBuffer = await crypto.subtle.digest('SHA-256', encodedPwd);
                         const hashArray = Array.from(new Uint8Array(hashBuffer));
                         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                        
+
                         if (hashHex === localTenant.password_hash) {
-                            adminToken = localStorage.getItem('voucomprafacil_token') || 'local-token-' + localTenant.id;
+                            // ✅ Senha correta via localStorage!
+                            const prevToken = localStorage.getItem('voucomprafacil_token');
+                            adminToken = (prevToken && !prevToken.startsWith('local-token-'))
+                                ? prevToken
+                                : 'local-token-' + localTenant.id;
                             adminTenantId = localTenant.id;
                             localStorage.setItem('voucomprafacil_token', adminToken);
                             localStorage.setItem('voucomprafacil_lojaId', String(adminTenantId));
 
-                            showSystemToast('Login local realizado! (servidor offline) 🔓');
+                            showSystemToast('Acesso liberado! 🔓');
                             triggerHaptic([50, 30, 50]);
 
                             if (adminTenantId !== tenantId) {
@@ -2963,11 +2968,17 @@
                             loadConfigFields();
                             renderAdminProductsList();
                         } else {
-                            showSystemToast('Senha incorreta ❌');
+                            // ❌ Senha errada tanto no servidor quanto localmente
+                            showSystemToast('Senha incorreta. Verifique e tente novamente ❌');
                             triggerHaptic(100);
                         }
+                    } else if (!localTenant) {
+                        // Conta não encontrada em lugar nenhum
+                        showSystemToast('Conta não encontrada. Verifique o e-mail ou registre-se ❌');
+                        triggerHaptic(100);
                     } else {
-                        showSystemToast('Servidor indisponível. Verifique sua conexão. ❌');
+                        // Conta sem hash (sessão antiga) - pedir re-registro
+                        showSystemToast('Sessão expirada. Registre-se novamente para atualizar sua conta ❌');
                         triggerHaptic(100);
                     }
                 }
