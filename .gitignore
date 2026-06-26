@@ -5,3 +5,4 @@ database.sqlite
 *.log
 .DS_Store
 .vercel
+scratch/
