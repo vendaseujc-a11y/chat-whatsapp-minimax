@@ -209,17 +209,22 @@ async function initDatabase() {
         SET welcome_message = 'Olá! Seja muito bem-vindo à **VouComprarFácil**! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
         WHERE id = 1 AND welcome_message NOT LIKE '%O que você procura hoje?%'
       `);
-      db.run(`
-        INSERT OR IGNORE INTO tenants (id, email, password_hash, store_name, whatsapp_phone, welcome_message)
-        VALUES (?, ?, ?, ?, ?, ?)
-      `, [
-        2,
-        'jonatasc2009@gmail.com',
-        hashPassword('VOUPRO9988'),
-        'VouComprarFácil Jonatas',
-        '5517996705407',
-        'Olá! Seja muito bem-vindo! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
-      ]);
+      const stmtCheck = db.prepare('SELECT id FROM tenants WHERE email = ?');
+      stmtCheck.bind(['jonatasc2009@gmail.com']);
+      const exists = stmtCheck.step();
+      stmtCheck.free();
+      if (!exists) {
+        db.run(`
+          INSERT INTO tenants (email, password_hash, store_name, whatsapp_phone, welcome_message)
+          VALUES (?, ?, ?, ?, ?)
+        `, [
+          'jonatasc2009@gmail.com',
+          hashPassword('VOUPRO9988'),
+          'VouComprarFácil Jonatas',
+          '5517996705407',
+          'Olá! Seja muito bem-vindo! 🛍️✨\n\nSou seu consultor virtual inteligente. O que você procura hoje?\n\nPor favor, escolha uma das opções abaixo ou me diga com suas palavras! 😊'
+        ]);
+      }
       const dataExport = db.export();
       fs.writeFileSync(dbPath, Buffer.from(dataExport));
     }
